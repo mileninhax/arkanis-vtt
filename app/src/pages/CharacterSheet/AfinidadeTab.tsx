@@ -32,6 +32,12 @@ export default function AfinidadeTab({ character, onUpdated }: { character: Char
     onUpdated()
   }
 
+  async function removeAfinidade() {
+    await supabase.from('characters').update({ afinidade_elemento: null }).eq('id', character.id)
+    setElemento(null)
+    onUpdated()
+  }
+
   if (!elemento) {
     return (
       <div>
@@ -77,6 +83,8 @@ export default function AfinidadeTab({ character, onUpdated }: { character: Char
           <ul>{poderes.map((p) => <li key={p.id}><strong>{p.name}</strong>: {p.description}</li>)}</ul>
         )}
       </section>
+
+      <button type="button" className="remove-afinidade-btn" onClick={removeAfinidade}>Remover Afinidade</button>
     </div>
   )
 }

@@ -65,27 +65,34 @@ export default function MinhasCampanhas() {
 
   return (
     <section>
-      <h2>Minhas Campanhas</h2>
+      <div className="character-list-header">
+        <h2>Minhas Campanhas</h2>
+      </div>
       {error && <p role="alert">{error}</p>}
 
       {campaigns === null && <p>Carregando…</p>}
       {campaigns?.length === 0 && <p>Nenhuma campanha ainda.</p>}
-      {campaigns?.map((c) => (
-        <div key={c.id}>
-          <strong>{c.name}</strong>
-          {c.owner_id === session?.user.id && <span> (Mestre)</span>}
-          {c.description && <p>{c.description}</p>}
-          <p>Código de convite: {c.invite_code}</p>
-        </div>
-      ))}
+
+      <div className="character-list">
+        {campaigns?.map((c) => (
+          <div key={c.id} className="character-card campaign-card">
+            <div className="character-card-body">
+              <strong className="character-card-name">{c.name}</strong>
+              {c.owner_id === session?.user.id && <span className="campaign-role-badge">Mestre</span>}
+              {c.description && <p className="character-card-game">{c.description}</p>}
+              <p className="campaign-invite-code">Código de convite: {c.invite_code}</p>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {showCreate ? (
-        <div>
-          <label>
+        <div className="campaign-form">
+          <label className="editperfil-field">
             Nome
             <input value={newName} onChange={(e) => setNewName(e.target.value)} />
           </label>
-          <label>
+          <label className="editperfil-field">
             Descrição
             <textarea value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
           </label>
@@ -93,11 +100,11 @@ export default function MinhasCampanhas() {
           <button type="button" onClick={() => setShowCreate(false)}>Cancelar</button>
         </div>
       ) : (
-        <button type="button" onClick={() => setShowCreate(true)}>+ Criar Campanha</button>
+        <button type="button" className="btn-pill btn-pill-neutral" onClick={() => setShowCreate(true)} style={{ marginTop: '0.8em' }}>+ Criar Campanha</button>
       )}
 
-      <div>
-        <label>
+      <div className="campaign-join-row">
+        <label className="editperfil-field">
           Código de convite
           <input value={joinCode} onChange={(e) => setJoinCode(e.target.value)} />
         </label>

@@ -61,6 +61,31 @@ export default function MeusPersonagens({ variant = 'perfil' }: { variant?: 'per
     loadCharacters()
   }
 
+  function CardMenu({ c }: { c: CharacterListItem }) {
+    return (
+      <div className="character-card-menu" onClick={(e) => e.preventDefault()}>
+        <button
+          type="button"
+          className="character-card-menu-btn"
+          onClick={() => setMenuOpen((id) => (id === c.id ? null : c.id))}
+          aria-label="Opções"
+        >
+          •••
+        </button>
+        {menuOpen === c.id && (
+          <>
+            <div className="dropdown-backdrop" onClick={() => setMenuOpen(null)} />
+            <ul className="character-card-dropdown">
+              <li><button type="button" onClick={() => handleCompartilhar(c)}>{copiedId === c.id ? 'Link copiado!' : 'Compartilhar'}</button></li>
+              <li><button type="button" onClick={() => handleDuplicar(c)}>Duplicar</button></li>
+              <li><button type="button" className="danger" onClick={() => { setMenuOpen(null); setDeleting(c) }}>Deletar</button></li>
+            </ul>
+          </>
+        )}
+      </div>
+    )
+  }
+
   return (
     <section>
       <div className="character-list-header">
@@ -84,58 +109,56 @@ export default function MeusPersonagens({ variant = 'perfil' }: { variant?: 'per
       {characters === null && <p>Carregando…</p>}
       {characters?.length === 0 && <p>Nenhum personagem ainda.</p>}
 
-      <div className="character-list">
-        {characters?.map((c) => (
-          <div key={c.id} className="character-card">
-            <Link to={`/personagem/${c.id}`} className="character-card-avatar-link">
-              {c.avatar_url ? (
-                <img className="character-card-avatar" src={c.avatar_url} alt="" />
-              ) : (
-                <div className="character-card-avatar character-card-avatar-fallback" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
-                  {(c.name || '?').charAt(0).toUpperCase()}
-                </div>
-              )}
+      {variant === 'jogar' ? (
+        <div className="character-tile-grid">
+          {characters?.map((c) => (
+            <Link
+              key={c.id}
+              to={`/personagem/${c.id}`}
+              className="character-tile"
+              style={c.avatar_url
+                ? { backgroundImage: `url(${c.avatar_url})` }
+                : { backgroundColor: fallbackAvatarColor(c.id) }}
+            >
+              <CardMenu c={c} />
+              <div className="character-tile-info">
+                <strong>{c.name || 'Sem nome'}</strong>
+                <span>Ordem Paranormal</span>
+              </div>
             </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="character-list">
+          {characters?.map((c) => (
+            <div key={c.id} className="character-card">
+              <Link to={`/personagem/${c.id}`} className="character-card-avatar-link">
+                {c.avatar_url ? (
+                  <img className="character-card-avatar" src={c.avatar_url} alt="" />
+                ) : (
+                  <div className="character-card-avatar character-card-avatar-fallback" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
+                    {(c.name || '?').charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </Link>
 
-            <div className="character-card-body">
-              <button
-                type="button"
-                className="character-card-name"
-                onClick={() => setExpanded((e) => (e === c.id ? null : c.id))}
-              >
-                {c.name || 'Sem nome'}
-              </button>
-              <p className="character-card-game">Ordem Paranormal</p>
-              {expanded === c.id && (
-                <p className="character-card-historia">{c.historico || 'Sem história definida ainda.'}</p>
-              )}
-            </div>
-
-            {variant === 'jogar' && (
-              <div className="character-card-menu">
+              <div className="character-card-body">
                 <button
                   type="button"
-                  className="character-card-menu-btn"
-                  onClick={() => setMenuOpen((id) => (id === c.id ? null : c.id))}
-                  aria-label="Opções"
+                  className="character-card-name"
+                  onClick={() => setExpanded((e) => (e === c.id ? null : c.id))}
                 >
-                  •••
+                  {c.name || 'Sem nome'}
                 </button>
-                {menuOpen === c.id && (
-                  <>
-                    <div className="dropdown-backdrop" onClick={() => setMenuOpen(null)} />
-                    <ul className="character-card-dropdown">
-                      <li><button type="button" onClick={() => handleCompartilhar(c)}>{copiedId === c.id ? 'Link copiado!' : 'Compartilhar'}</button></li>
-                      <li><button type="button" onClick={() => handleDuplicar(c)}>Duplicar</button></li>
-                      <li><button type="button" className="danger" onClick={() => { setMenuOpen(null); setDeleting(c) }}>Deletar</button></li>
-                    </ul>
-                  </>
+                <p className="character-card-game">Ordem Paranormal</p>
+                {expanded === c.id && (
+                  <p className="character-card-historia">{c.historico || 'Sem história definida ainda.'}</p>
                 )}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {deleting && (
         <div className="modal-backdrop">

@@ -19,8 +19,12 @@ export default function Jogar() {
       <div className="profile-vignette" />
       <h1>Jogar</h1>
 
-      <MeusPersonagens variant="jogar" />
-      <MinhasCampanhas />
+      <div className="jogar-section">
+        <MeusPersonagens variant="jogar" />
+      </div>
+      <div className="jogar-section">
+        <MinhasCampanhas />
+      </div>
     </main>
   )
 }

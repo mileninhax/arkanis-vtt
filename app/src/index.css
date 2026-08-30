@@ -370,6 +370,14 @@ code, .counter {
   padding: 1.2em 2em 2em;
 }
 
+.jogar-section {
+  margin-bottom: 2.4em;
+}
+
+.jogar-section:last-child {
+  margin-bottom: 0;
+}
+
 .profile-banner {
   position: relative;
   border-radius: 12px;
@@ -504,12 +512,62 @@ code, .counter {
 .character-list-desc {
   color: var(--text-dim);
   max-width: 60em;
+  margin-bottom: 1.2em;
 }
 
 .character-list {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
+}
+
+.character-tile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.character-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 190px;
+  height: 190px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+}
+
+.character-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 65%);
+}
+
+.character-tile-info {
+  position: relative;
+  z-index: 1;
+  padding: 0.8em;
+  color: var(--text-h);
+}
+
+.character-tile-info strong {
+  display: block;
+  font-family: var(--heading);
+  font-size: 1.1em;
+}
+
+.character-tile-info span {
+  display: block;
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 0.15em;
 }
 
 .character-card {
@@ -635,6 +693,49 @@ code, .counter {
   margin: 0.5em 0 0;
   color: var(--text-dim);
   font-size: 0.9em;
+}
+
+.campaign-card {
+  align-items: flex-start;
+}
+
+.campaign-role-badge {
+  display: inline-block;
+  margin-left: 0.5em;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent-strong);
+  background: var(--accent-bg);
+  border-radius: 999px;
+  padding: 0.15em 0.6em;
+  vertical-align: middle;
+}
+
+.campaign-invite-code {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  margin: 0.3em 0 0;
+}
+
+.campaign-form {
+  background: var(--profile-tint, var(--bg-panel));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 0.8em;
+  max-width: 420px;
+}
+
+.campaign-form button {
+  margin-right: 0.5em;
+}
+
+.campaign-join-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8em;
+  margin-top: 1.4em;
 }
 
 .modal-backdrop {

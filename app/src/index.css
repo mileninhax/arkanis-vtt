@@ -144,7 +144,6 @@ code, .counter {
   background-size: 140% 140%;
   background-position: 30% 30%;
   background-repeat: no-repeat;
-  animation: sheet-bg-drift 60s ease-in-out infinite alternate;
   opacity: 0.6;
 }
 
@@ -153,10 +152,84 @@ code, .counter {
   z-index: 1;
 }
 
+/* Padrão / sem afinidade: pan lento e uniforme, igual antes */
+.sheet-bg.bg-padrao {
+  animation: sheet-bg-drift 60s ease-in-out infinite alternate;
+}
+
 @keyframes sheet-bg-drift {
   0% { background-position: 20% 20%; }
   50% { background-position: 55% 45%; }
   100% { background-position: 30% 65%; }
+}
+
+/* Morte: espirais girando lentamente */
+.sheet-bg.bg-morte {
+  background-size: 200% 200%;
+  transform-origin: center;
+  animation: sheet-bg-spin 240s linear infinite;
+}
+
+@keyframes sheet-bg-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sangue: sensação de líquido escorrendo devagar */
+.sheet-bg.bg-sangue {
+  background-size: 160% 220%;
+  animation: sheet-bg-drip 20s ease-in-out infinite alternate;
+}
+
+@keyframes sheet-bg-drip {
+  0% { background-position: 50% 10%; filter: blur(0px); }
+  50% { background-position: 48% 35%; filter: blur(0.5px); }
+  100% { background-position: 52% 20%; filter: blur(0px); }
+}
+
+/* Conhecimento: brilho dourado suave, movimento uniforme */
+.sheet-bg.bg-conhecimento {
+  animation: sheet-bg-glow 50s ease-in-out infinite alternate;
+}
+
+@keyframes sheet-bg-glow {
+  0% { background-position: 25% 25%; filter: brightness(1); }
+  50% { background-position: 45% 40%; filter: brightness(1.15); }
+  100% { background-position: 30% 55%; filter: brightness(1); }
+}
+
+/* Energia: caos contido, movimento errático não-linear */
+.sheet-bg.bg-energia {
+  background-size: 170% 170%;
+  animation: sheet-bg-chaos 18s ease-in-out infinite;
+}
+
+.sheet-bg.bg-energia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.55), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.5), transparent 55%);
+  mix-blend-mode: screen;
+  animation: sheet-bg-chaos-glow 18s ease-in-out infinite;
+}
+
+@keyframes sheet-bg-chaos {
+  0% { background-position: 20% 30%; }
+  15% { background-position: 60% 20%; }
+  30% { background-position: 45% 65%; }
+  48% { background-position: 70% 55%; }
+  65% { background-position: 30% 70%; }
+  80% { background-position: 55% 35%; }
+  100% { background-position: 20% 30%; }
+}
+
+@keyframes sheet-bg-chaos-glow {
+  0% { opacity: 0.5; transform: translate(0%, 0%); }
+  25% { opacity: 0.8; transform: translate(3%, -4%); }
+  50% { opacity: 0.4; transform: translate(-3%, 3%); }
+  75% { opacity: 0.7; transform: translate(2%, 2%); }
+  100% { opacity: 0.5; transform: translate(0%, 0%); }
 }
 
 .vtt-topbar {

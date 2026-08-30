@@ -108,11 +108,13 @@ export default function CharacterSheet() {
 
   if (!character) return <main>Carregando…</main>
 
-  const bgImage = ELEMENT_BACKGROUNDS[character.afinidade_elemento ?? ''] ?? bgPadrao
+  const elemento = character.afinidade_elemento
+  const bgImage = (elemento && ELEMENT_BACKGROUNDS[elemento]) ?? bgPadrao
+  const bgClass = elemento && ELEMENT_BACKGROUNDS[elemento] ? `bg-${elemento}` : 'bg-padrao'
 
   return (
     <main className="sheet-root">
-      <div className="sheet-bg" style={{ backgroundImage: `url(${bgImage})` }} />
+      <div className={`sheet-bg ${bgClass}`} style={{ backgroundImage: `url(${bgImage})` }} />
       <header className="vtt-topbar">
         <nav className="vtt-tabs">
           {TABS.map((t) => (

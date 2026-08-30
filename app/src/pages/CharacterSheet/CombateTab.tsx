@@ -25,6 +25,15 @@ type Attack = {
     modificadores?: { kind: 'modificacao' | 'maldicao'; name: string; effect: string; elemento: string | null; origem: 'Arma' | 'Munição' }[]
     damage_bonus_from_mods?: number
   } | null
+  from_inventory_item_id: string | null
+}
+
+type InventoryAmmoInfo = {
+  id: string
+  linked_ammo_id: string | null
+  ammo_current: number | null
+  ammo_total: number | null
+  ammo_label: string | null
 }
 
 type Skill = { id: string; name: string }
@@ -44,16 +53,25 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [roll, setRoll] = useState<RollResultData | null>(null)
   const [attackMods, setAttackMods] = useState<Modifier[]>([])
   const [damageMods, setDamageMods] = useState<Modifier[]>([])
+  const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
 
   async function loadAttacks() {
     const { data } = await supabase
       .from('character_attacks')
-      .select('id, name, skill_id, attribute, d20_bonus, threat_margin, multiplier, damage, general_info')
+      .select('id, name, skill_id, attribute, d20_bonus, threat_margin, multiplier, damage, general_info, from_inventory_item_id')
       .eq('character_id', character.id)
     setAttacks((data ?? []) as unknown as Attack[])
   }
 
-  useEffect(() => { loadAttacks() }, [character.id])
+  async function loadInventoryAmmo() {
+    const { data } = await supabase
+      .from('character_inventory')
+      .select('id, linked_ammo_id, ammo_current, ammo_total, ammo_label')
+      .eq('character_id', character.id)
+    setInventoryAmmo((data ?? []) as InventoryAmmoInfo[])
+  }
+
+  useEffect(() => { loadAttacks(); loadInventoryAmmo() }, [character.id])
 
   useEffect(() => {
     supabase.from('skills').select('id, name').order('sort_order').then(({ data }) => setSkills(data ?? []))
@@ -100,7 +118,28 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     await loadAttacks()
   }
 
+  function ammoForAttack(attack: Attack): InventoryAmmoInfo | null {
+    if (!character.optional_rules.contagem_municao || !attack.from_inventory_item_id) return null
+    const sourceInv = inventoryAmmo.find((i) => i.id === attack.from_inventory_item_id)
+    if (!sourceInv?.linked_ammo_id) return null
+    const ammoInv = inventoryAmmo.find((i) => i.id === sourceInv.linked_ammo_id)
+    if (!ammoInv || ammoInv.ammo_total === null) return null
+    return ammoInv
+  }
+
+  async function consumeAmmo(ammoInv: InventoryAmmoInfo) {
+    const next = Math.max(0, (ammoInv.ammo_current ?? 0) - 1)
+    await supabase.from('character_inventory').update({ ammo_current: next }).eq('id', ammoInv.id)
+    await loadInventoryAmmo()
+  }
+
   function rollAttack(attack: Attack) {
+    const ammoInv = ammoForAttack(attack)
+    if (ammoInv && (ammoInv.ammo_current ?? 0) <= 0) {
+      window.alert(`Sem ${ammoInv.ammo_label ?? 'munição'} — recarregue no Inventário antes de atacar.`)
+      return
+    }
+
     const activeAttackMods = attackMods.filter((m) => m.is_active)
     const activeDamageMods = damageMods.filter((m) => m.is_active)
 
@@ -133,6 +172,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       municao: attack.general_info?.municao ?? null,
       modificadores: attack.general_info?.modificadores ?? [],
     })
+
+    if (ammoInv) consumeAmmo(ammoInv)
 
     if (session) {
       const damageText = damage.map((d) => d.manualFormula !== undefined ? `${d.label}: manual (${d.manualFormula})` : `${d.label}: ${d.total}`).join(' · ')
@@ -190,13 +231,17 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         )}
 
         <ul>
-          {attacks.map((a) => (
-            <li key={a.id}>
-              {a.name}{a.general_info?.municao ? ` (${a.general_info.municao})` : ''} — {attrValue(character.attributes, a.attribute)}d20 / {a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || 'sem dano definido'} / x{a.multiplier}
-              <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
-              <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
-            </li>
-          ))}
+          {attacks.map((a) => {
+            const ammoInv = ammoForAttack(a)
+            return (
+              <li key={a.id}>
+                {a.name}{a.general_info?.municao ? ` (${a.general_info.municao})` : ''} — {attrValue(character.attributes, a.attribute)}d20 / {a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || 'sem dano definido'} / x{a.multiplier}
+                {ammoInv && <span> · {ammoInv.ammo_current ?? 0}/{ammoInv.ammo_total} {ammoInv.ammo_label}</span>}
+                <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
+                <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
+              </li>
+            )
+          })}
         </ul>
       </section>
     </div>

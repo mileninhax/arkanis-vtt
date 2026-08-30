@@ -23,6 +23,9 @@ type InventoryItem = {
   equipment_items: EquipmentItem | null
   applied_modifiers: { kind: 'modificacao' | 'maldicao'; name: string; effect: string; elemento: string | null }[]
   linked_ammo_id: string | null
+  ammo_current: number | null
+  ammo_total: number | null
+  ammo_label: string | null
 }
 
 // Extrai bônus numéricos simples do texto de efeito de uma modificação (ex.: "+2 em
@@ -57,6 +60,7 @@ const TYPES: { key: EquipmentItem['type']; label: string }[] = [
   { key: 'municao', label: 'Munições' },
   { key: 'protecao', label: 'Proteções' },
   { key: 'geral', label: 'Geral' },
+  { key: 'paranormal', label: 'Paranormal' },
 ]
 
 function summarize(item: EquipmentItem | Partial<EquipmentItem>): string {
@@ -81,7 +85,7 @@ export default function InventarioTab({ character }: { character: CharacterRecor
   async function loadInventory() {
     const { data } = await supabase
       .from('character_inventory')
-      .select('id, equipment_item_id, custom_item, category_override, is_equipped, quantity, applied_modifiers, linked_ammo_id, equipment_items(id, type, name, category, spaces, description, stats)')
+      .select('id, equipment_item_id, custom_item, category_override, is_equipped, quantity, applied_modifiers, linked_ammo_id, ammo_current, ammo_total, ammo_label, equipment_items(id, type, name, category, spaces, description, stats)')
       .eq('character_id', character.id)
     setItems((data ?? []) as unknown as InventoryItem[])
   }
@@ -164,6 +168,22 @@ export default function InventarioTab({ character }: { character: CharacterRecor
     await loadInventory()
   }
 
+  async function setQuantity(inv: InventoryItem, quantity: number) {
+    if (quantity < 0) return
+    await supabase.from('character_inventory').update({ quantity }).eq('id', inv.id)
+    await loadInventory()
+  }
+
+  async function setAmmo(inv: InventoryItem, patch: Partial<Pick<InventoryItem, 'ammo_current' | 'ammo_total' | 'ammo_label'>>) {
+    await supabase.from('character_inventory').update(patch).eq('id', inv.id)
+    await loadInventory()
+  }
+
+  async function initAmmoTracking(inv: InventoryItem, item: EquipmentItem | Partial<EquipmentItem>) {
+    const defaultLabel = character.optional_rules.contagem_municao && item.type === 'municao' ? 'Balas' : 'Usos'
+    await setAmmo(inv, { ammo_total: 1, ammo_current: 1, ammo_label: defaultLabel })
+  }
+
   async function linkAmmo(inv: InventoryItem, ammoId: string | null) {
     await supabase.from('character_inventory').update({ linked_ammo_id: ammoId }).eq('id', inv.id)
     await loadInventory()
@@ -233,15 +253,37 @@ export default function InventarioTab({ character }: { character: CharacterRecor
           const item = inv.equipment_items ?? inv.custom_item
           if (!item) return null
           const isExpanded = expanded === inv.id
-          const canEquip = item.type === 'protecao' || item.type === 'geral'
+          const canEquip = item.type === 'protecao' || item.type === 'geral' || item.type === 'paranormal'
           return (
             <li key={inv.id}>
               <button type="button" onClick={() => setExpanded(isExpanded ? null : inv.id)}>
-                {item.name} — {summarize(item)} {inv.is_equipped ? '(equipado)' : ''}
+                {item.name}{inv.quantity > 1 ? ` (x${inv.quantity})` : ''} — {summarize(item)} {inv.is_equipped ? '(equipado)' : ''}
               </button>
               {isExpanded && editingId !== inv.id && (
                 <div>
                   {item.description && <p>{item.description}</p>}
+                  <label>
+                    Quantidade
+                    <button type="button" onClick={() => setQuantity(inv, inv.quantity - 1)} disabled={inv.quantity <= 0}>-</button>
+                    {inv.quantity}
+                    <button type="button" onClick={() => setQuantity(inv, inv.quantity + 1)}>+</button>
+                  </label>
+                  {inv.ammo_total === null ? (
+                    <button type="button" onClick={() => initAmmoTracking(inv, item)}>Rastrear Munição/Usos</button>
+                  ) : (
+                    <div>
+                      <label>
+                        Rótulo <input value={inv.ammo_label ?? ''} onChange={(e) => setAmmo(inv, { ammo_label: e.target.value })} />
+                      </label>
+                      <label>
+                        Total <input type="number" value={inv.ammo_total} onChange={(e) => setAmmo(inv, { ammo_total: Number(e.target.value) })} />
+                      </label>
+                      <button type="button" onClick={() => setAmmo(inv, { ammo_current: Math.max(0, (inv.ammo_current ?? 0) - 1) })} disabled={(inv.ammo_current ?? 0) <= 0}>-</button>
+                      {inv.ammo_current} / {inv.ammo_total} {inv.ammo_label}
+                      <button type="button" onClick={() => setAmmo(inv, { ammo_current: Math.min(inv.ammo_total ?? 0, (inv.ammo_current ?? 0) + 1) })}>+</button>
+                      <button type="button" onClick={() => setAmmo(inv, { ammo_current: inv.ammo_total })}>Recarregar</button>
+                    </div>
+                  )}
                   <button type="button" onClick={() => remove(inv.id)}>Remover</button>
                   <button type="button" onClick={() => startEdit(inv)}>Editar</button>
                   {item.type === 'arma' && (

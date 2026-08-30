@@ -398,6 +398,7 @@ code, .counter {
   background: none;
   border: none;
   color: var(--text-h);
+  font-family: var(--heading);
   font-weight: 700;
   font-size: 2.4em;
   line-height: 1;

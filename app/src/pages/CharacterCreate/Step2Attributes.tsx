@@ -8,8 +8,8 @@ import intelectoIcon from '../../assets/criacao/intelecto-icon.png'
 import vigorIcon from '../../assets/criacao/vigor-icon.png'
 import presencaIcon from '../../assets/criacao/presenca-icon.png'
 
-const NODES: { key: keyof Attributes; abbr: string; name: string; icon: string; top: string; left: string; labelSide: 'left' | 'right' | 'center' }[] = [
-  { key: 'agilidade', abbr: 'AGI', name: 'agilidade', icon: agilidadeIcon, top: '10%', left: '50%', labelSide: 'right' },
+const NODES: { key: keyof Attributes; abbr: string; name: string; icon: string; top: string; left: string; labelSide: 'left' | 'right' | 'top' }[] = [
+  { key: 'agilidade', abbr: 'AGI', name: 'agilidade', icon: agilidadeIcon, top: '10%', left: '50%', labelSide: 'top' },
   { key: 'intelecto', abbr: 'INT', name: 'intelecto', icon: intelectoIcon, top: '37.6%', left: '88%', labelSide: 'right' },
   { key: 'vigor', abbr: 'VIG', name: 'vigor', icon: vigorIcon, top: '82.4%', left: '73.5%', labelSide: 'right' },
   { key: 'presenca', abbr: 'PRE', name: 'presença', icon: presencaIcon, top: '82.4%', left: '26.5%', labelSide: 'left' },
@@ -48,16 +48,10 @@ export default function Step2Attributes({
   const isValid = remaining === 0
   const paperStyle = { backgroundImage: `url(${papelTextura})` }
 
-  function adjust(key: keyof Attributes, delta: number) {
-    const current = attributes[key]
-    const next = current + delta
-    if (next < 0 || next > 3) return
-
-    const projected = { ...attributes, [key]: next }
-    const { remaining: projectedRemaining } = computePool(projected)
-    if (delta > 0 && projectedRemaining < 0) return
-
-    onChange(projected)
+  function setValue(key: keyof Attributes, raw: number) {
+    if (Number.isNaN(raw)) return
+    const next = Math.max(0, Math.min(3, Math.round(raw)))
+    onChange({ ...attributes, [key]: next })
   }
 
   return (
@@ -83,18 +77,19 @@ export default function Step2Attributes({
             </svg>
 
             {NODES.map((node) => (
-              <div key={node.key} className="attr-node" style={{ top: node.top, left: node.left }}>
-                <div className="attr-node-circle">
-                  <img src={node.icon} alt="" />
-                </div>
-                <div className={`attr-node-label attr-node-label-${node.labelSide}`}>
+              <div key={node.key} className={`attr-node attr-node-${node.labelSide}`} style={{ top: node.top, left: node.left }}>
+                <div className="attr-node-label">
                   <span className="attr-node-abbr">{node.abbr}</span>
                   <span className="attr-node-name">{node.name}</span>
                 </div>
-                <div className="attr-node-controls">
-                  <button type="button" onClick={() => adjust(node.key, -1)} disabled={attributes[node.key] <= 0}>-</button>
-                  <span>{attributes[node.key]}</span>
-                  <button type="button" onClick={() => adjust(node.key, 1)} disabled={attributes[node.key] >= 3}>+</button>
+                <div className="attr-node-circle" style={{ '--icon': `url(${node.icon})` } as React.CSSProperties}>
+                  <input
+                    type="number"
+                    min={0}
+                    max={3}
+                    value={attributes[node.key]}
+                    onChange={(e) => setValue(node.key, Number(e.target.value))}
+                  />
                 </div>
               </div>
             ))}

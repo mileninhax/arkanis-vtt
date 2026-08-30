@@ -1953,40 +1953,84 @@ code, .counter {
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  gap: 0.4em;
+  gap: 0.5em;
+}
+
+.attr-node-left {
+  flex-direction: row;
+}
+
+.attr-node-right {
+  flex-direction: row-reverse;
+}
+
+.attr-node-top {
+  flex-direction: column;
 }
 
 .attr-node-circle {
+  position: relative;
   width: 3.4em;
   height: 3.4em;
   border-radius: 50%;
   background: #e8dcc0;
   border: 2px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
-.attr-node-circle img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
+.attr-node-circle::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  background-image: var(--icon);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.attr-node-circle input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  text-align: center;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.5em;
+  color: #000;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+
+.attr-node-circle input::-webkit-outer-spin-button,
+.attr-node-circle input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .attr-node-label {
   display: flex;
   flex-direction: column;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
-.attr-node-label-left {
-  order: -1;
+.attr-node-left .attr-node-label {
   text-align: right;
 }
 
-.attr-node-label-right {
+.attr-node-right .attr-node-label {
   text-align: left;
+}
+
+.attr-node-top .attr-node-label {
+  text-align: center;
+  align-items: center;
 }
 
 .attr-node-abbr {
@@ -1997,28 +2041,6 @@ code, .counter {
 
 .attr-node-name {
   font-size: 1.05em;
-}
-
-.attr-node-controls {
-  position: absolute;
-  bottom: -1.6em;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-  font-size: 0.7em;
-}
-
-.attr-node-controls button {
-  width: 1.4em;
-  height: 1.4em;
-  padding: 0;
-  line-height: 1;
-  border-radius: 50%;
-  background: #000;
-  color: #e8dcc0;
-  border: none;
 }
 
 .attr-about-list {

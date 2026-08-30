@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
+import { recordRoll } from '../../lib/rollHistory'
 import { attrValue, nexSteps, rollAttributeTest, rollDiceFormula, trainingBonus, type Training } from '../../lib/rules'
 import type { CharacterRecord } from './index'
 import RollResult, { type RollResultData } from './RollResult'
@@ -34,6 +36,7 @@ const PRATOS = [
 ]
 
 export default function InterludioTab({ character, onUpdated }: { character: CharacterRecord & { class_id: string | null }; onUpdated: () => void }) {
+  const { session } = useAuth()
   const [selectedActions, setSelectedActions] = useState<ActionKey[]>([])
   const [condicao, setCondicao] = useState<'precaria' | 'normal' | 'confortavel' | 'luxuosa'>('normal')
   const [prato, setPrato] = useState<string | null>(null)
@@ -273,7 +276,14 @@ export default function InterludioTab({ character, onUpdated }: { character: Cha
               const score = attrValue(character.attributes, attr)
               const { rolls, kept } = rollAttributeTest(score)
               const bonus = trainingBonus(cs.training) + cs.extra_bonus + (prato === 'rapido' ? 5 : 0)
-              setRoll({ label: `Revisar Caso — Teste de ${skill.name}`, rolls, kept, bonus })
+              const label = `Revisar Caso — Teste de ${skill.name}`
+              setRoll({ label, rolls, kept, bonus })
+              if (session) {
+                recordRoll({
+                  characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+                  label, total: kept + bonus, detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}`,
+                })
+              }
             }}
           >
             Rolar teste
@@ -330,6 +340,7 @@ export default function InterludioTab({ character, onUpdated }: { character: Cha
           onClick={() => {
             let successes = 0
             let nat20 = false
+            const parts: string[] = []
             for (const skillId of [folgaSkill1, folgaSkill2]) {
               const skill = skills.find((s) => s.id === skillId)
               if (!skill) continue
@@ -338,10 +349,18 @@ export default function InterludioTab({ character, onUpdated }: { character: Cha
               const score = attrValue(character.attributes, attr)
               const { rolls, kept } = rollAttributeTest(score)
               if (rolls.includes(20)) nat20 = true
-              const total = kept + trainingBonus(cs.training) + cs.extra_bonus
+              const bonus = trainingBonus(cs.training) + cs.extra_bonus
+              const total = kept + bonus
               if (total >= 20) successes += 1
+              parts.push(`${skill.name}: ${total} (d20 mantido ${kept} + bônus ${bonus})`)
             }
             setFolgaResult({ successes, nat20 })
+            if (session) {
+              recordRoll({
+                characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+                label: `Folga da Ordem (${interesse})`, total: successes, detail: parts.join(' · '),
+              })
+            }
           }}
         >
           Testar Folga

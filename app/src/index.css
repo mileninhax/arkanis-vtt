@@ -144,7 +144,7 @@ code, .counter {
   background-size: 140% 140%;
   background-position: 30% 30%;
   background-repeat: no-repeat;
-  opacity: 0.6;
+  background-blend-mode: normal;
 }
 
 .sheet-root > *:not(.sheet-bg) {
@@ -219,7 +219,7 @@ code, .counter {
 
 /* Energia: caos contido, movimento errático não-linear */
 .sheet-bg.bg-energia {
-  background-size: 170% 170%;
+  background-size: 260% 260%;
   animation: sheet-bg-chaos 18s ease-in-out infinite;
 }
 
@@ -227,28 +227,29 @@ code, .counter {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.55), transparent 55%),
-    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.5), transparent 55%);
+  background: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.9), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.85), transparent 55%);
   mix-blend-mode: screen;
+  opacity: 0.85;
   animation: sheet-bg-chaos-glow 18s ease-in-out infinite;
 }
 
 @keyframes sheet-bg-chaos {
-  0% { background-position: 20% 30%; }
-  15% { background-position: 60% 20%; }
-  30% { background-position: 45% 65%; }
-  48% { background-position: 70% 55%; }
-  65% { background-position: 30% 70%; }
-  80% { background-position: 55% 35%; }
-  100% { background-position: 20% 30%; }
+  0% { background-position: 35% 40%; }
+  15% { background-position: 50% 35%; }
+  30% { background-position: 42% 50%; }
+  48% { background-position: 55% 48%; }
+  65% { background-position: 38% 55%; }
+  80% { background-position: 48% 42%; }
+  100% { background-position: 35% 40%; }
 }
 
 @keyframes sheet-bg-chaos-glow {
-  0% { opacity: 0.5; transform: translate(0%, 0%); }
-  25% { opacity: 0.8; transform: translate(3%, -4%); }
-  50% { opacity: 0.4; transform: translate(-3%, 3%); }
-  75% { opacity: 0.7; transform: translate(2%, 2%); }
-  100% { opacity: 0.5; transform: translate(0%, 0%); }
+  0% { opacity: 0.6; transform: translate(0%, 0%); }
+  25% { opacity: 1; transform: translate(3%, -4%); }
+  50% { opacity: 0.5; transform: translate(-3%, 3%); }
+  75% { opacity: 0.9; transform: translate(2%, 2%); }
+  100% { opacity: 0.6; transform: translate(0%, 0%); }
 }
 
 .vtt-topbar {

@@ -114,7 +114,10 @@ export default function CharacterSheet() {
 
   return (
     <main className="sheet-root">
-      <div className={`sheet-bg ${bgClass}`} style={{ backgroundImage: `url(${bgImage})` }} />
+      <div
+        className={`sheet-bg ${bgClass}`}
+        style={{ backgroundImage: `linear-gradient(rgba(19,17,24,0.4), rgba(19,17,24,0.4)), url(${bgImage})` }}
+      />
       <header className="vtt-topbar">
         <nav className="vtt-tabs">
           {TABS.map((t) => (

@@ -11,6 +11,18 @@ import InterludioTab from './InterludioTab'
 import RegrasExtrasTab from './RegrasExtrasTab'
 import ConfiguracoesPanel from './ConfiguracoesPanel'
 import HistoricoRolagens from './HistoricoRolagens'
+import bgPadrao from '../../assets/backgrounds/bg-padrao.webp'
+import bgSangue from '../../assets/backgrounds/bg-sangue.webp'
+import bgMorte from '../../assets/backgrounds/bg-morte.webp'
+import bgConhecimento from '../../assets/backgrounds/bg-conhecimento.webp'
+import bgEnergia from '../../assets/backgrounds/bg-energia.webp'
+
+const ELEMENT_BACKGROUNDS: Record<string, string> = {
+  sangue: bgSangue,
+  morte: bgMorte,
+  conhecimento: bgConhecimento,
+  energia: bgEnergia,
+}
 
 export type CharacterRecord = {
   id: string
@@ -96,8 +108,11 @@ export default function CharacterSheet() {
 
   if (!character) return <main>Carregando…</main>
 
+  const bgImage = ELEMENT_BACKGROUNDS[character.afinidade_elemento ?? ''] ?? bgPadrao
+
   return (
-    <main>
+    <main className="sheet-root">
+      <div className="sheet-bg" style={{ backgroundImage: `url(${bgImage})` }} />
       <header className="vtt-topbar">
         <nav className="vtt-tabs">
           {TABS.map((t) => (

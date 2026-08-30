@@ -9,6 +9,8 @@ type ProfileRow = {
   avatar_url: string | null
   banner_url: string | null
   banner_position_y: number
+  accent_color: string | null
+  background_color: string | null
 }
 
 export default function Perfil() {
@@ -20,7 +22,7 @@ export default function Perfil() {
     if (!session) return
     supabase
       .from('profiles')
-      .select('display_name, description, avatar_url, banner_url, banner_position_y')
+      .select('display_name, description, avatar_url, banner_url, banner_position_y, accent_color, background_color')
       .eq('id', session.user.id)
       .single()
       .then(({ data }) => setProfile(data))
@@ -31,8 +33,11 @@ export default function Perfil() {
     navigate('/')
   }
 
+  const accent = profile?.accent_color || undefined
+  const background = profile?.background_color || undefined
+
   return (
-    <main>
+    <main style={{ backgroundColor: background, color: accent }}>
       <h1>Perfil</h1>
 
       {profile?.banner_url && (
@@ -50,11 +55,11 @@ export default function Perfil() {
       {profile?.description && <p>{profile.description}</p>}
 
       <nav>
-        <Link to="/jogar">Meus Personagens</Link>
+        <Link to="/jogar" style={{ color: accent }}>Meus Personagens</Link>
         {' · '}
-        <Link to="/perfil/editar">Editar Perfil</Link>
+        <Link to="/perfil/editar" style={{ color: accent }}>Editar Perfil</Link>
         {' · '}
-        <button onClick={handleSair}>Sair</button>
+        <button onClick={handleSair} style={{ color: accent, borderColor: accent }}>Sair</button>
       </nav>
     </main>
   )

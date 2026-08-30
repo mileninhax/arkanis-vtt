@@ -160,7 +160,7 @@ export default function EditarPerfil() {
 
       <section>
         <p>Prévia</p>
-        <div style={{ border: '1px solid currentColor', padding: 8, maxWidth: 300 }}>
+        <div style={{ border: '1px solid currentColor', padding: 8, maxWidth: 300, backgroundColor: backgroundColor, color: accentColor }}>
           {bannerUrl && (
             <div style={{ height: 60, overflow: 'hidden' }}>
               <img

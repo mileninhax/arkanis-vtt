@@ -268,3 +268,69 @@ code, .counter {
   color: var(--text-dim);
   text-transform: uppercase;
 }
+
+/* ---- Diagrama hexagonal de atributos (SVG) ---- */
+
+.hex-diagram-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  margin: 1.6em auto 0.5em;
+}
+
+.hex-nex-badge {
+  position: absolute;
+  top: -14px;
+  left: 0;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  color: var(--accent-strong);
+  border-radius: 999px;
+  padding: 0.15em 0.6em;
+  font-size: 0.75em;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.hex-attr-poly {
+  fill: var(--bg-card);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.hex-attr-group:hover .hex-attr-poly {
+  fill: var(--accent-bg);
+  stroke: var(--accent);
+}
+
+.hex-attr-value {
+  fill: var(--text-h);
+  font-size: 22px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.hex-attr-abbr {
+  fill: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-anchor: middle;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.hex-center-circle {
+  fill: var(--bg-input);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.hex-center-label {
+  fill: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-anchor: middle;
+  text-transform: uppercase;
+}

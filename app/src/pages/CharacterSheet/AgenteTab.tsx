@@ -10,6 +10,7 @@ import RituaisTab from './RituaisTab'
 import InventarioTab from './InventarioTab'
 import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
+import AttributeHexDiagram from './AttributeHexDiagram'
 
 type ClassRow = {
   pv_initial: number | null; pv_initial_attr: string | null; pv_per_nex: number | null; pv_per_nex_attr: string | null
@@ -209,24 +210,26 @@ function cycleTraining(current: Training): Training {
         </div>
 
         <div className="vtt-card">
-          <h3>Atributos</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5em' }}>
-            {ATTR_LABELS.map(({ key, abbr }) => (
-              editMode ? (
-                <label key={key}>
-                  {abbr}
-                  <input
-                    type="number"
-                    value={character.attributes[key]}
-                    onChange={(e) => updateAttribute(key, Number(e.target.value))}
-                    style={{ width: '3em' }}
-                  />
-                </label>
-              ) : (
-                <button key={key} type="button" onClick={() => rollAttribute(key, abbr)}>{abbr}: {character.attributes[key]}</button>
-              )
-            ))}
-          </div>
+          {editMode ? (
+            <>
+              <h3>Atributos</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5em' }}>
+                {ATTR_LABELS.map(({ key, abbr }) => (
+                  <label key={key}>
+                    {abbr}
+                    <input
+                      type="number"
+                      value={character.attributes[key]}
+                      onChange={(e) => updateAttribute(key, Number(e.target.value))}
+                      style={{ width: '3em' }}
+                    />
+                  </label>
+                ))}
+              </div>
+            </>
+          ) : (
+            <AttributeHexDiagram attributes={character.attributes} nexPercent={character.nex_percent} onRoll={rollAttribute} />
+          )}
 
           {character.optional_rules.evolucao_patente && (
             <label style={{ display: 'block', marginTop: '0.6em' }}>

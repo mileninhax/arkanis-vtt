@@ -285,6 +285,293 @@ code, .counter {
   margin: 0.8em 0;
 }
 
+/* ---- Perfil ---- */
+
+.profile-banner {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 150px;
+  border: 1px solid var(--border);
+}
+
+.profile-banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-banner-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  padding: 1.4em;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 60%);
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-card);
+  border: 3px solid rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.profile-desc {
+  color: var(--text);
+  max-width: 40em;
+  margin: 0;
+}
+
+.profile-body {
+  display: flex;
+  gap: 1.2em;
+  align-items: flex-start;
+  margin-top: 1.2em;
+  flex-wrap: wrap;
+}
+
+.profile-characters {
+  flex: 1 1 480px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1em 1.2em;
+}
+
+.profile-actions {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1em 1.2em;
+}
+
+.profile-actions a,
+.profile-actions button {
+  text-align: left;
+}
+
+.character-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.6em;
+}
+
+.character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.character-card {
+  display: flex;
+  gap: 0.8em;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7em 0.9em;
+}
+
+.character-card-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-input);
+  flex-shrink: 0;
+}
+
+.character-card-body {
+  min-width: 0;
+}
+
+.character-card-name {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--heading);
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.character-card-name:hover {
+  color: var(--accent-strong);
+}
+
+.character-card-game {
+  font-size: 0.8em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0.1em 0 0;
+}
+
+.character-card-historia {
+  margin: 0.5em 0 0;
+  color: var(--text-dim);
+  font-size: 0.9em;
+}
+
+/* ---- Editar Perfil ---- */
+
+.editperfil-section {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1em 1.2em;
+  margin-bottom: 1.2em;
+}
+
+.editperfil-field {
+  display: block;
+  margin-bottom: 0.8em;
+}
+
+.editperfil-field input,
+.editperfil-field textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.3em;
+}
+
+.editperfil-row {
+  display: flex;
+  gap: 1.5em;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+
+.editperfil-row:last-child {
+  margin-bottom: 0;
+}
+
+.editperfil-row-label {
+  flex: 0 0 180px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.editperfil-hint {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  max-width: 220px;
+  margin: 0.4em 0 0;
+}
+
+.editperfil-row-content {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.editperfil-avatar-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-input);
+  border: 1px solid var(--border-strong);
+}
+
+.editperfil-banner-preview {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 260px;
+  max-width: 560px;
+  height: 110px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0.5em;
+}
+
+.editperfil-banner-preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editperfil-banner-preview button {
+  position: relative;
+  z-index: 1;
+}
+
+.editperfil-minicard {
+  position: relative;
+  width: 280px;
+  min-height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  padding: 1.2em 1em;
+  cursor: ns-resize;
+  user-select: none;
+}
+
+.editperfil-minicard-banner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editperfil-minicard-avatar {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-input);
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  display: block;
+  margin: 0 auto 0.6em;
+}
+
+.editperfil-minicard h3,
+.editperfil-minicard p {
+  position: relative;
+  text-align: center;
+}
+
+.editperfil-swatch-row {
+  display: flex;
+  gap: 0.6em;
+  flex-wrap: wrap;
+}
+
+.editperfil-swatch {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid transparent;
+}
+
+.editperfil-swatch.active {
+  border-color: var(--text-h);
+}
+
 .vtt-topbar {
   display: flex;
   justify-content: space-between;

@@ -38,32 +38,35 @@ export default function Perfil() {
   const background = profile?.background_color || undefined
 
   return (
-    <main className="page-shell" style={{ backgroundColor: background, color: accent }}>
-      <h1>Perfil</h1>
-
-      {profile?.banner_url && (
-        <div style={{ height: 150, overflow: 'hidden' }}>
+    <main className="page-shell">
+      <div className="profile-banner" style={{ backgroundColor: background }}>
+        {profile?.banner_url && (
           <img
+            className="profile-banner-img"
             src={profile.banner_url}
-            alt="Banner"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `center ${profile.banner_position_y}%` }}
+            alt=""
+            style={{ objectPosition: `center ${profile.banner_position_y}%` }}
           />
+        )}
+        <div className="profile-banner-content">
+          <img className="profile-avatar" src={profile?.avatar_url ?? undefined} alt="Avatar" />
+          <div>
+            <h1 style={{ color: accent }}>{profile?.display_name || 'Sem nome definido'}</h1>
+            {profile?.description && <p className="profile-desc">{profile.description}</p>}
+          </div>
         </div>
-      )}
+      </div>
 
-      {profile?.avatar_url && <img src={profile.avatar_url} alt="Avatar" width={96} height={96} />}
-      <h2>{profile?.display_name || 'Sem nome definido'}</h2>
-      {profile?.description && <p>{profile.description}</p>}
+      <div className="profile-body">
+        <section className="profile-characters">
+          <MeusPersonagens />
+        </section>
 
-      <nav>
-        <Link to="/jogar" style={{ color: accent }}>Jogar</Link>
-        {' · '}
-        <Link to="/perfil/editar" style={{ color: accent }}>Editar Perfil</Link>
-        {' · '}
-        <button onClick={handleSair} style={{ color: accent, borderColor: accent }}>Sair</button>
-      </nav>
-
-      <MeusPersonagens />
+        <aside className="profile-actions">
+          <Link to="/perfil/editar">Editar Perfil</Link>
+          <button type="button" onClick={handleSair}>Sair</button>
+        </aside>
+      </div>
     </main>
   )
 }

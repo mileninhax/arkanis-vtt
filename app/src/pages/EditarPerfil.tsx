@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 
+const ACCENT_SWATCHES = ['#b98ee9', '#f16a63', '#f562a3', '#3f8fe0', '#1fae8e', '#22b14c', '#e0b13a', '#eaeaea']
+const BACKGROUND_SWATCHES = ['#2e2050', '#6a1f1f', '#6a1f42', '#1f3f6a', '#1f5a4a', '#1f5a2f', '#5a4a1f', '#131118']
+
 export default function EditarPerfil() {
   const { session } = useAuth()
   const navigate = useNavigate()
@@ -12,12 +15,14 @@ export default function EditarPerfil() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [bannerUrl, setBannerUrl] = useState<string | null>(null)
   const [bannerPositionY, setBannerPositionY] = useState(50)
-  const [accentColor, setAccentColor] = useState('#888888')
-  const [backgroundColor, setBackgroundColor] = useState('#1a1a1a')
+  const [accentColor, setAccentColor] = useState('#eaeaea')
+  const [backgroundColor, setBackgroundColor] = useState('#6a1f42')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+  const bannerInputRef = useRef<HTMLInputElement>(null)
   const draggingRef = useRef(false)
   const bannerBoxRef = useRef<HTMLDivElement>(null)
 
@@ -35,8 +40,8 @@ export default function EditarPerfil() {
           setAvatarUrl(data.avatar_url)
           setBannerUrl(data.banner_url)
           setBannerPositionY(data.banner_position_y ?? 50)
-          setAccentColor(data.accent_color ?? '#888888')
-          setBackgroundColor(data.background_color ?? '#1a1a1a')
+          setAccentColor(data.accent_color ?? '#eaeaea')
+          setBackgroundColor(data.background_color ?? '#6a1f42')
         }
         setLoading(false)
       })
@@ -112,85 +117,112 @@ export default function EditarPerfil() {
   if (loading) return null
 
   return (
-    <main>
+    <main className="page-shell">
       <h1>Editar Perfil</h1>
       {error && <p role="alert">{error}</p>}
 
-      <section>
-        <label>
+      <section className="editperfil-section">
+        <h2>Informações</h2>
+        <label className="editperfil-field">
           Nome de usuário
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
         </label>
-      </section>
-
-      <section>
-        <label>
+        <label className="editperfil-field">
           Descrição
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
       </section>
 
-      <section>
-        <p>Foto de perfil</p>
-        {avatarUrl && <img src={avatarUrl} alt="Avatar" width={96} height={96} />}
-        <input type="file" accept="image/*" onChange={handleAvatarChange} />
+      <section className="editperfil-section">
+        <h2>Aparência</h2>
+
+        <div className="editperfil-row">
+          <p className="editperfil-row-label">Foto de Perfil</p>
+          <div className="editperfil-row-content">
+            <img className="editperfil-avatar-preview" src={avatarUrl ?? undefined} alt="" />
+            <input ref={avatarInputRef} type="file" accept="image/*" onChange={handleAvatarChange} hidden />
+            <button type="button" onClick={() => avatarInputRef.current?.click()}>Mudar foto</button>
+          </div>
+        </div>
+
+        <div className="editperfil-row">
+          <p className="editperfil-row-label">Banner de Perfil</p>
+          <div className="editperfil-banner-preview">
+            {bannerUrl && <img src={bannerUrl} alt="" style={{ objectPosition: `center ${bannerPositionY}%` }} />}
+            <input ref={bannerInputRef} type="file" accept="image/*" onChange={handleBannerChange} hidden />
+            <button type="button" onClick={() => bannerInputRef.current?.click()}>Mudar Banner</button>
+          </div>
+        </div>
       </section>
 
-      <section>
-        <p>Banner de perfil (arraste dentro da imagem pra reposicionar)</p>
-        {bannerUrl && (
+      <section className="editperfil-section">
+        <div className="editperfil-row">
+          <div>
+            <p className="editperfil-row-label">Mini card de Perfil</p>
+            <p className="editperfil-hint">
+              Segure e arraste para posicionar o banner. Outros usuários verão seu perfil na posição que escolher para o seu banner.
+            </p>
+          </div>
           <div
             ref={bannerBoxRef}
-            style={{ height: 150, overflow: 'hidden', cursor: 'ns-resize', userSelect: 'none' }}
+            className="editperfil-minicard"
+            style={{ backgroundColor }}
             onPointerDown={handleBannerPointerDown}
             onPointerMove={handleBannerPointerMove}
             onPointerUp={handleBannerPointerUp}
             onPointerLeave={handleBannerPointerUp}
           >
-            <img
-              src={bannerUrl}
-              alt="Banner"
-              draggable={false}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `center ${bannerPositionY}%` }}
-            />
-          </div>
-        )}
-        <input type="file" accept="image/*" onChange={handleBannerChange} />
-      </section>
-
-      <section>
-        <p>Prévia</p>
-        <div style={{ border: '1px solid currentColor', padding: 8, maxWidth: 300, backgroundColor: backgroundColor, color: accentColor }}>
-          {bannerUrl && (
-            <div style={{ height: 60, overflow: 'hidden' }}>
+            {bannerUrl && (
               <img
+                className="editperfil-minicard-banner"
                 src={bannerUrl}
                 alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `center ${bannerPositionY}%` }}
+                draggable={false}
+                style={{ objectPosition: `center ${bannerPositionY}%` }}
               />
-            </div>
-          )}
-          {avatarUrl && <img src={avatarUrl} alt="" width={48} height={48} />}
-          <p>{displayName || 'Sem nome definido'}</p>
-          {description && <p>{description}</p>}
+            )}
+            <img className="editperfil-minicard-avatar" src={avatarUrl ?? undefined} alt="" />
+            <h3 style={{ color: accentColor }}>{displayName || 'Sem nome definido'}</h3>
+            {description && <p>{description}</p>}
+          </div>
         </div>
       </section>
 
-      <section>
-        <label>
-          Cor de destaque
-          <input type="color" value={accentColor} onChange={(e) => setAccentColor(e.target.value)} />
-        </label>
+      <section className="editperfil-section">
+        <div className="editperfil-row">
+          <p className="editperfil-row-label">Cor de Destaque</p>
+          <div className="editperfil-swatch-row">
+            {ACCENT_SWATCHES.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={`editperfil-swatch${accentColor === c ? ' active' : ''}`}
+                style={{ backgroundColor: c }}
+                onClick={() => setAccentColor(c)}
+                aria-label={c}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="editperfil-row">
+          <p className="editperfil-row-label">Cor de Fundo</p>
+          <div className="editperfil-swatch-row">
+            {BACKGROUND_SWATCHES.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={`editperfil-swatch${backgroundColor === c ? ' active' : ''}`}
+                style={{ backgroundColor: c }}
+                onClick={() => setBackgroundColor(c)}
+                aria-label={c}
+              />
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section>
-        <label>
-          Cor de fundo
-          <input type="color" value={backgroundColor} onChange={(e) => setBackgroundColor(e.target.value)} />
-        </label>
-      </section>
-
-      <button onClick={handleSalvar} disabled={saving}>{saving ? 'Salvando...' : 'Salvar'}</button>
+      <button type="button" onClick={handleSalvar} disabled={saving}>{saving ? 'Salvando...' : 'Salvar'}</button>
     </main>
   )
 }

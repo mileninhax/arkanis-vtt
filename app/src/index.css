@@ -124,7 +124,7 @@ h3 { font-size: 1.05em; }
 
 p { margin: 0 0 0.5em; }
 
-a { color: var(--accent-strong); }
+a { color: var(--accent-strong); text-decoration: none; }
 
 nav {
   display: flex;

@@ -476,6 +476,34 @@ code, .counter {
   align-items: center;
   gap: 1em;
   margin-bottom: 0.6em;
+  flex-wrap: wrap;
+}
+
+.character-list-actions {
+  display: flex;
+  gap: 0.6em;
+  flex-wrap: wrap;
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.45em 1em;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #131118;
+  background: var(--accent);
+}
+
+.btn-pill-neutral {
+  background: var(--text-h);
+  color: #131118;
+}
+
+.character-list-desc {
+  color: var(--text-dim);
+  max-width: 60em;
 }
 
 .character-list {
@@ -485,12 +513,17 @@ code, .counter {
 }
 
 .character-card {
+  position: relative;
   display: flex;
   gap: 0.8em;
   background: var(--profile-tint, var(--bg-card));
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.7em 0.9em;
+}
+
+.character-card-avatar-link {
+  flex-shrink: 0;
 }
 
 .character-card-avatar {
@@ -500,6 +533,76 @@ code, .counter {
   object-fit: cover;
   background: var(--bg-input);
   flex-shrink: 0;
+}
+
+.character-card-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--heading);
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.character-card-menu {
+  position: absolute;
+  top: 0.5em;
+  right: 0.6em;
+}
+
+.character-card-menu-btn {
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  border-radius: 999px;
+  width: 1.8em;
+  height: 1.8em;
+  padding: 0;
+  color: var(--text-h);
+  font-size: 0.8em;
+  letter-spacing: -1px;
+}
+
+.dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+}
+
+.character-card-dropdown {
+  position: absolute;
+  top: 2.1em;
+  right: 0;
+  z-index: 5;
+  list-style: none;
+  margin: 0;
+  padding: 0.3em;
+  min-width: 140px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.character-card-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.4em 0.6em;
+  border-radius: 6px;
+  color: var(--text-h);
+  font-size: 0.9em;
+}
+
+.character-card-dropdown button:hover {
+  background: var(--bg-card);
+}
+
+.character-card-dropdown button.danger,
+.modal-actions button.danger {
+  color: var(--danger);
 }
 
 .character-card-body {
@@ -532,6 +635,32 @@ code, .counter {
   margin: 0.5em 0 0;
   color: var(--text-dim);
   font-size: 0.9em;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 1.4em 1.6em;
+  max-width: 360px;
+  width: 90%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6em;
+  margin-top: 1em;
 }
 
 /* ---- Editar Perfil ---- */

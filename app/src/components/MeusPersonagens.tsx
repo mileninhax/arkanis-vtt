@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
+import { fallbackAvatarColor } from '../lib/color'
 
 type CharacterListItem = {
   id: string
@@ -10,27 +11,75 @@ type CharacterListItem = {
   historico: string | null
 }
 
-export default function MeusPersonagens() {
+export default function MeusPersonagens({ variant = 'perfil' }: { variant?: 'perfil' | 'jogar' }) {
   const { session } = useAuth()
   const [characters, setCharacters] = useState<CharacterListItem[] | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState<CharacterListItem | null>(null)
+  const [accentColor, setAccentColor] = useState<string | null>(null)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
-  useEffect(() => {
+  async function loadCharacters() {
     if (!session) return
-    supabase
+    const { data } = await supabase
       .from('characters')
       .select('id, name, avatar_url, historico')
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false })
-      .then(({ data }) => setCharacters(data ?? []))
+    setCharacters(data ?? [])
+  }
+
+  useEffect(() => {
+    loadCharacters()
   }, [session])
+
+  useEffect(() => {
+    if (!session || variant !== 'jogar') return
+    supabase.from('profiles').select('accent_color').eq('id', session.user.id).single()
+      .then(({ data }) => setAccentColor(data?.accent_color ?? null))
+  }, [session, variant])
+
+  async function handleCompartilhar(c: CharacterListItem) {
+    const url = `${window.location.origin}/personagem/${c.id}`
+    await navigator.clipboard.writeText(url)
+    setCopiedId(c.id)
+    setMenuOpen(null)
+    setTimeout(() => setCopiedId((id) => (id === c.id ? null : id)), 2000)
+  }
+
+  async function handleDuplicar(c: CharacterListItem) {
+    setMenuOpen(null)
+    await supabase.rpc('duplicate_character', { p_source_id: c.id })
+    loadCharacters()
+  }
+
+  async function handleDeletar() {
+    if (!deleting) return
+    await supabase.from('characters').delete().eq('id', deleting.id)
+    setDeleting(null)
+    loadCharacters()
+  }
 
   return (
     <section>
       <div className="character-list-header">
         <h2>Meus Personagens</h2>
-        <Link to="/personagem/criar">+ Criar Personagem</Link>
+        {variant === 'jogar' && (
+          <div className="character-list-actions">
+            <Link to="/jogar" className="btn-pill" style={{ backgroundColor: accentColor ?? undefined }}>
+              Ver todos os personagens
+            </Link>
+            <Link to="/personagem/criar" className="btn-pill btn-pill-neutral">Criar novo personagem</Link>
+          </div>
+        )}
       </div>
+
+      {variant === 'jogar' && (
+        <p className="character-list-desc">
+          Aqui estão os personagens com quem você já jogou. Não está vendo o que procura? Acesse "Ver todos os personagens".
+        </p>
+      )}
 
       {characters === null && <p>Carregando…</p>}
       {characters?.length === 0 && <p>Nenhum personagem ainda.</p>}
@@ -38,9 +87,16 @@ export default function MeusPersonagens() {
       <div className="character-list">
         {characters?.map((c) => (
           <div key={c.id} className="character-card">
-            <Link to={`/personagem/${c.id}`}>
-              <img className="character-card-avatar" src={c.avatar_url ?? undefined} alt="" />
+            <Link to={`/personagem/${c.id}`} className="character-card-avatar-link">
+              {c.avatar_url ? (
+                <img className="character-card-avatar" src={c.avatar_url} alt="" />
+              ) : (
+                <div className="character-card-avatar character-card-avatar-fallback" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
+                  {(c.name || '?').charAt(0).toUpperCase()}
+                </div>
+              )}
             </Link>
+
             <div className="character-card-body">
               <button
                 type="button"
@@ -54,9 +110,45 @@ export default function MeusPersonagens() {
                 <p className="character-card-historia">{c.historico || 'Sem história definida ainda.'}</p>
               )}
             </div>
+
+            {variant === 'jogar' && (
+              <div className="character-card-menu">
+                <button
+                  type="button"
+                  className="character-card-menu-btn"
+                  onClick={() => setMenuOpen((id) => (id === c.id ? null : c.id))}
+                  aria-label="Opções"
+                >
+                  •••
+                </button>
+                {menuOpen === c.id && (
+                  <>
+                    <div className="dropdown-backdrop" onClick={() => setMenuOpen(null)} />
+                    <ul className="character-card-dropdown">
+                      <li><button type="button" onClick={() => handleCompartilhar(c)}>{copiedId === c.id ? 'Link copiado!' : 'Compartilhar'}</button></li>
+                      <li><button type="button" onClick={() => handleDuplicar(c)}>Duplicar</button></li>
+                      <li><button type="button" className="danger" onClick={() => { setMenuOpen(null); setDeleting(c) }}>Deletar</button></li>
+                    </ul>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
+
+      {deleting && (
+        <div className="modal-backdrop">
+          <div className="modal-box">
+            <h3>Deletar Personagem</h3>
+            <p>Você realmente quer deletar {deleting.name || 'este personagem'}?</p>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setDeleting(null)}>Cancelar</button>
+              <button type="button" className="danger" onClick={handleDeletar}>Deletar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
+import { fallbackAvatarColor } from '../lib/color'
 
 type CampaignItem = {
   id: string
@@ -18,6 +20,9 @@ export default function MinhasCampanhas() {
   const [newDescription, setNewDescription] = useState('')
   const [joinCode, setJoinCode] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [accentColor, setAccentColor] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState<string | null>(null)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   async function loadCampaigns() {
     if (!session) return
@@ -30,6 +35,12 @@ export default function MinhasCampanhas() {
 
   useEffect(() => {
     loadCampaigns()
+  }, [session])
+
+  useEffect(() => {
+    if (!session) return
+    supabase.from('profiles').select('accent_color').eq('id', session.user.id).single()
+      .then(({ data }) => setAccentColor(data?.accent_color ?? null))
   }, [session])
 
   async function handleCreate() {
@@ -63,30 +74,66 @@ export default function MinhasCampanhas() {
     loadCampaigns()
   }
 
+  async function handleCopiarCodigo(c: CampaignItem) {
+    await navigator.clipboard.writeText(c.invite_code)
+    setCopiedId(c.id)
+    setMenuOpen(null)
+    setTimeout(() => setCopiedId((id) => (id === c.id ? null : id)), 2000)
+  }
+
   return (
     <section>
       <div className="character-list-header">
         <h2>Minhas Campanhas</h2>
+        <div className="character-list-actions">
+          <Link to="/jogar" className="btn-pill" style={{ backgroundColor: accentColor ?? undefined }}>
+            Ver todas as campanhas
+          </Link>
+          <button type="button" className="btn-pill btn-pill-neutral" onClick={() => setShowCreate(true)}>
+            Criar nova campanha
+          </button>
+        </div>
       </div>
+
+      <p className="character-list-desc">
+        Aqui você tem uma visão das últimas campanhas que entrou. Não está vendo aquilo que procura aqui? Acesse "Ver todas as campanhas" para uma lista completa.
+      </p>
+
       {error && <p role="alert">{error}</p>}
 
       {campaigns === null && <p>Carregando…</p>}
       {campaigns?.length === 0 && <p>Nenhuma campanha ainda.</p>}
 
-      <div className="character-list">
+      <div className="character-tile-grid">
         {campaigns?.map((c) => (
-          <div key={c.id} className="character-card campaign-card">
-            <div className="character-card-body">
-              <strong className="character-card-name">{c.name}</strong>
-              {c.owner_id === session?.user.id && <span className="campaign-role-badge">Mestre</span>}
-              {c.description && <p className="character-card-game">{c.description}</p>}
-              <p className="campaign-invite-code">Código de convite: {c.invite_code}</p>
+          <div key={c.id} className="character-tile" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
+            <div className="character-card-menu" onClick={(e) => e.preventDefault()}>
+              <button
+                type="button"
+                className="character-card-menu-btn"
+                onClick={() => setMenuOpen((id) => (id === c.id ? null : c.id))}
+                aria-label="Opções"
+              >
+                •••
+              </button>
+              {menuOpen === c.id && (
+                <>
+                  <div className="dropdown-backdrop" onClick={() => setMenuOpen(null)} />
+                  <ul className="character-card-dropdown">
+                    <li><button type="button" onClick={() => handleCopiarCodigo(c)}>{copiedId === c.id ? 'Código copiado!' : 'Copiar código de convite'}</button></li>
+                  </ul>
+                </>
+              )}
+            </div>
+            <div className="character-tile-info">
+              <strong>{c.name}</strong>
+              <span>{c.owner_id === session?.user.id ? 'Mestre' : 'Jogador'}</span>
             </div>
           </div>
         ))}
       </div>
 
-      {showCreate ? (
+      {showCreate && (
         <div className="campaign-form">
           <label className="editperfil-field">
             Nome
@@ -99,8 +146,6 @@ export default function MinhasCampanhas() {
           <button type="button" onClick={handleCreate}>Criar</button>
           <button type="button" onClick={() => setShowCreate(false)}>Cancelar</button>
         </div>
-      ) : (
-        <button type="button" className="btn-pill btn-pill-neutral" onClick={() => setShowCreate(true)} style={{ marginTop: '0.8em' }}>+ Criar Campanha</button>
       )}
 
       <div className="campaign-join-row">

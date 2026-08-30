@@ -30,6 +30,9 @@ type CharacterRitual = {
 const ELEMENTOS = ['sangue', 'morte', 'conhecimento', 'energia', 'medo'] as const
 const CIRCULOS = [1, 2, 3, 4]
 
+type CustomRitualDraft = { name: string; elemento: string; circle: number; effect: string }
+const emptyCustomRitual: CustomRitualDraft = { name: '', elemento: '', circle: 1, effect: '' }
+
 export default function RituaisTab({ character }: { character: CharacterRecord }) {
   const [known, setKnown] = useState<CharacterRitual[]>([])
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -38,6 +41,8 @@ export default function RituaisTab({ character }: { character: CharacterRecord }
   const [elementFilter, setElementFilter] = useState<string[]>([])
   const [circleFilter, setCircleFilter] = useState<number[]>([])
   const [catalog, setCatalog] = useState<Ritual[]>([])
+  const [creatingCustom, setCreatingCustom] = useState(false)
+  const [customDraft, setCustomDraft] = useState<CustomRitualDraft>(emptyCustomRitual)
 
   async function loadKnown() {
     const { data } = await supabase
@@ -68,6 +73,23 @@ export default function RituaisTab({ character }: { character: CharacterRecord }
 
   async function removeRitual(id: string) {
     await supabase.from('character_rituals').delete().eq('id', id)
+    await loadKnown()
+  }
+
+  async function saveCustomRitual() {
+    if (!customDraft.name || !customDraft.effect) return
+    await supabase.from('character_rituals').insert({
+      character_id: character.id,
+      custom_ritual: {
+        name: customDraft.name,
+        elemento: customDraft.elemento || null,
+        circle: customDraft.circle,
+        effect: customDraft.effect,
+      },
+    })
+    setCustomDraft(emptyCustomRitual)
+    setCreatingCustom(false)
+    setAdding(false)
     await loadKnown()
   }
 
@@ -122,16 +144,37 @@ export default function RituaisTab({ character }: { character: CharacterRecord }
       </ul>
 
       {adding && (
-        filteredCatalog.length === 0 ? <p>Nenhum ritual encontrado com esses filtros.</p> : (
-          <ul>
-            {filteredCatalog.map((r) => (
-              <li key={r.id}>
-                <strong>{r.circle}º — {r.name}</strong> ({r.elemento ?? 'multi-elemento'}): {r.effect}
-                <button type="button" onClick={() => addRitual(r)}>Adicionar Ritual</button>
-              </li>
-            ))}
-          </ul>
-        )
+        <div>
+          <button type="button" onClick={() => setCreatingCustom((c) => !c)}>Criar Ritual Personalizado</button>
+
+          {creatingCustom ? (
+            <div>
+              <label>Nome <input value={customDraft.name} onChange={(e) => setCustomDraft((d) => ({ ...d, name: e.target.value }))} /></label>
+              <label>Elemento
+                <select value={customDraft.elemento} onChange={(e) => setCustomDraft((d) => ({ ...d, elemento: e.target.value }))}>
+                  <option value="">Multi-elemento / nenhum</option>
+                  {ELEMENTOS.map((el) => <option key={el} value={el}>{el}</option>)}
+                </select>
+              </label>
+              <label>Círculo
+                <select value={customDraft.circle} onChange={(e) => setCustomDraft((d) => ({ ...d, circle: Number(e.target.value) }))}>
+                  {CIRCULOS.map((c) => <option key={c} value={c}>{c}º</option>)}
+                </select>
+              </label>
+              <label>Efeito <textarea value={customDraft.effect} onChange={(e) => setCustomDraft((d) => ({ ...d, effect: e.target.value }))} /></label>
+              <button type="button" onClick={saveCustomRitual}>Adicionar Ritual</button>
+            </div>
+          ) : filteredCatalog.length === 0 ? <p>Nenhum ritual encontrado com esses filtros.</p> : (
+            <ul>
+              {filteredCatalog.map((r) => (
+                <li key={r.id}>
+                  <strong>{r.circle}º — {r.name}</strong> ({r.elemento ?? 'multi-elemento'}): {r.effect}
+                  <button type="button" onClick={() => addRitual(r)}>Adicionar Ritual</button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   )

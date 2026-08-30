@@ -1718,11 +1718,13 @@ code, .counter {
   background-position: center;
   color: #000;
   font-family: 'Courier New', ui-monospace, monospace;
-  font-size: clamp(0.6rem, 1.7vh, 1rem);
+  font-size: clamp(0.6rem, 1.7vh, 1.3rem);
   overflow: hidden;
   padding: 1.3em 1.8em;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   border-radius: 2px;
+  display: flex;
+  flex-direction: column;
 }
 
 .creation-paper p {
@@ -1750,10 +1752,19 @@ code, .counter {
   margin-bottom: 0.7em;
 }
 
+.creation-crest-box {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.6em;
+}
+
 .creation-crest {
-  width: 85%;
-  max-width: 340px;
-  margin: 0 auto 0.6em;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   display: block;
 }
 
@@ -1902,11 +1913,12 @@ code, .counter {
 
 .attr-radar {
   position: relative;
-  width: 100%;
-  max-width: clamp(150px, 26vh, 320px);
+  width: auto;
+  max-width: 100%;
   aspect-ratio: 1 / 1;
   margin: 0.5em auto 1em;
-  flex-shrink: 0;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .attr-radar-grid {
@@ -2004,6 +2016,11 @@ code, .counter {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .attr-about-list li {

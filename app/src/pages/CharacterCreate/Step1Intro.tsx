@@ -36,7 +36,9 @@ export default function Step1Intro({ draft, onNext }: { draft: CharacterDraft; o
       <div className="creation-paper-slot">
         <div className="creation-paper-shadow" style={paperStyle} />
         <div className="creation-paper creation-paper-left" style={paperStyle}>
-          <img className="creation-crest" src={brasao} alt="Ordo Realitas" />
+          <div className="creation-crest-box">
+            <img className="creation-crest" src={brasao} alt="Ordo Realitas" />
+          </div>
           <h2 className="creation-title">Ficha do Agente</h2>
           <p>Este documento é estritamente confidencial e não pode deixar a base sob nenhuma circunstância.</p>
 

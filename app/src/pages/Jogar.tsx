@@ -1,4 +1,5 @@
 import MeusPersonagens from '../components/MeusPersonagens'
+import MinhasCampanhas from '../components/MinhasCampanhas'
 
 export default function Jogar() {
   return (
@@ -6,11 +7,7 @@ export default function Jogar() {
       <h1>Jogar</h1>
 
       <MeusPersonagens />
-
-      <section>
-        <h2>Minhas Campanhas</h2>
-        <p>Em breve.</p>
-      </section>
+      <MinhasCampanhas />
     </main>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
+import MeusPersonagens from '../components/MeusPersonagens'
 
 type ProfileRow = {
   display_name: string | null
@@ -55,12 +56,14 @@ export default function Perfil() {
       {profile?.description && <p>{profile.description}</p>}
 
       <nav>
-        <Link to="/jogar" style={{ color: accent }}>Meus Personagens</Link>
+        <Link to="/jogar" style={{ color: accent }}>Jogar</Link>
         {' · '}
         <Link to="/perfil/editar" style={{ color: accent }}>Editar Perfil</Link>
         {' · '}
         <button onClick={handleSair} style={{ color: accent, borderColor: accent }}>Sair</button>
       </nav>
+
+      <MeusPersonagens />
     </main>
   )
 }

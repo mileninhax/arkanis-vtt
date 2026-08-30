@@ -530,6 +530,72 @@ code, .counter {
   justify-content: center;
 }
 
+/* ---- Seleção de sistema (Criar Personagem) ---- */
+
+.system-select-header {
+  text-align: center;
+  margin-bottom: 1.6em;
+}
+
+.system-select-header p {
+  color: var(--text-dim);
+}
+
+.system-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2em;
+}
+
+.system-card {
+  position: relative;
+  width: 640px;
+  max-width: 100%;
+  height: 300px;
+  border-radius: 14px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+}
+
+.system-card-badge {
+  position: absolute;
+  top: 0.9em;
+  right: 0.9em;
+  z-index: 1;
+  background: rgba(10, 9, 14, 0.7);
+  backdrop-filter: blur(3px);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.3em 0.8em;
+  font-size: 0.75em;
+  color: var(--text-h);
+}
+
+.system-card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  padding: 1.2em 1.4em;
+  background: linear-gradient(to top, rgba(6, 5, 9, 0.92), rgba(6, 5, 9, 0.5) 70%, transparent);
+}
+
+.system-card-overlay h2 {
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  letter-spacing: 0.03em;
+}
+
+.system-card-overlay p {
+  color: var(--text);
+  max-width: 30em;
+  margin-bottom: 0.9em;
+  font-size: 0.9em;
+}
+
 /* ---- Perfil ---- */
 
 .profile-page {

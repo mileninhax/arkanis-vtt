@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
+import arkanisLogo from '../assets/icons/arkanis-logo.png'
 
 export default function Navbar() {
   const { session } = useAuth()
@@ -18,16 +19,22 @@ export default function Navbar() {
       .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null))
   }, [session])
 
-  if (!session) return null
   if (/^\/personagem\/[^/]+$/.test(location.pathname) && location.pathname !== '/personagem/criar') return null
 
   return (
     <nav className="navbar">
-      <Link to="/perfil">Perfil</Link>
-      <Link to="/jogar">Jogar</Link>
-      <Link to="/perfil" className="navbar-avatar">
-        {avatarUrl ? <img src={avatarUrl} alt="Avatar" width={32} height={32} /> : <span>(avatar)</span>}
+      <Link to="/" className="navbar-logo">
+        <img src={arkanisLogo} alt="Arkanis" />
       </Link>
+      {session && (
+        <>
+          <Link to="/perfil">Perfil</Link>
+          <Link to="/jogar">Jogar</Link>
+          <Link to="/perfil" className="navbar-avatar">
+            {avatarUrl ? <img src={avatarUrl} alt="Avatar" width={32} height={32} /> : <span>(avatar)</span>}
+          </Link>
+        </>
+      )}
     </nav>
   )
 }

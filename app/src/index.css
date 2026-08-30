@@ -287,11 +287,15 @@ code, .counter {
 
 /* ---- Perfil ---- */
 
+.profile-page {
+  padding: 1.2em 2em 2em;
+}
+
 .profile-banner {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  min-height: 150px;
+  min-height: 190px;
   border: 1px solid var(--border);
 }
 
@@ -309,7 +313,6 @@ code, .counter {
   align-items: center;
   gap: 1.2em;
   padding: 1.4em;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 60%);
 }
 
 .profile-avatar {
@@ -320,6 +323,17 @@ code, .counter {
   background: var(--bg-card);
   border: 3px solid rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
+}
+
+.profile-banner-textbox {
+  background: rgba(10, 9, 14, 0.6);
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+  padding: 0.7em 1.1em;
+}
+
+.profile-banner-textbox h1 {
+  margin: 0 0 0.2em;
 }
 
 .profile-desc {

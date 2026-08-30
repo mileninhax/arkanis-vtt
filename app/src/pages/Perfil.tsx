@@ -38,7 +38,7 @@ export default function Perfil() {
   const background = profile?.background_color || undefined
 
   return (
-    <main className="page-shell">
+    <main className="profile-page">
       <div className="profile-banner" style={{ backgroundColor: background }}>
         {profile?.banner_url && (
           <img
@@ -50,7 +50,7 @@ export default function Perfil() {
         )}
         <div className="profile-banner-content">
           <img className="profile-avatar" src={profile?.avatar_url ?? undefined} alt="Avatar" />
-          <div>
+          <div className="profile-banner-textbox">
             <h1 style={{ color: accent }}>{profile?.display_name || 'Sem nome definido'}</h1>
             {profile?.description && <p className="profile-desc">{profile.description}</p>}
           </div>

@@ -17,13 +17,15 @@ export default function Jogar() {
   return (
     <main className="profile-page font-ashigea" style={{ '--vignette-color': backgroundColor } as React.CSSProperties}>
       <div className="profile-vignette" />
-      <h1>Jogar</h1>
+      <div className="jogar-content">
+        <h1>Jogar</h1>
 
-      <div className="jogar-section">
-        <MeusPersonagens variant="jogar" />
-      </div>
-      <div className="jogar-section">
-        <MinhasCampanhas />
+        <div className="jogar-section">
+          <MeusPersonagens variant="jogar" />
+        </div>
+        <div className="jogar-section">
+          <MinhasCampanhas />
+        </div>
       </div>
     </main>
   )

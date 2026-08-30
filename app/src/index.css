@@ -370,6 +370,11 @@ code, .counter {
   padding: 1.2em 2em 2em;
 }
 
+.jogar-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .jogar-section {
   margin-bottom: 2.4em;
 }

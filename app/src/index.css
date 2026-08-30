@@ -2032,14 +2032,15 @@ code, .counter {
 }
 
 .attr-about-icon {
-  width: 3.6em;
-  height: 3.6em;
+  width: 6em;
+  height: 6em;
   object-fit: contain;
   flex-shrink: 0;
   margin-top: 0.1em;
 }
 
 .attr-about-list p {
-  margin: 0.2em 0 0;
-  font-size: 0.9em;
+  margin: 0.3em 0 0;
+  font-size: 1.5em;
+  line-height: 1.4;
 }

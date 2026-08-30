@@ -227,11 +227,12 @@ code, .counter {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.9), transparent 55%),
-    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.85), transparent 55%);
+  background-image: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.55), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.5), transparent 55%);
+  background-size: 260% 260%;
   mix-blend-mode: screen;
-  opacity: 0.85;
-  animation: sheet-bg-chaos-glow 18s ease-in-out infinite;
+  opacity: 0.35;
+  animation: sheet-bg-chaos 18s ease-in-out infinite;
 }
 
 @keyframes sheet-bg-chaos {
@@ -242,14 +243,6 @@ code, .counter {
   65% { background-position: 38% 55%; }
   80% { background-position: 48% 42%; }
   100% { background-position: 35% 40%; }
-}
-
-@keyframes sheet-bg-chaos-glow {
-  0% { opacity: 0.6; transform: translate(0%, 0%); }
-  25% { opacity: 1; transform: translate(3%, -4%); }
-  50% { opacity: 0.5; transform: translate(-3%, 3%); }
-  75% { opacity: 0.9; transform: translate(2%, 2%); }
-  100% { opacity: 0.6; transform: translate(0%, 0%); }
 }
 
 .vtt-topbar {

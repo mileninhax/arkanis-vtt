@@ -620,11 +620,6 @@ code, .counter {
   font-size: 0.9em;
 }
 
-.btn-pill-danger {
-  background: #5a0f1f;
-  color: #fff;
-  align-self: flex-start;
-}
 
 /* ---- Perfil ---- */
 
@@ -776,6 +771,12 @@ code, .counter {
 .btn-pill-neutral {
   background: var(--text-h);
   color: #131118;
+}
+
+.btn-pill-danger {
+  background: #5a0f1f;
+  color: #fff;
+  align-self: flex-start;
 }
 
 .character-list-desc {

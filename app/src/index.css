@@ -1694,9 +1694,9 @@ code, .counter {
 .creation-paper {
   background-size: cover;
   background-position: center;
-  color: #2b2417;
+  color: #000;
   font-family: 'Courier New', ui-monospace, monospace;
-  font-size: 0.78em;
+  font-size: 1em;
   width: 460px;
   max-width: 100%;
   flex: 1 1 460px;
@@ -1723,10 +1723,10 @@ code, .counter {
 
 .creation-title {
   font-family: 'Courier New', ui-monospace, monospace;
-  color: #2b2417;
+  color: #000;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  border-bottom: 1px solid #2b2417;
+  border-bottom: 1px solid #000;
   display: inline-block;
   padding-bottom: 0.2em;
   margin-bottom: 0.7em;
@@ -1754,7 +1754,7 @@ code, .counter {
 }
 
 .creation-field {
-  border: 1px solid #2b2417;
+  border: 1px solid #000;
   border-radius: 4px;
   padding: 0.5em 0.9em;
   font-size: 0.9em;
@@ -1763,7 +1763,7 @@ code, .counter {
 }
 
 .creation-field span {
-  border-bottom: 1px dashed #2b2417;
+  border-bottom: 1px dashed #000;
   padding-bottom: 0.1em;
 }
 

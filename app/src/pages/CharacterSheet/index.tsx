@@ -9,6 +9,7 @@ import ProgressaoTab from './ProgressaoTab'
 import AfinidadeTab from './AfinidadeTab'
 import InterludioTab from './InterludioTab'
 import RegrasExtrasTab from './RegrasExtrasTab'
+import ConfiguracoesPanel from './ConfiguracoesPanel'
 
 export type CharacterRecord = {
   id: string
@@ -29,6 +30,11 @@ export type CharacterRecord = {
   patente: string
   prestigio: number
   optional_rules: Record<string, boolean>
+  afinidade_elemento: string | null
+  sheet_banner: string
+  dice_tray: string
+  editable_by_others: boolean
+  hidden_from_others: boolean
   origin_id: string | null
   custom_origin: { name: string; skill1Id: string | null; skill2Id: string | null; powerName: string; powerDescription: string } | null
   class_id: string | null
@@ -58,6 +64,7 @@ export default function CharacterSheet() {
   const [refreshKey, setRefreshKey] = useState(0)
   const [showDice, setShowDice] = useState(false)
   const [editMode, setEditMode] = useState(false)
+  const [showConfig, setShowConfig] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -103,9 +110,17 @@ export default function CharacterSheet() {
         <p>{originName} — {className}</p>
         <button type="button" onClick={() => setShowDice((v) => !v)}>Dados</button>
         <button type="button" onClick={() => setEditMode((v) => !v)}>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</button>
+        <button type="button" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>⚙</button>
       </header>
 
       {showDice && <DiceRoller onClose={() => setShowDice(false)} />}
+      {showConfig && (
+        <ConfiguracoesPanel
+          character={character}
+          onUpdated={() => setRefreshKey((k) => k + 1)}
+          onClose={() => setShowConfig(false)}
+        />
+      )}
 
       <nav>
         {TABS.map((t) => (

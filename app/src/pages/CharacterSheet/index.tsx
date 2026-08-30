@@ -16,6 +16,10 @@ import bgSangue from '../../assets/backgrounds/bg-sangue.webp'
 import bgMorte from '../../assets/backgrounds/bg-morte.webp'
 import bgConhecimento from '../../assets/backgrounds/bg-conhecimento.webp'
 import bgEnergia from '../../assets/backgrounds/bg-energia.webp'
+import d20Icon from '../../assets/icons/d20-paranormal.svg'
+import changeIcon from '../../assets/icons/change-icon.svg'
+import settingsIcon from '../../assets/icons/settings-icon.svg'
+import historyIcon from '../../assets/icons/history-icon.svg'
 
 const ELEMENT_BACKGROUNDS: Record<string, string> = {
   sangue: bgSangue,
@@ -46,6 +50,7 @@ export type CharacterRecord = {
   prestigio: number
   optional_rules: Record<string, boolean>
   afinidade_elemento: string | null
+  conditions: string[]
   sheet_banner: string
   dice_tray: string
   editable_by_others: boolean
@@ -70,11 +75,19 @@ export type CharacterRecord = {
 
 const TABS = ['Agente', 'Investigação', 'Afinidade', 'Progressão', 'Interlúdio', 'Regras Extras'] as const
 
+const ELEMENTO_NOMES: Record<string, string> = {
+  sangue: 'Sangue',
+  morte: 'Morte',
+  conhecimento: 'Conhecimento',
+  energia: 'Energia',
+}
+
 export default function CharacterSheet() {
   const { id } = useParams()
   const [character, setCharacter] = useState<CharacterRecord | null>(null)
   const [originName, setOriginName] = useState<string | null>(null)
   const [className, setClassName] = useState<string | null>(null)
+  const [trackName, setTrackName] = useState<string | null>(null)
   const [tab, setTab] = useState<(typeof TABS)[number]>('Agente')
   const [refreshKey, setRefreshKey] = useState(0)
   const [showDice, setShowDice] = useState(false)
@@ -103,6 +116,22 @@ export default function CharacterSheet() {
         } else if (data?.custom_class) {
           setClassName(data.custom_class.name)
         }
+
+        const { data: picks } = await supabase.from('character_progression_picks').select('picks').eq('character_id', id)
+        const trilhaPick = (picks ?? [])
+          .flatMap((row) => (row.picks as { kind: string; ref_id: string | null }[]) ?? [])
+          .find((p) => p.kind === 'trilha' && p.ref_id)
+        if (trilhaPick?.ref_id) {
+          const { data: tier } = await supabase.from('class_track_tiers').select('track_id').eq('id', trilhaPick.ref_id).single()
+          if (tier?.track_id) {
+            const { data: track } = await supabase.from('class_tracks').select('name').eq('id', tier.track_id).single()
+            setTrackName(track?.name ?? null)
+          } else {
+            setTrackName(null)
+          }
+        } else {
+          setTrackName(null)
+        }
       })
   }, [id, refreshKey])
 
@@ -125,10 +154,20 @@ export default function CharacterSheet() {
           ))}
         </nav>
         <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
-          <button type="button" className="vtt-icon-btn" aria-label="Dados" onClick={() => setShowDice((v) => !v)}>🎲</button>
-          <button type="button" onClick={() => setEditMode((v) => !v)}>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</button>
-          <button type="button" className="vtt-icon-btn" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>⚙</button>
-          <button type="button" className="vtt-icon-btn" aria-label="Histórico de Rolagens" onClick={() => setShowHistory((v) => !v)}>📖</button>
+          <button type="button" className="vtt-icon-btn vtt-icon-btn-labeled" onClick={() => setShowDice((v) => !v)}>
+            <img src={d20Icon} alt="" />
+            <span>Dados</span>
+          </button>
+          <button type="button" className="vtt-icon-btn vtt-icon-btn-labeled" onClick={() => setEditMode((v) => !v)}>
+            <img src={changeIcon} alt="" />
+            <span>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</span>
+          </button>
+          <button type="button" className="vtt-icon-btn" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>
+            <img src={settingsIcon} alt="" />
+          </button>
+          <button type="button" className="vtt-icon-btn" aria-label="Histórico de Rolagens" onClick={() => setShowHistory((v) => !v)}>
+            <img src={historyIcon} alt="" />
+          </button>
         </div>
       </header>
 
@@ -149,6 +188,8 @@ export default function CharacterSheet() {
           editMode={editMode}
           originName={originName}
           className={className}
+          trackName={trackName}
+          elementoNome={elemento ? ELEMENTO_NOMES[elemento] ?? elemento : null}
           onNameChange={async (name) => {
             setCharacter((c) => (c ? { ...c, name } : c))
             await supabase.from('characters').update({ name }).eq('id', character.id)

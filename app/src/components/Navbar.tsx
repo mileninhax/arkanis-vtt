@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 
 export default function Navbar() {
   const { session } = useAuth()
+  const location = useLocation()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function Navbar() {
   }, [session])
 
   if (!session) return null
+  if (/^\/personagem\/[^/]+$/.test(location.pathname) && location.pathname !== '/personagem/criar') return null
 
   return (
     <nav>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
 
@@ -150,6 +151,12 @@ export default function ConfiguracoesPanel({
 
       {configTab === 'Preferências' && (
         <section>
+          <h3>Navegação</h3>
+          <nav style={{ display: 'flex', gap: '1em' }}>
+            <Link to="/perfil">Perfil</Link>
+            <Link to="/jogar">Jogar</Link>
+          </nav>
+
           <h3>Privacidade</h3>
           <label>
             <input

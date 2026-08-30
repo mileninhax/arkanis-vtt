@@ -59,6 +59,8 @@ export default function AgenteTab({
   editMode,
   originName,
   className,
+  trackName,
+  elementoNome,
   onNameChange,
 }: {
   character: CharacterRecord
@@ -66,6 +68,8 @@ export default function AgenteTab({
   editMode: boolean
   originName: string | null
   className: string | null
+  trackName: string | null
+  elementoNome: string | null
   onNameChange: (name: string) => void
 }) {
   const { session } = useAuth()
@@ -78,6 +82,8 @@ export default function AgenteTab({
   const [testModifiers, setTestModifiers] = useState<Modifier[]>([])
   const [testDraft, setTestDraft] = useState({ diceBonus: 0, valueBonus: 0 })
   const [onlyTrained, setOnlyTrained] = useState(false)
+  const [addingCondition, setAddingCondition] = useState(false)
+  const [conditionDraft, setConditionDraft] = useState('')
 
   useEffect(() => {
     if (character.class_id) {
@@ -125,6 +131,16 @@ export default function AgenteTab({
 
   async function updateCharacterField(field: string, value: number | string) {
     await supabase.from('characters').update({ [field]: value }).eq('id', character.id)
+    onUpdated()
+  }
+
+  async function addCondition(name: string) {
+    await supabase.from('characters').update({ conditions: [...character.conditions, name] }).eq('id', character.id)
+    onUpdated()
+  }
+
+  async function removeCondition(index: number) {
+    await supabase.from('characters').update({ conditions: character.conditions.filter((_, i) => i !== index) }).eq('id', character.id)
     onUpdated()
   }
 
@@ -216,6 +232,8 @@ function cycleTraining(current: Training): Training {
           )}
           <p style={{ color: 'var(--text-dim)' }}>{originName}</p>
           <p style={{ color: 'var(--text-dim)' }}>{className}</p>
+          {elementoNome && <p style={{ color: 'var(--text-dim)' }}>Afinidade: {elementoNome}</p>}
+          {trackName && <p style={{ color: 'var(--text-dim)' }}>Trilha: {trackName}</p>}
           <p style={{ color: 'var(--text-dim)' }}>
             NEX {character.nex_percent}%{character.nex_mode === 'nex_experiencia' ? ` · Exp. ${character.experience ?? 0}` : ''}
           </p>
@@ -318,6 +336,40 @@ function cycleTraining(current: Training): Training {
               />
             )
           )}
+
+          <div className="vtt-divider"><span /></div>
+          <h3>Condições e Efeitos</h3>
+          <div className="vtt-condition-tags">
+            {character.conditions.map((cond, i) => (
+              <span key={i} className="vtt-condition-tag">
+                {cond}
+                <button type="button" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>
+              </span>
+            ))}
+            {addingCondition ? (
+              <input
+                autoFocus
+                value={conditionDraft}
+                onChange={(e) => setConditionDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && conditionDraft.trim()) {
+                    addCondition(conditionDraft.trim())
+                    setConditionDraft('')
+                    setAddingCondition(false)
+                  }
+                  if (e.key === 'Escape') {
+                    setConditionDraft('')
+                    setAddingCondition(false)
+                  }
+                }}
+                onBlur={() => { setConditionDraft(''); setAddingCondition(false) }}
+                placeholder="Nome da condição"
+                style={{ width: '10em' }}
+              />
+            ) : (
+              <button type="button" className="vtt-condition-add" onClick={() => setAddingCondition(true)} aria-label="Adicionar condição">+</button>
+            )}
+          </div>
         </div>
       </div>
 

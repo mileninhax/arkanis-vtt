@@ -22,10 +22,10 @@ export default function Navbar() {
   if (/^\/personagem\/[^/]+$/.test(location.pathname) && location.pathname !== '/personagem/criar') return null
 
   return (
-    <nav>
+    <nav className="navbar">
       <Link to="/perfil">Perfil</Link>
       <Link to="/jogar">Jogar</Link>
-      <Link to="/perfil">
+      <Link to="/perfil" className="navbar-avatar">
         {avatarUrl ? <img src={avatarUrl} alt="Avatar" width={32} height={32} /> : <span>(avatar)</span>}
       </Link>
     </nav>

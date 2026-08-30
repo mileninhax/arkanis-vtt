@@ -38,7 +38,7 @@ export default function Perfil() {
   const background = profile?.background_color || undefined
 
   return (
-    <main style={{ backgroundColor: background, color: accent }}>
+    <main className="page-shell" style={{ backgroundColor: background, color: accent }}>
       <h1>Perfil</h1>
 
       {profile?.banner_url && (

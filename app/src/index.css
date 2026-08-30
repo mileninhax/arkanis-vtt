@@ -84,6 +84,13 @@ p { margin: 0 0 0.5em; }
 
 a { color: var(--accent-strong); }
 
+nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6em;
+}
+
 button {
   font: inherit;
   color: var(--text);
@@ -225,6 +232,57 @@ code, .counter {
   65% { background-position: 38% 55%; }
   80% { background-position: 48% 42%; }
   100% { background-position: 35% 40%; }
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  padding: 0.6em 1.2em;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar a {
+  font-family: var(--heading);
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+
+.navbar a:hover {
+  color: var(--text-h);
+}
+
+.navbar-avatar {
+  margin-left: auto;
+  display: inline-flex;
+}
+
+.navbar-avatar img {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.page-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.2em;
+}
+
+.page-shell img[alt='Avatar'] {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0.8em 0;
+  border: 2px solid var(--border-strong);
+}
+
+.page-shell nav {
+  gap: 1em;
+  margin: 0.8em 0;
 }
 
 .vtt-topbar {

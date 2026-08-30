@@ -428,7 +428,7 @@ code, .counter {
 }
 
 .home-hero-logo img {
-  width: min(360px, 100%);
+  width: min(560px, 100%);
   height: auto;
   filter: drop-shadow(0 0 40px rgba(155, 111, 224, 0.4));
 }

@@ -417,5 +417,15 @@ code, .counter {
   font-size: 0.7em;
   color: #000;
   text-shadow: none;
-  cursor: default;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  text-align: center;
+  text-align-last: center;
+  outline: none;
+}
+
+.attr-nex-badge:hover,
+.attr-nex-badge:focus {
+  color: #000;
 }

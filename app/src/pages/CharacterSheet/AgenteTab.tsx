@@ -240,7 +240,12 @@ function cycleTraining(current: Training): Training {
               </div>
             </>
           ) : (
-            <AttributeDiagram attributes={character.attributes} nexPercent={character.nex_percent} onRoll={rollAttribute} />
+            <AttributeDiagram
+              attributes={character.attributes}
+              nexPercent={character.nex_percent}
+              onRoll={rollAttribute}
+              onNexChange={(value) => updateCharacterField('nex_percent', value)}
+            />
           )}
 
           {character.optional_rules.evolucao_patente && (

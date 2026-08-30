@@ -9,19 +9,30 @@ const ATTRS: { key: AttributeKey; abbr: string; top: string; left: string }[] = 
   { key: 'vigor', abbr: 'VIG', top: '77%', left: '72.4%' },
 ]
 
+const NEX_OPTIONS = [0, ...Array.from({ length: 19 }, (_, i) => (i + 1) * 5), 99]
+
 export default function AttributeDiagram({
   attributes,
   nexPercent,
   onRoll,
+  onNexChange,
 }: {
   attributes: Attributes
   nexPercent: number
   onRoll: (key: AttributeKey, abbr: string) => void
+  onNexChange: (value: number) => void
 }) {
   return (
     <div className="attr-diagram">
       <img src={attributesDiagram} alt="Atributos" />
-      <div className="attr-value-badge attr-nex-badge">{nexPercent}%</div>
+      <select
+        className="attr-value-badge attr-nex-badge"
+        value={nexPercent}
+        onChange={(e) => onNexChange(Number(e.target.value))}
+        aria-label="NEX"
+      >
+        {NEX_OPTIONS.map((n) => <option key={n} value={n}>{n}%</option>)}
+      </select>
       {ATTRS.map(({ key, abbr, top, left }) => (
         <button
           key={key}

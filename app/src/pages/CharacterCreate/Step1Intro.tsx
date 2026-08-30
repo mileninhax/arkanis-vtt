@@ -1,6 +1,6 @@
 import type { CharacterDraft } from './types'
+import CreationLetterhead from './CreationLetterhead'
 import brasao from '../../assets/criacao/brasao-ordo-realitas.png'
-import brasaoSm from '../../assets/criacao/brasao-ordo-realitas-sm.png'
 import stepArrow from '../../assets/criacao/step-arrow.svg'
 import papelTextura from '../../assets/criacao/papel-textura.png'
 
@@ -50,14 +50,7 @@ export default function Step1Intro({ draft, onNext }: { draft: CharacterDraft; o
       <div className="creation-paper-slot">
         <div className="creation-paper-shadow" style={paperStyle} />
         <div className="creation-paper creation-paper-right" style={paperStyle}>
-          <header className="creation-letterhead">
-            <div>
-              <h2 className="creation-title">ORDO REALITAS</h2>
-              <p className="creation-underline">Documento oficial n: {draft.docNumber}</p>
-              <p className="creation-underline">Termo de boas-vindas</p>
-            </div>
-            <img className="creation-crest-sm" src={brasaoSm} alt="" />
-          </header>
+          <CreationLetterhead docNumber={draft.docNumber} />
 
           <p>Bem-Vindo, Agente.</p>
           <p>A partir de agora, você faz parte da Ordo Realitas, uma organização dedicada a proteger a Membrana, a barreira que separa o nosso mundo do outro lado.</p>

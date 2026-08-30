@@ -1,11 +1,27 @@
+import CreationLetterhead from './CreationLetterhead'
 import type { Attributes, CharacterDraft } from './types'
+import stepArrow from '../../assets/criacao/step-arrow.svg'
+import papelTextura from '../../assets/criacao/papel-textura.png'
+import forcaIcon from '../../assets/criacao/forca-icon.png'
+import agilidadeIcon from '../../assets/criacao/agilidade-icon.png'
+import intelectoIcon from '../../assets/criacao/intelecto-icon.png'
+import vigorIcon from '../../assets/criacao/vigor-icon.png'
+import presencaIcon from '../../assets/criacao/presenca-icon.png'
 
-const LABELS: { key: keyof Attributes; abbr: string; name: string; description: string }[] = [
-  { key: 'forca', abbr: 'FOR', name: 'Força', description: 'Potência muscular e habilidade atlética.' },
-  { key: 'agilidade', abbr: 'AGI', name: 'Agilidade', description: 'Coordenação motora, velocidade de reação e destreza manual.' },
-  { key: 'intelecto', abbr: 'INT', name: 'Intelecto', description: 'Raciocínio, memória e educação geral.' },
-  { key: 'vigor', abbr: 'VIG', name: 'Vigor', description: 'Saúde e resistência física.' },
-  { key: 'presenca', abbr: 'PRE', name: 'Presença', description: 'Sentidos, força de vontade, habilidades sociais; concede Pontos de Esforço (PE) adicionais.' },
+const NODES: { key: keyof Attributes; abbr: string; name: string; icon: string; top: string; left: string; labelSide: 'left' | 'right' | 'center' }[] = [
+  { key: 'agilidade', abbr: 'AGI', name: 'agilidade', icon: agilidadeIcon, top: '10%', left: '50%', labelSide: 'right' },
+  { key: 'intelecto', abbr: 'INT', name: 'intelecto', icon: intelectoIcon, top: '37.6%', left: '88%', labelSide: 'right' },
+  { key: 'vigor', abbr: 'VIG', name: 'vigor', icon: vigorIcon, top: '82.4%', left: '73.5%', labelSide: 'right' },
+  { key: 'presenca', abbr: 'PRE', name: 'presença', icon: presencaIcon, top: '82.4%', left: '26.5%', labelSide: 'left' },
+  { key: 'forca', abbr: 'FOR', name: 'força', icon: forcaIcon, top: '37.6%', left: '12%', labelSide: 'left' },
+]
+
+const ABOUT = [
+  { abbr: 'FOR', name: 'Força', icon: forcaIcon, description: 'Determina sua potência muscular e habilidade atlética.' },
+  { abbr: 'AGI', name: 'Agilidade', icon: agilidadeIcon, description: 'Define sua coordenação motora, velocidade de reação e destreza manual.' },
+  { abbr: 'INT', name: 'Intelecto', icon: intelectoIcon, description: 'Mede seu raciocínio, memória e educação geral.' },
+  { abbr: 'VIG', name: 'Vigor', icon: vigorIcon, description: 'Determina sua saúde e resistência física.' },
+  { abbr: 'PRE', name: 'Presença', icon: presencaIcon, description: 'Define seus sentidos, força de vontade, habilidades sociais e concede pontos de esforço (PE) adicionais.' },
 ]
 
 function computePool(attributes: Attributes) {
@@ -30,6 +46,7 @@ export default function Step2Attributes({
   const { attributes } = draft
   const { remaining } = computePool(attributes)
   const isValid = remaining === 0
+  const paperStyle = { backgroundImage: `url(${papelTextura})` }
 
   function adjust(key: keyof Attributes, delta: number) {
     const current = attributes[key]
@@ -44,39 +61,78 @@ export default function Step2Attributes({
   }
 
   return (
-    <div>
-      <section>
-        <h2>Atributos</h2>
-        <p>Todos os seus atributos começam em 1 e você recebe 4 pontos para distribuir entre eles como quiser.</p>
-        <p>Você também pode reduzir um atributo para 0 para receber 1 ponto adicional. O valor máximo inicial que você pode ter em cada atributo é 3.</p>
-        <p>Pontos restantes: {remaining}</p>
+    <div className="creation-spread">
+      <div className="creation-paper-slot">
+        <div className="creation-paper-shadow" style={paperStyle} />
+        <div className="creation-paper creation-paper-tilt-l" style={paperStyle}>
+          <CreationLetterhead docNumber={draft.docNumber} />
 
-        <ul>
-          {LABELS.map(({ key, abbr, name }) => (
-            <li key={key}>
-              <span>{abbr} — {name}</span>
-              <button type="button" onClick={() => adjust(key, -1)} disabled={attributes[key] <= 0}>-</button>
-              <span>{attributes[key]}</span>
-              <button type="button" onClick={() => adjust(key, 1)} disabled={attributes[key] >= 3}>+</button>
-            </li>
-          ))}
-        </ul>
-      </section>
+          <div className="creation-section-title">Atributos</div>
 
-      <section>
-        <h2>Sobre Atributos</h2>
-        <ol>
-          {LABELS.map(({ abbr, name, description }) => (
-            <li key={abbr}>
-              <strong>{name} ({abbr})</strong>
-              <p>{description}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+          <div className="attr-radar">
+            <svg className="attr-radar-grid" viewBox="0 0 300 300">
+              <polygon points="150,30 264.12,112.92 220.56,247.08 79.44,247.08 35.88,112.92" />
+              <polygon points="150,60 235.59,122.19 202.92,222.81 97.08,222.81 64.41,122.19" />
+              <polygon points="150,90 207.06,131.46 185.28,198.54 114.72,198.54 92.94,131.46" />
+              <polygon points="150,120 178.53,140.73 167.64,174.27 132.36,174.27 121.47,140.73" />
+              <line x1="150" y1="150" x2="150" y2="30" />
+              <line x1="150" y1="150" x2="264.12" y2="112.92" />
+              <line x1="150" y1="150" x2="220.56" y2="247.08" />
+              <line x1="150" y1="150" x2="79.44" y2="247.08" />
+              <line x1="150" y1="150" x2="35.88" y2="112.92" />
+            </svg>
 
-      <button type="button" onClick={onBack}>← Voltar</button>
-      <button type="button" onClick={onNext} disabled={!isValid}>Avançar →</button>
+            {NODES.map((node) => (
+              <div key={node.key} className="attr-node" style={{ top: node.top, left: node.left }}>
+                <div className="attr-node-circle">
+                  <img src={node.icon} alt="" />
+                </div>
+                <div className={`attr-node-label attr-node-label-${node.labelSide}`}>
+                  <span className="attr-node-abbr">{node.abbr}</span>
+                  <span className="attr-node-name">{node.name}</span>
+                </div>
+                <div className="attr-node-controls">
+                  <button type="button" onClick={() => adjust(node.key, -1)} disabled={attributes[node.key] <= 0}>-</button>
+                  <span>{attributes[node.key]}</span>
+                  <button type="button" onClick={() => adjust(node.key, 1)} disabled={attributes[node.key] >= 3}>+</button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p>Todos os seus atributos começam em 1 e você recebe 4 pontos para distribuir entre eles como quiser.</p>
+          <p>Você também pode reduzir um atributo para 0 para receber 1 ponto adicional. O valor máximo inicial que você pode ter em cada atributo é 3.</p>
+          <p className="creation-footnote">Pontos restantes: {remaining}</p>
+        </div>
+      </div>
+
+      <div className="creation-paper-slot">
+        <div className="creation-paper-shadow" style={paperStyle} />
+        <div className="creation-paper creation-paper-tilt-r" style={paperStyle}>
+          <CreationLetterhead docNumber={draft.docNumber} />
+
+          <div className="creation-section-title">Sobre Atributos</div>
+
+          <ul className="attr-about-list">
+            {ABOUT.map((a, i) => (
+              <li key={a.abbr}>
+                <img className="attr-about-icon" src={a.icon} alt="" />
+                <div>
+                  <span className="creation-rule-title"><span className="creation-rule-num">{i + 1}.</span> {a.name.toUpperCase()} ({a.abbr})</span>
+                  <p>{a.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <button type="button" className="creation-back-arrow" onClick={onBack} aria-label="Voltar">
+        <img src={stepArrow} alt="" />
+      </button>
+      <button type="button" className="creation-next-arrow" onClick={onNext} disabled={!isValid} aria-label="Avançar">
+        <img src={stepArrow} alt="" />
+      </button>
     </div>
   )
 }

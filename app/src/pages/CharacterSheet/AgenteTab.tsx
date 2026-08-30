@@ -135,12 +135,12 @@ export default function AgenteTab({
   }
 
   async function addCondition(name: string) {
-    await supabase.from('characters').update({ conditions: [...character.conditions, name] }).eq('id', character.id)
+    await supabase.from('characters').update({ conditions: [...(character.conditions ?? []), name] }).eq('id', character.id)
     onUpdated()
   }
 
   async function removeCondition(index: number) {
-    await supabase.from('characters').update({ conditions: character.conditions.filter((_, i) => i !== index) }).eq('id', character.id)
+    await supabase.from('characters').update({ conditions: (character.conditions ?? []).filter((_, i) => i !== index) }).eq('id', character.id)
     onUpdated()
   }
 
@@ -340,7 +340,7 @@ function cycleTraining(current: Training): Training {
           <div className="vtt-divider"><span /></div>
           <h3>Condições e Efeitos</h3>
           <div className="vtt-condition-tags">
-            {character.conditions.map((cond, i) => (
+            {(character.conditions ?? []).map((cond, i) => (
               <span key={i} className="vtt-condition-tag">
                 {cond}
                 <button type="button" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>

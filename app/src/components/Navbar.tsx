@@ -19,7 +19,9 @@ export default function Navbar() {
       .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null))
   }, [session])
 
-  if (/^\/personagem\/[^/]+$/.test(location.pathname) && location.pathname !== '/personagem/criar') return null
+  const isSheetRoute = /^\/personagem\/[^/]+$/.test(location.pathname) && location.pathname !== '/personagem/criar'
+  const isCreationWizard = /^\/personagem\/criar\/[^/]+$/.test(location.pathname)
+  if (isSheetRoute || isCreationWizard) return null
 
   return (
     <nav className="navbar">

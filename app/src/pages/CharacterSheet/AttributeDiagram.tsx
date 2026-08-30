@@ -5,8 +5,8 @@ const ATTRS: { key: AttributeKey; abbr: string; top: string; left: string }[] = 
   { key: 'agilidade', abbr: 'AGI', top: '16%', left: '50.2%' },
   { key: 'forca', abbr: 'FOR', top: '38%', left: '18.8%' },
   { key: 'intelecto', abbr: 'INT', top: '38%', left: '81.6%' },
-  { key: 'presenca', abbr: 'PRE', top: '76%', left: '28%' },
-  { key: 'vigor', abbr: 'VIG', top: '76%', left: '72.4%' },
+  { key: 'presenca', abbr: 'PRE', top: '76%', left: '25.5%' },
+  { key: 'vigor', abbr: 'VIG', top: '76%', left: '69.9%' },
 ]
 
 export default function AttributeDiagram({

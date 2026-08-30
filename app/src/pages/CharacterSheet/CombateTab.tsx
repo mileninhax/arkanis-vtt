@@ -54,6 +54,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [attackMods, setAttackMods] = useState<Modifier[]>([])
   const [damageMods, setDamageMods] = useState<Modifier[]>([])
   const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
+  const [modsOpen, setModsOpen] = useState(false)
+  const [attackSearch, setAttackSearch] = useState('')
 
   async function loadAttacks() {
     const { data } = await supabase
@@ -193,57 +195,82 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     <div>
       {roll && <RollResult result={roll} onClose={() => setRoll(null)} />}
 
-      <section>
-        <p><strong>Defesa:</strong> {defenseTotal} (Equip {equippedDefense} + Agilidade {agilidade} + 10)</p>
-      </section>
+      <div className="vtt-card" style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
+        <div className="vtt-attack-thumb" style={{ width: 56, height: 56, borderRadius: '50%' }}>🛡</div>
+        <div>
+          <h3 style={{ marginBottom: 0 }}>Defesa: {defenseTotal}</h3>
+          <p style={{ fontSize: '0.85em', color: 'var(--text-dim)' }}>Equip {equippedDefense} + Agilidade {agilidade} + 10</p>
+        </div>
+      </div>
 
-      <section>
-        <h3>Modificador de Ataque</h3>
-        <ModifiersPanel characterId={character.id} scope="ataque" showThreatAndMultiplier onChange={setAttackMods} />
-        <h3>Modificador de Dano</h3>
-        <ModifiersPanel characterId={character.id} scope="dano" onChange={setDamageMods} />
-      </section>
-
-      <section>
-        <button type="button" onClick={() => setAdding((a) => !a)}>Adicionar Ataque</button>
-
-        {adding && (
-          <div>
-            <label>Nome <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} /></label>
-            <label>Perícia
-              <select value={form.skillId} onChange={(e) => setForm((f) => ({ ...f, skillId: e.target.value }))}>
-                <option value="">—</option>
-                {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-            </label>
-            <label>Atributo
-              <select value={form.attribute} onChange={(e) => setForm((f) => ({ ...f, attribute: e.target.value as AttributeKey }))}>
-                {ATTRS.map((a) => <option key={a} value={a}>{a}</option>)}
-              </select>
-            </label>
-            <label>D20 Bônus de Ataque <input type="number" value={form.d20Bonus} onChange={(e) => setForm((f) => ({ ...f, d20Bonus: Number(e.target.value) }))} /></label>
-            <label>Margem de Ameaça <input type="number" value={form.threatMargin} onChange={(e) => setForm((f) => ({ ...f, threatMargin: Number(e.target.value) }))} /></label>
-            <label>Multiplicador <input type="number" value={form.multiplier} onChange={(e) => setForm((f) => ({ ...f, multiplier: Number(e.target.value) }))} /></label>
-            <label>Dano (fórmula) <input value={form.damage} onChange={(e) => setForm((f) => ({ ...f, damage: e.target.value }))} placeholder="1d8" /></label>
-            <label>Tipo de Dano <input value={form.damageType} onChange={(e) => setForm((f) => ({ ...f, damageType: e.target.value }))} /></label>
-            <button type="button" onClick={addAttack}>Adicionar Ataque</button>
+      <div className="vtt-card">
+        <button type="button" onClick={() => setModsOpen((v) => !v)} style={{ width: '100%', textAlign: 'left' }}>
+          Modificadores de Combate {modsOpen ? '▾' : '▸'}
+        </button>
+        {modsOpen && (
+          <div style={{ marginTop: '0.6em' }}>
+            <h3>Modificador de Ataque</h3>
+            <ModifiersPanel characterId={character.id} scope="ataque" showThreatAndMultiplier onChange={setAttackMods} />
+            <h3>Modificador de Dano</h3>
+            <ModifiersPanel characterId={character.id} scope="dano" onChange={setDamageMods} />
           </div>
         )}
+      </div>
 
-        <ul>
-          {attacks.map((a) => {
-            const ammoInv = ammoForAttack(a)
-            return (
-              <li key={a.id}>
-                {a.name}{a.general_info?.municao ? ` (${a.general_info.municao})` : ''} — {attrValue(character.attributes, a.attribute)}d20 / {a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || 'sem dano definido'} / x{a.multiplier}
-                {ammoInv && <span> · {ammoInv.ammo_current ?? 0}/{ammoInv.ammo_total} {ammoInv.ammo_label}</span>}
-                <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
-                <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+      {attacks.length === 0 && (
+        <div className="vtt-warning-box">Você não possui ataques. Adicione a partir do seu inventário ou crie um abaixo.</div>
+      )}
+      {attacks.length > 0 && attacks.every((a) => !ammoForAttack(a)) && character.optional_rules.contagem_municao && (
+        <div className="vtt-warning-box">Você não possui munição rastreada. Adicione a partir do seu inventário.</div>
+      )}
+
+      <div style={{ display: 'flex', gap: '0.5em', marginBottom: '0.8em' }}>
+        <input placeholder="Buscar Ataques" value={attackSearch} onChange={(e) => setAttackSearch(e.target.value)} style={{ flex: 1 }} />
+        <button type="button" onClick={() => setAdding((a) => !a)}>Adicionar Ataque</button>
+      </div>
+
+      {adding && (
+        <div className="vtt-card">
+          <label>Nome <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} /></label>
+          <label>Perícia
+            <select value={form.skillId} onChange={(e) => setForm((f) => ({ ...f, skillId: e.target.value }))}>
+              <option value="">—</option>
+              {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          </label>
+          <label>Atributo
+            <select value={form.attribute} onChange={(e) => setForm((f) => ({ ...f, attribute: e.target.value as AttributeKey }))}>
+              {ATTRS.map((a) => <option key={a} value={a}>{a}</option>)}
+            </select>
+          </label>
+          <label>D20 Bônus de Ataque <input type="number" value={form.d20Bonus} onChange={(e) => setForm((f) => ({ ...f, d20Bonus: Number(e.target.value) }))} /></label>
+          <label>Margem de Ameaça <input type="number" value={form.threatMargin} onChange={(e) => setForm((f) => ({ ...f, threatMargin: Number(e.target.value) }))} /></label>
+          <label>Multiplicador <input type="number" value={form.multiplier} onChange={(e) => setForm((f) => ({ ...f, multiplier: Number(e.target.value) }))} /></label>
+          <label>Dano (fórmula) <input value={form.damage} onChange={(e) => setForm((f) => ({ ...f, damage: e.target.value }))} placeholder="1d8" /></label>
+          <label>Tipo de Dano <input value={form.damageType} onChange={(e) => setForm((f) => ({ ...f, damageType: e.target.value }))} /></label>
+          <button type="button" onClick={addAttack}>Adicionar Ataque</button>
+        </div>
+      )}
+
+      {attacks.filter((a) => a.name.toLowerCase().includes(attackSearch.toLowerCase())).map((a) => {
+        const ammoInv = ammoForAttack(a)
+        return (
+          <div key={a.id} className="vtt-attack-card">
+            <div className="vtt-attack-thumb">⚔</div>
+            <div style={{ flex: 1 }}>
+              <strong>{a.name}</strong>{a.general_info?.municao ? ` (${a.general_info.municao})` : ''}
+              {ammoInv && <div style={{ fontSize: '0.85em', color: 'var(--text-dim)' }}>{ammoInv.ammo_current ?? 0}/{ammoInv.ammo_total} {ammoInv.ammo_label}</div>}
+            </div>
+            <div className="vtt-attack-stats">
+              <div><span className="label">Ataque</span>{attrValue(character.attributes, a.attribute)}d20{a.d20_bonus ? `+${a.d20_bonus}` : ''}</div>
+              <div><span className="label">Dano</span>{a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || '—'}</div>
+              <div><span className="label">Crítico</span>{a.threat_margin}/x{a.multiplier}</div>
+            </div>
+            <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
+            <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
+          </div>
+        )
+      })}
     </div>
   )
 }

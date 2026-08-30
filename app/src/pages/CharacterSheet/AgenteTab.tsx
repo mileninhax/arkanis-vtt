@@ -40,7 +40,21 @@ const ATTR_LABELS: { key: AttributeKey; abbr: string }[] = [
   { key: 'presenca', abbr: 'PRE' },
 ]
 
-export default function AgenteTab({ character, onUpdated, editMode }: { character: CharacterRecord; onUpdated: () => void; editMode: boolean }) {
+export default function AgenteTab({
+  character,
+  onUpdated,
+  editMode,
+  originName,
+  className,
+  onNameChange,
+}: {
+  character: CharacterRecord
+  onUpdated: () => void
+  editMode: boolean
+  originName: string | null
+  className: string | null
+  onNameChange: (name: string) => void
+}) {
   const { session } = useAuth()
   const [classRow, setClassRow] = useState<ClassRow | null>(null)
   const [skills, setSkills] = useState<SkillRow[]>([])
@@ -161,18 +175,46 @@ function cycleTraining(current: Training): Training {
     return true
   })
 
+  const maxPv = character.max_pv_override ?? derived.maxPv
+  const maxSanity = character.max_sanity_override ?? derived.maxSanity
+  const pct = (cur: number, max: number) => (max > 0 ? Math.max(0, Math.min(100, (cur / max) * 100)) : 0)
+  const maxPdPatente = character.optional_rules.evolucao_patente && classRow
+    ? computePatentePd(classRow.pd_patente_initial, classRow.pd_patente_per_patente, character.attributes.presenca, character.patente)
+    : null
+
   return (
-    <div>
+    <div className="vtt-columns">
       {roll && <RollResult result={roll} onClose={() => setRoll(null)} />}
 
-      <section>
-        <h2>Atributos {character.nex_mode === 'nex_experiencia' ? `— NEX ${character.nex_percent}% / Experiência ${character.experience ?? 0}` : `— NEX ${character.nex_percent}%`}</h2>
-        <ul>
-          {ATTR_LABELS.map(({ key, abbr }) => (
-            <li key={key}>
-              {editMode ? (
-                <label>
-                  {abbr}:
+      <div className="vtt-col-side">
+        <div className="vtt-card" style={{ textAlign: 'center' }}>
+          <img className="vtt-avatar" src={character.avatar_url ?? undefined} alt="" />
+          {editMode && (
+            <div>
+              <button type="button">Mudar foto</button>
+              <button type="button">Mudar moldura</button>
+            </div>
+          )}
+
+          {editMode ? (
+            <input value={character.name} onChange={(e) => onNameChange(e.target.value)} style={{ textAlign: 'center', width: '100%' }} />
+          ) : (
+            <h2>{character.name}</h2>
+          )}
+          <p style={{ color: 'var(--text-dim)' }}>{originName}</p>
+          <p style={{ color: 'var(--text-dim)' }}>{className}</p>
+          <p style={{ color: 'var(--text-dim)' }}>
+            NEX {character.nex_percent}%{character.nex_mode === 'nex_experiencia' ? ` · Exp. ${character.experience ?? 0}` : ''}
+          </p>
+        </div>
+
+        <div className="vtt-card">
+          <h3>Atributos</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5em' }}>
+            {ATTR_LABELS.map(({ key, abbr }) => (
+              editMode ? (
+                <label key={key}>
+                  {abbr}
                   <input
                     type="number"
                     value={character.attributes[key]}
@@ -181,108 +223,119 @@ function cycleTraining(current: Training): Training {
                   />
                 </label>
               ) : (
-                <button type="button" onClick={() => rollAttribute(key, abbr)}>{abbr}: {character.attributes[key]}</button>
-              )}
-            </li>
-          ))}
-        </ul>
+                <button key={key} type="button" onClick={() => rollAttribute(key, abbr)}>{abbr}: {character.attributes[key]}</button>
+              )
+            ))}
+          </div>
 
-        <div>
-          <p>Vida: {(character.current_pv ?? 0)} / {character.max_pv_override ?? derived.maxPv} (Temp. {character.temp_pv})</p>
-          <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}>-1 Vida</button>
-          <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}>+1 Vida</button>
+          {character.optional_rules.evolucao_patente && (
+            <label style={{ display: 'block', marginTop: '0.6em' }}>
+              Patente
+              <select value={character.patente} onChange={(e) => updateCharacterField('patente', e.target.value)}>
+                {['sem_patente', 'recruta', 'operador', 'agente_especial', 'oficial_operacoes', 'agente_elite'].map((p) => (
+                  <option key={p} value={p}>{p.replace(/_/g, ' ')}</option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
 
-        {character.optional_rules.sem_sanidade ? (
-          <div>
-            <p>Determinação: {(character.current_pd ?? 0)} / {derived.maxPd} <em>("Jogando sem Sanidade" — substitui Sanidade e Esforço)</em></p>
-            <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1 PD</button>
-            <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1 PD</button>
+        <div className="vtt-card">
+          <div className="vtt-stat-bar">
+            <p>Vida: {character.current_pv ?? 0} / {maxPv} {character.temp_pv ? `(+${character.temp_pv} temp.)` : ''}</p>
+            <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pv" style={{ width: `${pct(character.current_pv ?? 0, maxPv)}%` }} /></div>
+            <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}>-1</button>
+            <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}>+1</button>
           </div>
-        ) : (
-          <>
-            <div>
-              <p>Sanidade: {(character.current_sanity ?? 0)} / {character.max_sanity_override ?? derived.maxSanity} (Temp. {character.temp_sanity})</p>
-              <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) - 1)}>-1 Sanidade</button>
-              <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}>+1 Sanidade</button>
-            </div>
-            <div>
-              <p>Esforço: {(character.current_pe ?? 0)} / {derived.maxPe}</p>
-              <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) - 1)}>-1 PE</button>
-              <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}>+1 PE</button>
-            </div>
-          </>
-        )}
 
-        {character.optional_rules.evolucao_patente && !character.optional_rules.sem_sanidade && classRow && (() => {
-          const maxPdPatente = computePatentePd(classRow.pd_patente_initial, classRow.pd_patente_per_patente, character.attributes.presenca, character.patente)
-          return maxPdPatente == null ? (
-            <p><em>PD por Evolução de Patente ainda não confirmado pra essa classe.</em></p>
+          {character.optional_rules.sem_sanidade ? (
+            <div className="vtt-stat-bar">
+              <p>Determinação: {character.current_pd ?? 0} / {derived.maxPd} <em style={{ fontSize: '0.8em' }}>(substitui Sanidade/Esforço)</em></p>
+              <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pd" style={{ width: `${pct(character.current_pd ?? 0, derived.maxPd)}%` }} /></div>
+              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1</button>
+              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1</button>
+            </div>
           ) : (
-            <div>
-              <p>Determinação (Evolução por Patente): {(character.current_pd ?? 0)} / {maxPdPatente}</p>
-              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1 PD</button>
-              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1 PD</button>
-            </div>
-          )
-        })()}
+            <>
+              <div className="vtt-stat-bar">
+                <p>Sanidade: {character.current_sanity ?? 0} / {maxSanity} {character.temp_sanity ? `(+${character.temp_sanity} temp.)` : ''}</p>
+                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill sanidade" style={{ width: `${pct(character.current_sanity ?? 0, maxSanity)}%` }} /></div>
+                <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) - 1)}>-1</button>
+                <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}>+1</button>
+              </div>
+              <div className="vtt-stat-bar">
+                <p>Esforço: {character.current_pe ?? 0} / {derived.maxPe}</p>
+                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill esforco" style={{ width: `${pct(character.current_pe ?? 0, derived.maxPe)}%` }} /></div>
+                <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) - 1)}>-1</button>
+                <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}>+1</button>
+              </div>
+            </>
+          )}
 
-        {character.optional_rules.evolucao_patente && (
-          <label>
-            Patente
-            <select value={character.patente} onChange={(e) => updateCharacterField('patente', e.target.value)}>
-              {['sem_patente', 'recruta', 'operador', 'agente_especial', 'oficial_operacoes', 'agente_elite'].map((p) => (
-                <option key={p} value={p}>{p.replace(/_/g, ' ')}</option>
-              ))}
-            </select>
-          </label>
-        )}
-      </section>
+          {character.optional_rules.evolucao_patente && !character.optional_rules.sem_sanidade && (
+            maxPdPatente == null ? (
+              <p style={{ fontSize: '0.85em', color: 'var(--text-dim)' }}>PD por Evolução de Patente ainda não confirmado pra essa classe.</p>
+            ) : (
+              <div className="vtt-stat-bar">
+                <p>Determinação (Patente): {character.current_pd ?? 0} / {maxPdPatente}</p>
+                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pd" style={{ width: `${pct(character.current_pd ?? 0, maxPdPatente)}%` }} /></div>
+                <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1</button>
+                <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1</button>
+              </div>
+            )
+          )}
+        </div>
+      </div>
 
-      <section>
-        <h2>Perícias</h2>
-        <ModifiersPanel characterId={character.id} scope="teste" onChange={setTestModifiers} onDraftChange={setTestDraft} />
-        <input placeholder="Busque Perícias" value={skillFilter} onChange={(e) => setSkillFilter(e.target.value)} />
-        <label><input type="checkbox" checked={onlyTrained} onChange={(e) => setOnlyTrained(e.target.checked)} /> Apenas Treinadas</label>
+      <div className="vtt-col-main">
+        <div className="vtt-card">
+          <h3>Modificador de Testes</h3>
+          <ModifiersPanel characterId={character.id} scope="teste" onChange={setTestModifiers} onDraftChange={setTestDraft} />
+        </div>
 
-        <table>
-          <thead>
-            <tr><th>Perícia</th><th>Treino</th><th>Atrib.</th><th>Extra</th><th>Total</th><th></th></tr>
-          </thead>
-          <tbody>
-            {visibleSkills.map((skill) => {
-              const cs = charSkills[skill.id] ?? { skill_id: skill.id, training: 'nenhum' as const, attribute_override: null, extra_bonus: 0 }
-              const attr = cs.attribute_override ?? skill.default_attribute
-              const total = trainingBonus(cs.training) + cs.extra_bonus + testValueBonus
-              const diceCount = attr ? attrValue(character.attributes, attr) + testDiceBonus : null
-              return (
-                <tr key={skill.id}>
-                  <td>{skill.name} ({diceCount ?? '?'}d20{testDiceBonus ? ` (${testDiceBonus >= 0 ? '+' : ''}${testDiceBonus} de modificadores)` : ''})</td>
-                  <td>
-                    <button type="button" onClick={() => setSkillField(skill.id, { training: cycleTraining(cs.training) })}>
-                      {trainingBadge(cs.training)}
-                    </button>
-                  </td>
-                  <td>
-                    <select value={attr ?? ''} onChange={(e) => setSkillField(skill.id, { attribute_override: e.target.value || null })}>
-                      <option value="">—</option>
-                      {ATTR_LABELS.map((a) => <option key={a.key} value={a.key}>{a.abbr}</option>)}
-                    </select>
-                  </td>
-                  <td>
-                    <input type="number" value={cs.extra_bonus} onChange={(e) => setSkillField(skill.id, { extra_bonus: Number(e.target.value) })} style={{ width: '3em' }} />
-                  </td>
-                  <td>{total}</td>
-                  <td><button type="button" onClick={() => rollSkill(skill)} disabled={!attr}>Rolar</button></td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </section>
+        <div className="vtt-card">
+          <input placeholder="Busque Perícias" value={skillFilter} onChange={(e) => setSkillFilter(e.target.value)} />
+          <label><input type="checkbox" checked={onlyTrained} onChange={(e) => setOnlyTrained(e.target.checked)} /> Apenas Treinadas</label>
 
-      <section>
-        <nav>
+          <table>
+            <thead>
+              <tr><th>Perícia</th><th>Treino</th><th>Atrib.</th><th>Extra</th><th>Total</th><th></th></tr>
+            </thead>
+            <tbody>
+              {visibleSkills.map((skill) => {
+                const cs = charSkills[skill.id] ?? { skill_id: skill.id, training: 'nenhum' as const, attribute_override: null, extra_bonus: 0 }
+                const attr = cs.attribute_override ?? skill.default_attribute
+                const total = trainingBonus(cs.training) + cs.extra_bonus + testValueBonus
+                const diceCount = attr ? attrValue(character.attributes, attr) + testDiceBonus : null
+                return (
+                  <tr key={skill.id}>
+                    <td>{skill.name} ({diceCount ?? '?'}d20{testDiceBonus ? ` (${testDiceBonus >= 0 ? '+' : ''}${testDiceBonus} de modificadores)` : ''})</td>
+                    <td>
+                      <button type="button" onClick={() => setSkillField(skill.id, { training: cycleTraining(cs.training) })}>
+                        {trainingBadge(cs.training)}
+                      </button>
+                    </td>
+                    <td>
+                      <select value={attr ?? ''} onChange={(e) => setSkillField(skill.id, { attribute_override: e.target.value || null })}>
+                        <option value="">—</option>
+                        {ATTR_LABELS.map((a) => <option key={a.key} value={a.key}>{a.abbr}</option>)}
+                      </select>
+                    </td>
+                    <td>
+                      <input type="number" value={cs.extra_bonus} onChange={(e) => setSkillField(skill.id, { extra_bonus: Number(e.target.value) })} style={{ width: '3em' }} />
+                    </td>
+                    <td>{total}</td>
+                    <td><button type="button" onClick={() => rollSkill(skill)} disabled={!attr}>Rolar</button></td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="vtt-col-combat">
+        <nav className="vtt-tabs" style={{ marginBottom: '0.8em' }}>
           {(['Combate', 'Habilidades', 'Rituais', 'Inventário'] as const).map((t) => (
             <button key={t} type="button" onClick={() => setRightTab(t)} disabled={rightTab === t}>{t}</button>
           ))}
@@ -292,7 +345,7 @@ function cycleTraining(current: Training): Training {
         {rightTab === 'Rituais' && <RituaisTab character={character} />}
         {rightTab === 'Inventário' && <InventarioTab character={character} />}
         {rightTab === 'Combate' && <CombateTab character={character} />}
-      </section>
+      </div>
     </div>
   )
 }

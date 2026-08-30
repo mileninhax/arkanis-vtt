@@ -16,6 +16,7 @@ export type CharacterRecord = {
   id: string
   campaign_id: string | null
   name: string
+  avatar_url: string | null
   doc_number: string
   attributes: Attributes
   nex_percent: number
@@ -97,24 +98,18 @@ export default function CharacterSheet() {
 
   return (
     <main>
-      <header>
-        {editMode ? (
-          <input
-            value={character.name}
-            onChange={async (e) => {
-              const name = e.target.value
-              setCharacter((c) => (c ? { ...c, name } : c))
-              await supabase.from('characters').update({ name }).eq('id', character.id)
-            }}
-          />
-        ) : (
-          <h1>{character.name}</h1>
-        )}
-        <p>{originName} — {className}</p>
-        <button type="button" onClick={() => setShowDice((v) => !v)}>Dados</button>
-        <button type="button" onClick={() => setEditMode((v) => !v)}>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</button>
-        <button type="button" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>⚙</button>
-        <button type="button" aria-label="Histórico de Rolagens" onClick={() => setShowHistory((v) => !v)}>📖🕓</button>
+      <header className="vtt-topbar">
+        <nav className="vtt-tabs">
+          {TABS.map((t) => (
+            <button key={t} type="button" onClick={() => setTab(t)} disabled={tab === t}>{t}</button>
+          ))}
+        </nav>
+        <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
+          <button type="button" className="vtt-icon-btn" aria-label="Dados" onClick={() => setShowDice((v) => !v)}>🎲</button>
+          <button type="button" onClick={() => setEditMode((v) => !v)}>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</button>
+          <button type="button" className="vtt-icon-btn" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>⚙</button>
+          <button type="button" className="vtt-icon-btn" aria-label="Histórico de Rolagens" onClick={() => setShowHistory((v) => !v)}>📖</button>
+        </div>
       </header>
 
       {showDice && <DiceRoller character={character} onClose={() => setShowDice(false)} />}
@@ -127,14 +122,18 @@ export default function CharacterSheet() {
       )}
       {showHistory && <HistoricoRolagens character={character} onClose={() => setShowHistory(false)} />}
 
-      <nav>
-        {TABS.map((t) => (
-          <button key={t} type="button" onClick={() => setTab(t)} disabled={tab === t}>{t}</button>
-        ))}
-      </nav>
-
       {tab === 'Agente' && (
-        <AgenteTab character={character} onUpdated={() => setRefreshKey((k) => k + 1)} editMode={editMode} />
+        <AgenteTab
+          character={character}
+          onUpdated={() => setRefreshKey((k) => k + 1)}
+          editMode={editMode}
+          originName={originName}
+          className={className}
+          onNameChange={async (name) => {
+            setCharacter((c) => (c ? { ...c, name } : c))
+            await supabase.from('characters').update({ name }).eq('id', character.id)
+          }}
+        />
       )}
       {tab === 'Investigação' && (
         <InvestigacaoTab character={character} originName={originName} className={className} />

@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import MeusPersonagens from '../components/MeusPersonagens'
+import settingsIcon from '../assets/icons/settings-icon.svg'
+import logoutIcon from '../assets/icons/log-out-icon.svg'
 
 type ProfileRow = {
   display_name: string | null
@@ -63,8 +65,14 @@ export default function Perfil() {
         </section>
 
         <aside className="profile-actions">
-          <Link to="/perfil/editar">Editar Perfil</Link>
-          <button type="button" onClick={handleSair}>Sair</button>
+          <Link to="/perfil/editar" className="profile-action-item">
+            <img src={settingsIcon} alt="" />
+            <span>Editar Perfil</span>
+          </Link>
+          <button type="button" className="profile-action-item" onClick={handleSair}>
+            <img src={logoutIcon} alt="" />
+            <span>Sair</span>
+          </button>
         </aside>
       </div>
     </main>

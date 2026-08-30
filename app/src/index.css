@@ -362,16 +362,33 @@ code, .counter {
   flex: 0 0 220px;
   display: flex;
   flex-direction: column;
-  gap: 0.6em;
+  gap: 0.3em;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1em 1.2em;
+  padding: 0.6em;
 }
 
-.profile-actions a,
-.profile-actions button {
+.profile-action-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
   text-align: left;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 0.7em;
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.profile-action-item:hover {
+  background: var(--bg-card);
+}
+
+.profile-action-item img {
+  width: 1.3em;
+  height: 1.3em;
 }
 
 .character-list-header {

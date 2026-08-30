@@ -29,45 +29,52 @@ const RULES = [
 
 export default function Step1Intro({ draft, onNext }: { draft: CharacterDraft; onNext: () => void }) {
   const today = new Date().toLocaleDateString('pt-BR')
+  const paperStyle = { backgroundImage: `url(${papelTextura})` }
 
   return (
     <div className="creation-spread">
-      <div className="creation-paper creation-paper-left" style={{ backgroundImage: `url(${papelTextura})` }}>
-        <img className="creation-crest" src={brasao} alt="Ordo Realitas" />
-        <h2 className="creation-title">Ficha do Agente</h2>
-        <p>Este documento é estritamente confidencial e não pode deixar a base sob nenhuma circunstância.</p>
+      <div className="creation-paper-slot">
+        <div className="creation-paper-shadow" style={paperStyle} />
+        <div className="creation-paper creation-paper-left" style={paperStyle}>
+          <img className="creation-crest" src={brasao} alt="Ordo Realitas" />
+          <h2 className="creation-title">Ficha do Agente</h2>
+          <p>Este documento é estritamente confidencial e não pode deixar a base sob nenhuma circunstância.</p>
 
-        <div className="creation-fields">
-          <label className="creation-field">Doc.No:<span>{draft.docNumber}</span></label>
-          <label className="creation-field">Data:<span>{today}</span></label>
+          <div className="creation-fields">
+            <label className="creation-field">Doc.No:<span>{draft.docNumber}</span></label>
+            <label className="creation-field">Data:<span>{today}</span></label>
+          </div>
         </div>
       </div>
 
-      <div className="creation-paper creation-paper-right" style={{ backgroundImage: `url(${papelTextura})` }}>
-        <header className="creation-letterhead">
-          <div>
-            <h2 className="creation-title">ORDO REALITAS</h2>
-            <p className="creation-underline">Documento oficial n: {draft.docNumber}</p>
-            <p className="creation-underline">Termo de boas-vindas</p>
-          </div>
-          <img className="creation-crest-sm" src={brasaoSm} alt="" />
-        </header>
+      <div className="creation-paper-slot">
+        <div className="creation-paper-shadow" style={paperStyle} />
+        <div className="creation-paper creation-paper-right" style={paperStyle}>
+          <header className="creation-letterhead">
+            <div>
+              <h2 className="creation-title">ORDO REALITAS</h2>
+              <p className="creation-underline">Documento oficial n: {draft.docNumber}</p>
+              <p className="creation-underline">Termo de boas-vindas</p>
+            </div>
+            <img className="creation-crest-sm" src={brasaoSm} alt="" />
+          </header>
 
-        <p>Bem-Vindo, Agente.</p>
-        <p>A partir de agora, você faz parte da Ordo Realitas, uma organização dedicada a proteger a Membrana, a barreira que separa o nosso mundo do outro lado.</p>
-        <p>O que esperamos de você:</p>
+          <p>Bem-Vindo, Agente.</p>
+          <p>A partir de agora, você faz parte da Ordo Realitas, uma organização dedicada a proteger a Membrana, a barreira que separa o nosso mundo do outro lado.</p>
+          <p>O que esperamos de você:</p>
 
-        <ol className="creation-rules">
-          {RULES.map((rule, i) => (
-            <li key={rule.title}>
-              <span className="creation-rule-title"><span className="creation-rule-num">{i + 1}.</span> {rule.title}</span>
-              <p>{rule.text}</p>
-            </li>
-          ))}
-        </ol>
+          <ol className="creation-rules">
+            {RULES.map((rule, i) => (
+              <li key={rule.title}>
+                <span className="creation-rule-title"><span className="creation-rule-num">{i + 1}.</span> {rule.title}</span>
+                <p>{rule.text}</p>
+              </li>
+            ))}
+          </ol>
 
-        <p>Antes de terminarmos, precisamos apenas de algumas informações sobre você. Continue lendo o documento e insira as informações necessárias.</p>
-        <p className="creation-footnote">*Não gravar o combate</p>
+          <p>Antes de terminarmos, precisamos apenas de algumas informações sobre você. Continue lendo o documento e insira as informações necessárias.</p>
+          <p className="creation-footnote">*Não gravar o combate</p>
+        </div>
       </div>
 
       <button type="button" className="creation-next-arrow" onClick={onNext} aria-label="Avançar">

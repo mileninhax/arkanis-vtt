@@ -553,11 +553,15 @@ code, .counter {
   gap: 1.2em;
 }
 
-.system-card {
+.system-card-wrap {
   position: relative;
-  display: flex;
   width: 100%;
   max-width: 680px;
+}
+
+.system-card {
+  display: flex;
+  width: 100%;
   min-height: 240px;
   border-radius: 14px;
   overflow: hidden;

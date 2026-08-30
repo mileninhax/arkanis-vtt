@@ -24,14 +24,16 @@ export default function SystemSelect() {
 
         <div className="system-card-grid">
           {SYSTEMS.map((s) => (
-            <div key={s.slug} className="system-card">
+            <div key={s.slug} className="system-card-wrap">
               <span className="system-card-badge">{s.version}</span>
-              <div className="system-card-left">
-                <h2>{s.name}</h2>
-                <p>{s.description}</p>
-                <Link to={`/personagem/criar/${s.slug}`} className="btn-pill btn-pill-danger">Criar Personagem</Link>
+              <div className="system-card">
+                <div className="system-card-left">
+                  <h2>{s.name}</h2>
+                  <p>{s.description}</p>
+                  <Link to={`/personagem/criar/${s.slug}`} className="btn-pill btn-pill-danger">Criar Personagem</Link>
+                </div>
+                <div className="system-card-right" style={{ backgroundImage: `url(${s.image})` }} />
               </div>
-              <div className="system-card-right" style={{ backgroundImage: `url(${s.image})` }} />
             </div>
           ))}
         </div>

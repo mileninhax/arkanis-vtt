@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Optima Nova LT Pro';
+  src: url('./assets/fonts/OptimaNovaLTPro-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Optima Nova LT Pro';
+  src: url('./assets/fonts/OptimaNovaLTPro-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Optima Nova LT Pro';
+  src: url('./assets/fonts/OptimaNovaLTPro-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #131118;
   --bg-panel: #1c1922;
@@ -16,7 +40,7 @@
   --danger: #d9534f;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Optima Nova LT Pro', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 15px/145% var(--sans);
@@ -225,7 +249,7 @@ code, .counter {
 }
 
 .stat-bar-label {
-  font-family: 'Westsac', var(--heading);
+  font-family: var(--heading);
   font-size: 1.1em;
   font-weight: 500;
   text-transform: uppercase;

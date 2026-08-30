@@ -163,35 +163,17 @@ code, .counter {
   100% { background-position: 30% 65%; }
 }
 
-/* Morte: imagem parada (sem cortar borda), com ondas concêntricas girando por cima,
-   tipo o efeito de uma gota caindo n'água. */
+/* Morte: a imagem em si gira bem devagar, com zoom grande o bastante pra nunca
+   revelar canto/borda durante a rotação. */
 .sheet-bg.bg-morte {
-  background-size: 150% 150%;
+  background-size: 160% 160%;
+  transform-origin: center center;
+  animation: sheet-bg-spin 240s linear infinite;
 }
 
-.sheet-bg.bg-morte::after {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background: repeating-radial-gradient(
-    circle at 35% 40%,
-    rgba(0, 0, 0, 0) 0,
-    rgba(0, 0, 0, 0) 40px,
-    rgba(0, 0, 0, 0.14) 42px,
-    rgba(0, 0, 0, 0) 44px
-  );
-  animation: sheet-bg-ripple-spin 90s linear infinite, sheet-bg-ripple-pulse 6s ease-in-out infinite;
-}
-
-@keyframes sheet-bg-ripple-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes sheet-bg-ripple-pulse {
-  0% { background-size: 100% 100%; }
-  50% { background-size: 106% 106%; }
-  100% { background-size: 100% 100%; }
+@keyframes sheet-bg-spin {
+  from { transform: scale(1.6) rotate(0deg); }
+  to { transform: scale(1.6) rotate(360deg); }
 }
 
 /* Sangue: sensação de líquido escorrendo devagar */

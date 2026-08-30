@@ -412,8 +412,10 @@ code, .counter {
 }
 
 .attr-nex-badge {
-  top: 9.6%;
+  top: 11%;
   left: 21.2%;
-  font-size: 0.55em;
+  font-size: 0.7em;
+  color: #000;
+  text-shadow: none;
   cursor: default;
 }

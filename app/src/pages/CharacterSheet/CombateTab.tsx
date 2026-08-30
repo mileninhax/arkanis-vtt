@@ -21,6 +21,7 @@ type Attack = {
     tipo_municao?: string
     municao?: string | null
     modificadores?: { kind: 'modificacao' | 'maldicao'; name: string; effect: string; elemento: string | null; origem: 'Arma' | 'Munição' }[]
+    damage_bonus_from_mods?: number
   } | null
 }
 
@@ -103,7 +104,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     const attackDiceBonus = activeAttackMods.reduce((sum, m) => sum + m.dice_bonus, 0)
     const attackValueBonus = activeAttackMods.reduce((sum, m) => sum + m.value_bonus, 0)
     const threatBonus = activeAttackMods.reduce((sum, m) => sum + m.threat_margin_bonus, 0)
-    const damageValueBonus = activeDamageMods.reduce((sum, m) => sum + m.value_bonus, 0)
+    const damageValueBonus = activeDamageMods.reduce((sum, m) => sum + m.value_bonus, 0) + (attack.general_info?.damage_bonus_from_mods ?? 0)
 
     const score = attrValue(character.attributes, attack.attribute) + attackDiceBonus
     const { rolls, kept } = rollAttributeTest(score)

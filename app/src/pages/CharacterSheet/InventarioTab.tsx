@@ -25,6 +25,22 @@ type InventoryItem = {
   linked_ammo_id: string | null
 }
 
+// Extrai bônus numéricos simples do texto de efeito de uma modificação (ex.: "+2 em
+// margem de ameaça", "+1 no multiplicador de crítico"). Efeitos mais complexos (Calibre
+// Grosso, Compensador etc.) não são parseados aqui e continuam só como referência textual.
+function parseNumericMod(effect: string) {
+  const result = { attackTestBonus: 0, threatMarginDelta: 0, damageBonus: 0, multiplierDelta: 0 }
+  const margemMatch = effect.match(/([+-]?\d+)\s+em margem de ameaça/i)
+  if (margemMatch) result.threatMarginDelta -= Number(margemMatch[1])
+  const ataqueMatch = effect.match(/([+-]?\d+)\s+em testes de ataque/i)
+  if (ataqueMatch) result.attackTestBonus += Number(ataqueMatch[1])
+  const danoMatch = effect.match(/([+-]?\d+)\s+em rolagens de dano/i)
+  if (danoMatch) result.damageBonus += Number(danoMatch[1])
+  const multMatch = effect.match(/([+-]?\d+)\s+no multiplicador de crítico/i)
+  if (multMatch) result.multiplierDelta += Number(multMatch[1])
+  return result
+}
+
 function parseCritico(critico: unknown): { threatMargin: number; multiplier: number } {
   let threatMargin = 20
   let multiplier = 2
@@ -163,11 +179,20 @@ export default function InventarioTab({ character }: { character: CharacterRecor
     const damage: { formula: string; tipo: string }[] = [{ formula: String(stats.dano ?? ''), tipo: String(stats.tipo_dano ?? '') }]
     let finalMultiplier = multiplier
     let finalThreatMargin = threatMargin
+    let attackTestBonus = 0
+    let damageBonusFromMods = 0
 
     const linkedAmmo = inv.linked_ammo_id ? items.find((i) => i.id === inv.linked_ammo_id) : null
-    for (const mod of linkedAmmo?.applied_modifiers ?? []) {
+
+    for (const mod of [...(inv.applied_modifiers ?? []), ...(linkedAmmo?.applied_modifiers ?? [])]) {
+      if (mod.kind !== 'modificacao') continue // maldições têm efeitos narrativos demais pra parsear automaticamente
       if (mod.name === 'Dum Dum') finalMultiplier += 1
       if (mod.name === 'Explosiva') damage.push({ formula: '2d6', tipo: 'explosão adicional' })
+      const parsed = parseNumericMod(mod.effect)
+      finalThreatMargin += parsed.threatMarginDelta
+      finalMultiplier += parsed.multiplierDelta
+      attackTestBonus += parsed.attackTestBonus
+      damageBonusFromMods += parsed.damageBonus
     }
 
     const modificadores = [
@@ -179,6 +204,7 @@ export default function InventarioTab({ character }: { character: CharacterRecor
       character_id: character.id,
       name: item.name,
       attribute: isMelee ? 'forca' : 'agilidade',
+      d20_bonus: attackTestBonus,
       threat_margin: finalThreatMargin,
       multiplier: finalMultiplier,
       damage,
@@ -189,6 +215,7 @@ export default function InventarioTab({ character }: { character: CharacterRecor
         tipo_municao: stats.tipo_municao,
         municao: linkedAmmo?.equipment_items?.name ?? linkedAmmo?.custom_item?.name ?? null,
         modificadores,
+        damage_bonus_from_mods: damageBonusFromMods,
       },
       from_inventory_item_id: inv.id,
     })

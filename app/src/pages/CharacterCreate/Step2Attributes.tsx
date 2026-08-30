@@ -7,13 +7,14 @@ import agilidadeIcon from '../../assets/criacao/agilidade-icon.png'
 import intelectoIcon from '../../assets/criacao/intelecto-icon.png'
 import vigorIcon from '../../assets/criacao/vigor-icon.png'
 import presencaIcon from '../../assets/criacao/presenca-icon.png'
+import atributosDiagrama from '../../assets/criacao/atributos-diagrama.svg'
 
-const NODES: { key: keyof Attributes; abbr: string; name: string; icon: string; top: string; left: string; labelSide: 'left' | 'right' | 'top' }[] = [
-  { key: 'agilidade', abbr: 'AGI', name: 'agilidade', icon: agilidadeIcon, top: '10%', left: '50%', labelSide: 'top' },
-  { key: 'intelecto', abbr: 'INT', name: 'intelecto', icon: intelectoIcon, top: '37.6%', left: '88%', labelSide: 'right' },
-  { key: 'vigor', abbr: 'VIG', name: 'vigor', icon: vigorIcon, top: '82.4%', left: '73.5%', labelSide: 'right' },
-  { key: 'presenca', abbr: 'PRE', name: 'presença', icon: presencaIcon, top: '82.4%', left: '26.5%', labelSide: 'left' },
-  { key: 'forca', abbr: 'FOR', name: 'força', icon: forcaIcon, top: '37.6%', left: '12%', labelSide: 'left' },
+const NODES: { key: keyof Attributes; top: string; left: string }[] = [
+  { key: 'agilidade', top: '13.1%', left: '48.7%' },
+  { key: 'intelecto', top: '37.6%', left: '74.7%' },
+  { key: 'vigor', top: '77.5%', left: '64.8%' },
+  { key: 'presenca', top: '77.5%', left: '32.6%' },
+  { key: 'forca', top: '37.6%', left: '22.6%' },
 ]
 
 const ABOUT = [
@@ -64,34 +65,19 @@ export default function Step2Attributes({
           <div className="creation-section-title">Atributos</div>
 
           <div className="attr-radar">
-            <svg className="attr-radar-grid" viewBox="0 0 300 300">
-              <polygon points="150,30 264.12,112.92 220.56,247.08 79.44,247.08 35.88,112.92" />
-              <polygon points="150,60 235.59,122.19 202.92,222.81 97.08,222.81 64.41,122.19" />
-              <polygon points="150,90 207.06,131.46 185.28,198.54 114.72,198.54 92.94,131.46" />
-              <polygon points="150,120 178.53,140.73 167.64,174.27 132.36,174.27 121.47,140.73" />
-              <line x1="150" y1="150" x2="150" y2="30" />
-              <line x1="150" y1="150" x2="264.12" y2="112.92" />
-              <line x1="150" y1="150" x2="220.56" y2="247.08" />
-              <line x1="150" y1="150" x2="79.44" y2="247.08" />
-              <line x1="150" y1="150" x2="35.88" y2="112.92" />
-            </svg>
+            <img className="attr-radar-img" src={atributosDiagrama} alt="Diagrama de atributos" />
 
             {NODES.map((node) => (
-              <div key={node.key} className={`attr-node attr-node-${node.labelSide}`} style={{ top: node.top, left: node.left }}>
-                <div className="attr-node-label">
-                  <span className="attr-node-abbr">{node.abbr}</span>
-                  <span className="attr-node-name">{node.name}</span>
-                </div>
-                <div className="attr-node-circle" style={{ '--icon': `url(${node.icon})` } as React.CSSProperties}>
-                  <input
-                    type="number"
-                    min={0}
-                    max={3}
-                    value={attributes[node.key]}
-                    onChange={(e) => setValue(node.key, Number(e.target.value))}
-                  />
-                </div>
-              </div>
+              <input
+                key={node.key}
+                type="number"
+                className="attr-radar-input"
+                style={{ top: node.top, left: node.left }}
+                min={0}
+                max={3}
+                value={attributes[node.key]}
+                onChange={(e) => setValue(node.key, Number(e.target.value))}
+              />
             ))}
           </div>
 

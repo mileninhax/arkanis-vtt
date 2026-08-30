@@ -11,6 +11,7 @@ import InventarioTab from './InventarioTab'
 import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 import AttributeDiagram from './AttributeDiagram'
+import StatBar from './StatBar'
 import pvEmpty from '../../assets/pv-empty.svg'
 import pvLow from '../../assets/pv-low.svg'
 import pvHalf from '../../assets/pv-half.svg'
@@ -255,36 +256,46 @@ function cycleTraining(current: Training): Training {
         </div>
 
         <div className="vtt-card">
-          <div className="vtt-stat-bar vtt-stat-bar-icon">
-            <img src={pvIconFor(pct(character.current_pv ?? 0, maxPv))} alt="" className="vtt-stat-icon" />
-            <div>
-              <p>Vida: {character.current_pv ?? 0} / {maxPv} {character.temp_pv ? `(+${character.temp_pv} temp.)` : ''}</p>
-              <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}>-1</button>
-              <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}>+1</button>
-            </div>
-          </div>
+          <StatBar
+            label="Vida"
+            icon={pvIconFor(pct(character.current_pv ?? 0, maxPv))}
+            current={character.current_pv ?? 0}
+            max={maxPv}
+            temp={character.temp_pv}
+            colorClass="pv"
+            onDecrement={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}
+            onIncrement={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}
+          />
 
           {character.optional_rules.sem_sanidade ? (
-            <div className="vtt-stat-bar">
-              <p>Determinação: {character.current_pd ?? 0} / {derived.maxPd} <em style={{ fontSize: '0.8em' }}>(substitui Sanidade/Esforço)</em></p>
-              <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pd" style={{ width: `${pct(character.current_pd ?? 0, derived.maxPd)}%` }} /></div>
-              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1</button>
-              <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1</button>
-            </div>
+            <StatBar
+              label="Determinação"
+              current={character.current_pd ?? 0}
+              max={derived.maxPd}
+              colorClass="pd"
+              note="Substitui Sanidade/Esforço"
+              onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
+              onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+            />
           ) : (
             <>
-              <div className="vtt-stat-bar">
-                <p>Sanidade: {character.current_sanity ?? 0} / {maxSanity} {character.temp_sanity ? `(+${character.temp_sanity} temp.)` : ''}</p>
-                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill sanidade" style={{ width: `${pct(character.current_sanity ?? 0, maxSanity)}%` }} /></div>
-                <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) - 1)}>-1</button>
-                <button type="button" onClick={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}>+1</button>
-              </div>
-              <div className="vtt-stat-bar">
-                <p>Esforço: {character.current_pe ?? 0} / {derived.maxPe}</p>
-                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill esforco" style={{ width: `${pct(character.current_pe ?? 0, derived.maxPe)}%` }} /></div>
-                <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) - 1)}>-1</button>
-                <button type="button" onClick={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}>+1</button>
-              </div>
+              <StatBar
+                label="Sanidade"
+                current={character.current_sanity ?? 0}
+                max={maxSanity}
+                temp={character.temp_sanity}
+                colorClass="sanidade"
+                onDecrement={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) - 1)}
+                onIncrement={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}
+              />
+              <StatBar
+                label="Esforço"
+                current={character.current_pe ?? 0}
+                max={derived.maxPe}
+                colorClass="esforco"
+                onDecrement={() => updateCharacterField('current_pe', (character.current_pe ?? 0) - 1)}
+                onIncrement={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}
+              />
             </>
           )}
 
@@ -292,12 +303,14 @@ function cycleTraining(current: Training): Training {
             maxPdPatente == null ? (
               <p style={{ fontSize: '0.85em', color: 'var(--text-dim)' }}>PD por Evolução de Patente ainda não confirmado pra essa classe.</p>
             ) : (
-              <div className="vtt-stat-bar">
-                <p>Determinação (Patente): {character.current_pd ?? 0} / {maxPdPatente}</p>
-                <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pd" style={{ width: `${pct(character.current_pd ?? 0, maxPdPatente)}%` }} /></div>
-                <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}>-1</button>
-                <button type="button" onClick={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}>+1</button>
-              </div>
+              <StatBar
+                label="Determinação (Patente)"
+                current={character.current_pd ?? 0}
+                max={maxPdPatente}
+                colorClass="pd"
+                onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
+                onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+              />
             )
           )}
         </div>

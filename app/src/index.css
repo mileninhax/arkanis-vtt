@@ -197,40 +197,109 @@ code, .counter {
   object-fit: cover;
 }
 
-.vtt-stat-bar {
-  margin-bottom: 0.6em;
+.vtt-stat-icon {
+  width: 56px;
+  height: 66px;
+  flex-shrink: 0;
 }
 
-.vtt-stat-bar-track {
+/* ---- StatBar (Vida/Sanidade/Esforço/PD) ---- */
+
+.stat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: 0.9em;
+}
+
+.stat-bar-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-bar-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.2em;
+}
+
+.stat-bar-label {
+  font-family: 'Westsac', var(--heading);
+  font-size: 1.1em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-h);
+}
+
+.stat-bar-temp {
+  font-size: 0.8em;
+  color: var(--text-dim);
+}
+
+.stat-bar-track {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.stat-bar-arrow {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1em;
+  padding: 0 0.2em;
+  cursor: pointer;
+}
+
+.stat-bar-arrow:hover {
+  color: var(--text-h);
+}
+
+.stat-bar-fill-wrap {
   position: relative;
-  height: 0.9em;
+  flex: 1;
+  height: 1.4em;
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: 999px;
   overflow: hidden;
 }
 
-.vtt-stat-bar-fill {
+.stat-bar-fill {
   height: 100%;
   border-radius: 999px;
 }
 
-.vtt-stat-bar-fill.pv { background: var(--red); }
+.stat-bar-fill.pv, .stat-bar-fill.sanidade {
+  background: linear-gradient(90deg, #521d1d 0%, #8d1515 48.08%, #b91e1e 100%);
+}
 
-.vtt-stat-bar-icon {
+.stat-bar-fill.esforco {
+  background: linear-gradient(90deg, #5a4614 0%, #b3860f 48.08%, #e0b13a 100%);
+}
+
+.stat-bar-fill.pd {
+  background: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%);
+}
+
+.stat-bar-value {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  gap: 0.6em;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-.vtt-stat-icon {
-  width: 56px;
-  height: 66px;
-  flex-shrink: 0;
+.stat-bar-note {
+  font-size: 0.75em;
+  color: var(--text-dim);
+  margin: 0.2em 0 0;
 }
-.vtt-stat-bar-fill.sanidade { background: var(--red); }
-.vtt-stat-bar-fill.esforco { background: var(--gold); }
-.vtt-stat-bar-fill.pd { background: var(--accent); }
 
 .vtt-warning-box {
   background: var(--bg-input);
@@ -283,31 +352,12 @@ code, .counter {
 
 /* ---- Diagrama de atributos (imagem real fornecida por Millie) ---- */
 
-.attr-diagram-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 260px;
-  margin: 1.6em auto 0.5em;
-}
-
-.hex-nex-badge {
-  position: absolute;
-  top: -14px;
-  left: 0;
-  background: var(--accent-bg);
-  border: 1px solid var(--accent);
-  color: var(--accent-strong);
-  border-radius: 999px;
-  padding: 0.15em 0.6em;
-  font-size: 0.75em;
-  font-weight: 600;
-  z-index: 2;
-}
-
 .attr-diagram {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  max-width: 260px;
+  aspect-ratio: 1036 / 1044;
+  margin: 0.5em auto;
 }
 
 .attr-diagram img {
@@ -335,4 +385,15 @@ code, .counter {
 
 .attr-value-badge:hover {
   background: var(--accent-strong);
+}
+
+.attr-nex-badge {
+  top: 9.6%;
+  left: 21.2%;
+  font-size: 0.7em;
+  cursor: default;
+}
+
+.attr-nex-badge:hover {
+  background: var(--accent);
 }

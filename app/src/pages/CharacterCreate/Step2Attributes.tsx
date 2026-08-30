@@ -10,11 +10,11 @@ import presencaIcon from '../../assets/criacao/presenca-icon.png'
 import atributosDiagrama from '../../assets/criacao/atributos-diagrama.svg'
 
 const NODES: { key: keyof Attributes; top: string; left: string }[] = [
-  { key: 'agilidade', top: '13.1%', left: '48.7%' },
-  { key: 'intelecto', top: '37.6%', left: '74.7%' },
-  { key: 'vigor', top: '77.5%', left: '64.8%' },
-  { key: 'presenca', top: '77.5%', left: '32.6%' },
-  { key: 'forca', top: '37.6%', left: '22.6%' },
+  { key: 'agilidade', top: '16.5%', left: '48.7%' },
+  { key: 'intelecto', top: '40.5%', left: '75.3%' },
+  { key: 'vigor', top: '80.3%', left: '64.5%' },
+  { key: 'presenca', top: '80.3%', left: '33%' },
+  { key: 'forca', top: '40.5%', left: '23.3%' },
 ]
 
 const ABOUT = [

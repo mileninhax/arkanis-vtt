@@ -2011,6 +2011,54 @@ code, .counter {
   border-top: 1px dashed #000;
 }
 
+.origin-selected-info:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.origin-status-empty {
+  border: 2px dashed #a8384a;
+  color: #a8384a;
+  font-weight: 700;
+  padding: 0.7em 1em;
+  margin: 0;
+}
+
+.creation-paper-split {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  color: #000;
+  font-family: 'Secret Service Typewriter', 'Courier New', ui-monospace, monospace;
+  font-size: clamp(0.6rem, 1.7vh, 1.3rem);
+}
+
+.origin-status-panel,
+.origin-list-panel {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 2px;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.45);
+  padding: 1em 1.4em;
+  overflow: hidden;
+}
+
+.origin-status-panel {
+  flex: 0 0 auto;
+}
+
+.origin-list-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .origin-tabs {
   display: flex;
   flex-wrap: wrap;

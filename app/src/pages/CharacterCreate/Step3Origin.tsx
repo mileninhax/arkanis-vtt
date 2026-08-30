@@ -5,6 +5,8 @@ import type { CharacterDraft, CustomOrigin } from './types'
 import CreationLetterhead from './CreationLetterhead'
 import stepArrow from '../../assets/criacao/step-arrow.svg'
 import papelTextura from '../../assets/criacao/papel-textura.png'
+import papelTexturaClara from '../../assets/criacao/papel-textura-clara.png'
+import papelTexturaMarrom from '../../assets/criacao/papel-textura-marrom.png'
 
 type Tab = 'ordem_paranormal' | 'sobrevivendo_ao_horror' | 'arquivos_secretos' | 'custom'
 
@@ -43,6 +45,8 @@ export default function Step3Origin({
   const [skills, setSkills] = useState<Skill[]>([])
   const [loading, setLoading] = useState(false)
   const paperStyle = { backgroundImage: `url(${papelTextura})` }
+  const claraStyle = { backgroundImage: `url(${papelTexturaClara})` }
+  const marromStyle = { backgroundImage: `url(${papelTexturaMarrom})` }
 
   useEffect(() => {
     getSkills().then(setSkills)
@@ -60,6 +64,9 @@ export default function Step3Origin({
 
   const selected = origins.find((o) => o.id === draft.originId)
   const selectedName = draft.customOrigin ? draft.customOrigin.name : selected?.name
+  const customSkillsText = draft.customOrigin
+    ? [skills.find((s) => s.id === draft.customOrigin?.skill1Id)?.name, skills.find((s) => s.id === draft.customOrigin?.skill2Id)?.name].filter(Boolean).join(' e ')
+    : ''
 
   function selectOrigin(origin: Origin) {
     onChange({ originId: origin.id, customOrigin: null })
@@ -79,7 +86,7 @@ export default function Step3Origin({
         <div className="creation-paper creation-paper-tilt-l" style={paperStyle}>
           <CreationLetterhead docNumber={draft.docNumber} />
 
-          <div className="creation-section-title">Origem selecionada: {selectedName || 'nenhuma'}</div>
+          <div className="creation-section-title">Origem</div>
 
           <p>O que você fazia antes de se envolver com o paranormal e ingressar na Ordem da Realidade? A origem representa como a vida pregressa influencia sua carreira de investigador.</p>
 
@@ -87,80 +94,102 @@ export default function Step3Origin({
 
           <p>Cada origem apresentada a seguir é intencionalmente vaga, apenas uma ideia por onde começar. Você pode usá-la como está, para jogar rapidamente, ou colorir com quantos detalhes quiser, conforme o conceito de seu agente.</p>
           <p>Perícias concedidas serão adicionadas automaticamente. Perícias opcionais podem ser adicionadas ao agente após sua criação.</p>
-
-          {selected && (
-            <div className="origin-selected-info">
-              <p>
-                <strong>Perícias:</strong> {selected.skills_text ?? [skills.find((s) => s.id === selected.skill_1_id)?.name, skills.find((s) => s.id === selected.skill_2_id)?.name].filter(Boolean).join(' e ')}
-              </p>
-              <p><strong>{selected.power_name}:</strong> {selected.power_description}</p>
-              {selected.description && <p>{selected.description}</p>}
-            </div>
-          )}
         </div>
       </div>
 
       <div className="creation-paper-slot">
-        <div className="creation-paper-shadow" style={paperStyle} />
-        <div className="creation-paper creation-paper-tilt-r" style={paperStyle}>
-          <nav className="origin-tabs">
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                className={`origin-tab${tab === t.key ? ' active' : ''}`}
-                onClick={() => setTab(t.key)}
-              >
-                {t.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="origin-content">
-            {tab === 'custom' ? (
-              <div className="origin-form">
-                <label className="creation-field-block">
-                  Nome da Origem
-                  <input value={draft.customOrigin?.name ?? ''} onChange={(e) => updateCustom({ name: e.target.value })} placeholder="Nome da Origem." />
-                </label>
-
-                <div className="creation-section-title">Perícias Treinadas</div>
-                <div className="origin-form-row">
-                  <select className="origin-select-box" value={draft.customOrigin?.skill1Id ?? ''} onChange={(e) => updateCustom({ skill1Id: e.target.value || null })}>
-                    <option value="">Nenhuma</option>
-                    {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                  </select>
-                  <select className="origin-select-box" value={draft.customOrigin?.skill2Id ?? ''} onChange={(e) => updateCustom({ skill2Id: e.target.value || null })}>
-                    <option value="">Nenhuma</option>
-                    {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                  </select>
-                </div>
-
-                <div className="creation-section-title">Poder de Origem</div>
-                <label className="creation-field-block">
-                  Nome do poder
-                  <input value={draft.customOrigin?.powerName ?? ''} onChange={(e) => updateCustom({ powerName: e.target.value })} placeholder="Nome do poder." />
-                </label>
-                <label className="creation-field-block">
-                  Descrição
-                  <textarea value={draft.customOrigin?.powerDescription ?? ''} onChange={(e) => updateCustom({ powerDescription: e.target.value })} placeholder="Descrição aqui." />
-                </label>
-              </div>
-            ) : loading ? (
-              <p>Carregando…</p>
-            ) : origins.length === 0 ? (
-              <p>Sem origens cadastradas ainda pra essa fonte.</p>
+        <div className="creation-paper-shadow" style={marromStyle} />
+        <div className="creation-paper-split creation-paper-tilt-r">
+          <div className="origin-status-panel" style={claraStyle}>
+            {selectedName ? (
+              <>
+                <div className="creation-section-title">Origem selecionada: {selectedName}</div>
+                {selected && (
+                  <div className="origin-selected-info">
+                    <p>
+                      <strong>Perícias:</strong> {selected.skills_text ?? [skills.find((s) => s.id === selected.skill_1_id)?.name, skills.find((s) => s.id === selected.skill_2_id)?.name].filter(Boolean).join(' e ')}
+                    </p>
+                    <p><strong>{selected.power_name}:</strong> {selected.power_description}</p>
+                    {selected.description && <p>{selected.description}</p>}
+                  </div>
+                )}
+                {draft.customOrigin && (
+                  <div className="origin-selected-info">
+                    {customSkillsText && <p><strong>Perícias:</strong> {customSkillsText}</p>}
+                    {draft.customOrigin.powerName && (
+                      <p><strong>{draft.customOrigin.powerName}:</strong> {draft.customOrigin.powerDescription}</p>
+                    )}
+                  </div>
+                )}
+              </>
             ) : (
-              <ul className="origin-list">
-                {origins.map((o) => (
-                  <li key={o.id}>
-                    <button type="button" className={draft.originId === o.id ? 'active' : ''} onClick={() => selectOrigin(o)}>
-                      {o.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <div className="creation-section-title">[Origem não selecionada]</div>
+                <p className="origin-status-empty">Selecione uma origem abaixo, ou crie a sua na aba "Sua Origem".</p>
+              </>
             )}
+          </div>
+
+          <div className="origin-list-panel" style={marromStyle}>
+            <nav className="origin-tabs">
+              {TABS.map((t) => (
+                <button
+                  key={t.key}
+                  type="button"
+                  className={`origin-tab${tab === t.key ? ' active' : ''}`}
+                  onClick={() => setTab(t.key)}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+
+            <div className="origin-content">
+              {tab === 'custom' ? (
+                <div className="origin-form">
+                  <label className="creation-field-block">
+                    Nome da Origem
+                    <input value={draft.customOrigin?.name ?? ''} onChange={(e) => updateCustom({ name: e.target.value })} placeholder="Nome da Origem." />
+                  </label>
+
+                  <div className="creation-section-title">Perícias Treinadas</div>
+                  <div className="origin-form-row">
+                    <select className="origin-select-box" value={draft.customOrigin?.skill1Id ?? ''} onChange={(e) => updateCustom({ skill1Id: e.target.value || null })}>
+                      <option value="">Nenhuma</option>
+                      {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+                    </select>
+                    <select className="origin-select-box" value={draft.customOrigin?.skill2Id ?? ''} onChange={(e) => updateCustom({ skill2Id: e.target.value || null })}>
+                      <option value="">Nenhuma</option>
+                      {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="creation-section-title">Poder de Origem</div>
+                  <label className="creation-field-block">
+                    Nome do poder
+                    <input value={draft.customOrigin?.powerName ?? ''} onChange={(e) => updateCustom({ powerName: e.target.value })} placeholder="Nome do poder." />
+                  </label>
+                  <label className="creation-field-block">
+                    Descrição
+                    <textarea value={draft.customOrigin?.powerDescription ?? ''} onChange={(e) => updateCustom({ powerDescription: e.target.value })} placeholder="Descrição aqui." />
+                  </label>
+                </div>
+              ) : loading ? (
+                <p>Carregando…</p>
+              ) : origins.length === 0 ? (
+                <p>Sem origens cadastradas ainda pra essa fonte.</p>
+              ) : (
+                <ul className="origin-list">
+                  {origins.map((o) => (
+                    <li key={o.id}>
+                      <button type="button" className={draft.originId === o.id ? 'active' : ''} onClick={() => selectOrigin(o)}>
+                        {o.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
       </div>

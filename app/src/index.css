@@ -1750,6 +1750,7 @@ code, .counter {
   display: inline-block;
   padding-bottom: 0.2em;
   margin-bottom: 0.7em;
+  font-size: 1.7em;
 }
 
 .creation-crest-box {
@@ -1806,7 +1807,7 @@ code, .counter {
 
 .creation-underline {
   text-decoration: underline;
-  font-size: 0.85em;
+  font-size: 1.15em;
   margin-bottom: 0.2em !important;
 }
 
@@ -1948,8 +1949,8 @@ code, .counter {
 }
 
 .attr-node-circle {
-  width: 2.6em;
-  height: 2.6em;
+  width: 3.4em;
+  height: 3.4em;
   border-radius: 50%;
   background: #e8dcc0;
   border: 2px solid #000;
@@ -1982,12 +1983,12 @@ code, .counter {
 
 .attr-node-abbr {
   font-weight: 700;
-  font-size: 1.1em;
+  font-size: 1.6em;
   border-bottom: 1px dashed #000;
 }
 
 .attr-node-name {
-  font-size: 0.75em;
+  font-size: 1.05em;
 }
 
 .attr-node-controls {
@@ -2031,8 +2032,8 @@ code, .counter {
 }
 
 .attr-about-icon {
-  width: 2.4em;
-  height: 2.4em;
+  width: 3.6em;
+  height: 3.6em;
   object-fit: contain;
   flex-shrink: 0;
   margin-top: 0.1em;

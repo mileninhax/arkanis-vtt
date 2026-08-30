@@ -458,6 +458,78 @@ code, .counter {
   justify-content: center;
 }
 
+/* ---- Auth (login/cadastro) ---- */
+
+.auth-form {
+  background: rgba(10, 9, 14, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 2em 2.4em;
+  max-width: 26em;
+  width: 100%;
+  text-align: center;
+}
+
+.auth-form-logo {
+  width: 64px;
+  height: auto;
+  margin: 0 auto 0.6em;
+  display: block;
+}
+
+.auth-form h2 {
+  margin-bottom: 1em;
+}
+
+.auth-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  margin-bottom: 1em;
+  text-align: left;
+}
+
+.auth-form .editperfil-field input {
+  width: 100%;
+}
+
+.auth-form-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.4em;
+}
+
+.auth-form-alert {
+  color: var(--danger);
+  font-size: 0.9em;
+}
+
+.auth-form-toggle {
+  background: none;
+  border: none;
+  color: var(--accent-strong);
+  font-size: 0.9em;
+  margin: 0.8em auto 0;
+  display: block;
+}
+
+.auth-form-oauth {
+  margin-top: 1em;
+  border-top: 1px solid var(--border);
+  padding-top: 1em;
+}
+
+.auth-form-oauth p {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  margin-bottom: 0.6em;
+}
+
+.auth-form-oauth .character-list-actions {
+  justify-content: center;
+}
+
 /* ---- Perfil ---- */
 
 .profile-page {

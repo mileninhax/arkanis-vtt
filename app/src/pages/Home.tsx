@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
+import AuthForm from '../components/AuthForm'
 import bgHome from '../assets/backgrounds/bg-home.png'
 import arkanisLogo from '../assets/icons/arkanis-logo.png'
 
 export default function Home() {
   const { session, loading } = useAuth()
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null)
 
   return (
     <main className="font-ashigea home-hero">
@@ -23,11 +26,24 @@ export default function Home() {
                 <Link to="/personagem/criar" className="btn-pill btn-pill-neutral">Criar Personagem</Link>
               </div>
             ) : (
-              <Link to="/login" className="btn-pill">Crie já a sua conta</Link>
+              <>
+                <div className="character-list-actions">
+                  <button type="button" className="btn-pill" onClick={() => setAuthMode('signup')}>Crie já a sua conta</button>
+                </div>
+                <button type="button" className="auth-form-toggle" onClick={() => setAuthMode('login')}>Já tem conta? Entrar</button>
+              </>
             )
           )}
         </div>
       </div>
+
+      {authMode && (
+        <div className="modal-backdrop" onClick={() => setAuthMode(null)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <AuthForm initialMode={authMode} onDone={() => setAuthMode(null)} />
+          </div>
+        </div>
+      )}
     </main>
   )
 }

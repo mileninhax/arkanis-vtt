@@ -445,11 +445,12 @@ code, .counter {
 
 .home-hero-content h1 {
   font-size: 3em;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.5em;
 }
 
 .home-hero-content p {
   color: var(--text);
+  margin-top: 0.6em;
   margin-bottom: 1.4em;
 }
 

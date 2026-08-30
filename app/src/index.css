@@ -1994,3 +1994,130 @@ code, .counter {
   font-size: 1.5em;
   line-height: 1.4;
 }
+
+/* ---- Criação: Origem ---- */
+
+.creation-stencil {
+  background: #000;
+  color: #e8dcc0;
+  font-weight: 700;
+  padding: 0.6em 0.8em;
+  margin-bottom: 0.9em;
+}
+
+.origin-selected-info {
+  margin-top: 0.9em;
+  padding-top: 0.9em;
+  border-top: 1px dashed #000;
+}
+
+.origin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
+  flex-shrink: 0;
+}
+
+.origin-tab {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 999px;
+  padding: 0.4em 1em;
+  font-family: inherit;
+  font-size: 0.95em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.origin-tab.active {
+  background: #fff;
+  border: 2px solid #a8384a;
+  color: #000;
+  font-weight: 700;
+}
+
+.origin-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.creation-field-block {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.9em;
+}
+
+.creation-field-block input,
+.creation-field-block textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.4em;
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-family: inherit;
+  font-weight: 400;
+  padding: 0.5em 0.7em;
+  color: #000;
+}
+
+.creation-field-block textarea {
+  min-height: 4em;
+  resize: vertical;
+}
+
+.creation-field-block input::placeholder,
+.creation-field-block textarea::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.origin-form-row {
+  display: flex;
+  gap: 0.8em;
+  margin-bottom: 0.9em;
+}
+
+.origin-select-box {
+  flex: 1 1 0;
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-family: inherit;
+  padding: 0.5em 0.7em;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.origin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.origin-list li + li {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.origin-list button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.6em 0.2em;
+  font-family: inherit;
+  font-size: 1.05em;
+  color: #000;
+}
+
+.origin-list button:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.origin-list button.active {
+  font-weight: 700;
+  color: #a8384a;
+}

@@ -167,8 +167,13 @@ export default function InventarioTab({ character }: { character: CharacterRecor
     const linkedAmmo = inv.linked_ammo_id ? items.find((i) => i.id === inv.linked_ammo_id) : null
     for (const mod of linkedAmmo?.applied_modifiers ?? []) {
       if (mod.name === 'Dum Dum') finalMultiplier += 1
-      if (mod.name === 'Explosiva') damage.push({ formula: '2d6', tipo: '' })
+      if (mod.name === 'Explosiva') damage.push({ formula: '2d6', tipo: 'explosão adicional' })
     }
+
+    const modificadores = [
+      ...(inv.applied_modifiers ?? []).map((m) => ({ ...m, origem: 'Arma' as const })),
+      ...(linkedAmmo?.applied_modifiers ?? []).map((m) => ({ ...m, origem: 'Munição' as const })),
+    ]
 
     await supabase.from('character_attacks').insert({
       character_id: character.id,
@@ -177,7 +182,14 @@ export default function InventarioTab({ character }: { character: CharacterRecor
       threat_margin: finalThreatMargin,
       multiplier: finalMultiplier,
       damage,
-      general_info: { tipo: stats.natureza, empunhadura: stats.empunhadura, alcance: stats.alcance, tipo_municao: stats.tipo_municao, municao: linkedAmmo?.equipment_items?.name ?? linkedAmmo?.custom_item?.name ?? null },
+      general_info: {
+        tipo: stats.natureza,
+        empunhadura: stats.empunhadura,
+        alcance: stats.alcance,
+        tipo_municao: stats.tipo_municao,
+        municao: linkedAmmo?.equipment_items?.name ?? linkedAmmo?.custom_item?.name ?? null,
+        modificadores,
+      },
       from_inventory_item_id: inv.id,
     })
   }

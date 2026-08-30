@@ -14,6 +14,14 @@ type Attack = {
   threat_margin: number
   multiplier: number
   damage: { formula: string; tipo: string }[]
+  general_info: {
+    tipo?: string
+    empunhadura?: string
+    alcance?: string
+    tipo_municao?: string
+    municao?: string | null
+    modificadores?: { kind: 'modificacao' | 'maldicao'; name: string; effect: string; elemento: string | null; origem: 'Arma' | 'Munição' }[]
+  } | null
 }
 
 type Skill = { id: string; name: string }
@@ -36,7 +44,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   async function loadAttacks() {
     const { data } = await supabase
       .from('character_attacks')
-      .select('id, name, skill_id, attribute, d20_bonus, threat_margin, multiplier, damage')
+      .select('id, name, skill_id, attribute, d20_bonus, threat_margin, multiplier, damage, general_info')
       .eq('character_id', character.id)
     setAttacks((data ?? []) as unknown as Attack[])
   }
@@ -111,7 +119,15 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ' — CRÍTICO' : ''}`, rolls: rolled.rolls, modifier: rolled.modifier + damageValueBonus, total: rolled.total + damageValueBonus }
     })
 
-    setRoll({ label: `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`, rolls, kept, bonus, damage })
+    setRoll({
+      label: `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`,
+      rolls,
+      kept,
+      bonus,
+      damage,
+      municao: attack.general_info?.municao ?? null,
+      modificadores: attack.general_info?.modificadores ?? [],
+    })
   }
 
   const agilidade = character.attributes.agilidade
@@ -161,7 +177,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         <ul>
           {attacks.map((a) => (
             <li key={a.id}>
-              {a.name} — {attrValue(character.attributes, a.attribute)}d20 / {a.damage.map((d) => `${d.formula} ${d.tipo}`).join(', ') || 'sem dano definido'} / x{a.multiplier}
+              {a.name}{a.general_info?.municao ? ` (${a.general_info.municao})` : ''} — {attrValue(character.attributes, a.attribute)}d20 / {a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || 'sem dano definido'} / x{a.multiplier}
               <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
               <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
             </li>

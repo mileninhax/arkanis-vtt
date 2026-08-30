@@ -9,7 +9,7 @@ values
 (
   (select id from sources where slug = 'arquivos_secretos_01'), 'Ferido por Ritual',
   (select id from skills where name = 'Ocultismo'), null, 'Ocultismo + 1 perícia definida pelo elemento (Fortitude/Sangue, Vontade/Morte ou Conhecimento, Reflexos/Energia)',
-  'Mácula Ritualística', 'Aprende e conjura um ritual de 1º círculo do elemento escolhido (marca da entidade); 1x/cena conjura sem pagar PE (efeitos adicionais ainda custam PE); não conta no limite de rituais conhecidos; mas -◯ em testes de resistência contra efeitos desse elemento.',
+  'Mácula Ritualística', 'Aprende e conjura um ritual de 1º círculo do elemento escolhido (marca da entidade); 1x/cena conjura sem pagar PE (efeitos adicionais ainda custam PE); não conta no limite de rituais conhecidos; mas -1d20 em testes de resistência contra efeitos desse elemento.',
   'Vida ordinária interrompida pelos efeitos paranormais de um ritual (escolhe elemento: Sangue, Morte, Conhecimento ou Energia).', 1
 ),
 (

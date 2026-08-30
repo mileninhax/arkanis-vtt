@@ -68,7 +68,7 @@ from (values
    'Explorador espacial acostumado à pressão de ser responsável por vidas e experimentos caros; foi no espaço que descobriu que não estamos sozinhos.', 2),
 
   ('Chef do Outro Lado', 'Ocultismo', null, 'Ocultismo e Profissão (cozinheiro)',
-   'Fome do Outro Lado', 'No início de cada missão, pode obter partes de criaturas derrotadas como ingredientes (item categoria I, 0,5 espaço; cada criatura Pequena+ dá 1 ingrediente). Ação de interlúdio + 1 ingrediente + Profissão (cozinheiro) DT 15+◯ prepara um prato: se passar, dá RD 10 contra o tipo de dano do elemento da criatura até o fim da próxima cena; se falhar, dá vulnerabilidade a esse dano. Cada refeição consumida custa 1 Sanidade permanente (e +3% NEX se usando a regra opcional de Experiência).',
+   'Fome do Outro Lado', 'No início de cada missão, pode obter partes de criaturas derrotadas como ingredientes (item categoria I, 0,5 espaço; cada criatura Pequena+ dá 1 ingrediente). Ação de interlúdio + 1 ingrediente + Profissão (cozinheiro) DT 15 +1d20 prepara um prato: se passar, dá RD 10 contra o tipo de dano do elemento da criatura até o fim da próxima cena; se falhar, dá vulnerabilidade a esse dano. Cada refeição consumida custa 1 Sanidade permanente (e +3% NEX se usando a regra opcional de Experiência).',
    'Descobriu o tabu de cozinhar e ingerir entidades do Outro Lado; acredita ser uma arte gastronômica esotérica.', 3),
 
   ('Colegial', 'Atualidades', 'Tecnologia', null,
@@ -88,7 +88,7 @@ from (values
    'Interessado em história/geografia, corpo endurecido por trilhas e expedições.', 7),
 
   ('Experimento', 'Atletismo', 'Fortitude', null,
-   'Mutação', 'Resistência a dano 2, +2 numa perícia baseada em Força/Agilidade/Vigor à escolha; mas -◯ em Diplomacia.',
+   'Mutação', 'Resistência a dano 2, +2 numa perícia baseada em Força/Agilidade/Vigor à escolha; mas -1d20 em Diplomacia.',
    'Cobaia (voluntária ou não) de experimentos físicos/científicos/paranormais, com alterações permanentes no corpo.', 8),
 
   ('Fanático por Criaturas', 'Investigação', 'Ocultismo', null,

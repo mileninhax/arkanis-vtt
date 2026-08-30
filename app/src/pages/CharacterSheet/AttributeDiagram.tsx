@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Attributes, AttributeKey } from '../../lib/rules'
 import attributesDiagram from '../../assets/attributes-diagram.png'
 
@@ -22,17 +23,37 @@ export default function AttributeDiagram({
   onRoll: (key: AttributeKey, abbr: string) => void
   onNexChange: (value: number) => void
 }) {
+  const [nexOpen, setNexOpen] = useState(false)
+
   return (
     <div className="attr-diagram">
       <img src={attributesDiagram} alt="Atributos" />
-      <select
+      <button
+        type="button"
         className="attr-value-badge attr-nex-badge"
-        value={nexPercent}
-        onChange={(e) => onNexChange(Number(e.target.value))}
+        onClick={() => setNexOpen((v) => !v)}
         aria-label="NEX"
       >
-        {NEX_OPTIONS.map((n) => <option key={n} value={n}>{n}%</option>)}
-      </select>
+        {nexPercent}%
+      </button>
+      {nexOpen && (
+        <>
+          <div className="nex-dropdown-backdrop" onClick={() => setNexOpen(false)} />
+          <ul className="nex-dropdown">
+            {NEX_OPTIONS.map((n) => (
+              <li key={n}>
+                <button
+                  type="button"
+                  className={n === nexPercent ? 'active' : undefined}
+                  onClick={() => { onNexChange(n); setNexOpen(false) }}
+                >
+                  {n}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
       {ATTRS.map(({ key, abbr, top, left }) => (
         <button
           key={key}

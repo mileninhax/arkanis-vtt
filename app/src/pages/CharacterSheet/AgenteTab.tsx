@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
+import { recordRoll } from '../../lib/rollHistory'
 import { attrValue, computeDerivedStats, computePatentePd, rollAttributeTest, trainingBonus, type AttributeKey, type Training } from '../../lib/rules'
 import type { CharacterRecord } from './index'
 import RollResult, { type RollResultData } from './RollResult'
@@ -39,6 +41,7 @@ const ATTR_LABELS: { key: AttributeKey; abbr: string }[] = [
 ]
 
 export default function AgenteTab({ character, onUpdated, editMode }: { character: CharacterRecord; onUpdated: () => void; editMode: boolean }) {
+  const { session } = useAuth()
   const [classRow, setClassRow] = useState<ClassRow | null>(null)
   const [skills, setSkills] = useState<SkillRow[]>([])
   const [charSkills, setCharSkills] = useState<Record<string, CharacterSkillRow>>({})
@@ -101,7 +104,14 @@ export default function AgenteTab({ character, onUpdated, editMode }: { characte
   function rollAttribute(key: AttributeKey, abbr: string) {
     const score = character.attributes[key]
     const { rolls, kept } = rollAttributeTest(score)
-    setRoll({ label: `Teste de ${abbr}`, rolls, kept, bonus: 0 })
+    const label = `Teste de ${abbr}`
+    setRoll({ label, rolls, kept, bonus: 0 })
+    if (session) {
+      recordRoll({
+        characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+        label, total: kept, detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')})`,
+      })
+    }
   }
 
   async function setSkillField(skillId: string, patch: Partial<CharacterSkillRow>) {
@@ -135,7 +145,14 @@ function cycleTraining(current: Training): Training {
     const score = attrValue(character.attributes, attr) + testDiceBonus
     const { rolls, kept } = rollAttributeTest(score)
     const bonus = trainingBonus(cs.training) + cs.extra_bonus + testValueBonus
-    setRoll({ label: `Teste de ${skill.name}`, rolls, kept, bonus })
+    const label = `Teste de ${skill.name}`
+    setRoll({ label, rolls, kept, bonus })
+    if (session) {
+      recordRoll({
+        characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+        label, total: kept + bonus, detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}`,
+      })
+    }
   }
 
   const visibleSkills = skills.filter((s) => {

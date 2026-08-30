@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/AuthContext'
+import { recordRoll } from '../../lib/rollHistory'
 import { attrValue, rollAttributeTest, rollDiceFormula, trainingBonus, type AttributeKey, type Training } from '../../lib/rules'
 import type { CharacterRecord } from './index'
 import RollResult, { type RollResultData } from './RollResult'
@@ -32,6 +34,7 @@ const ATTRS: AttributeKey[] = ['forca', 'agilidade', 'intelecto', 'vigor', 'pres
 const emptyForm = { name: '', skillId: '', attribute: 'forca' as AttributeKey, d20Bonus: 0, threatMargin: 20, multiplier: 2, damage: '', damageType: '' }
 
 export default function CombateTab({ character }: { character: CharacterRecord }) {
+  const { session } = useAuth()
   const [attacks, setAttacks] = useState<Attack[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
   const [charSkillBonus, setCharSkillBonus] = useState<Record<string, number>>({})
@@ -120,8 +123,9 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ' — CRÍTICO' : ''}`, rolls: rolled.rolls, modifier: rolled.modifier + damageValueBonus, total: rolled.total + damageValueBonus }
     })
 
+    const label = `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`
     setRoll({
-      label: `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`,
+      label,
       rolls,
       kept,
       bonus,
@@ -129,6 +133,16 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       municao: attack.general_info?.municao ?? null,
       modificadores: attack.general_info?.modificadores ?? [],
     })
+
+    if (session) {
+      const damageText = damage.map((d) => d.manualFormula !== undefined ? `${d.label}: manual (${d.manualFormula})` : `${d.label}: ${d.total}`).join(' · ')
+      recordRoll({
+        characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+        label,
+        total: kept + bonus,
+        detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}${damageText ? ` — ${damageText}` : ''}`,
+      })
+    }
   }
 
   const agilidade = character.attributes.agilidade

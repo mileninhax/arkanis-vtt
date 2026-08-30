@@ -10,9 +10,11 @@ import AfinidadeTab from './AfinidadeTab'
 import InterludioTab from './InterludioTab'
 import RegrasExtrasTab from './RegrasExtrasTab'
 import ConfiguracoesPanel from './ConfiguracoesPanel'
+import HistoricoRolagens from './HistoricoRolagens'
 
 export type CharacterRecord = {
   id: string
+  campaign_id: string | null
   name: string
   doc_number: string
   attributes: Attributes
@@ -65,6 +67,7 @@ export default function CharacterSheet() {
   const [showDice, setShowDice] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [showConfig, setShowConfig] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -111,9 +114,10 @@ export default function CharacterSheet() {
         <button type="button" onClick={() => setShowDice((v) => !v)}>Dados</button>
         <button type="button" onClick={() => setEditMode((v) => !v)}>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</button>
         <button type="button" aria-label="Configurações" onClick={() => setShowConfig((v) => !v)}>⚙</button>
+        <button type="button" aria-label="Histórico de Rolagens" onClick={() => setShowHistory((v) => !v)}>📖🕓</button>
       </header>
 
-      {showDice && <DiceRoller onClose={() => setShowDice(false)} />}
+      {showDice && <DiceRoller character={character} onClose={() => setShowDice(false)} />}
       {showConfig && (
         <ConfiguracoesPanel
           character={character}
@@ -121,6 +125,7 @@ export default function CharacterSheet() {
           onClose={() => setShowConfig(false)}
         />
       )}
+      {showHistory && <HistoricoRolagens character={character} onClose={() => setShowHistory(false)} />}
 
       <nav>
         {TABS.map((t) => (

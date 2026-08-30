@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useAuth } from '../../lib/AuthContext'
+import { recordRoll } from '../../lib/rollHistory'
+import type { CharacterRecord } from './index'
 
 const DICE = [4, 6, 8, 10, 12, 20]
 
@@ -26,10 +29,19 @@ function parseManual(input: string): { terms: Term[]; modifier: number } | null 
   return { terms, modifier }
 }
 
-export default function DiceRoller({ onClose }: { onClose: () => void }) {
+export default function DiceRoller({ character, onClose }: { character: CharacterRecord; onClose: () => void }) {
+  const { session } = useAuth()
   const [selected, setSelected] = useState<Record<number, number>>({})
   const [manual, setManual] = useState('')
   const [result, setResult] = useState<{ total: number; detail: { sides: number; value: number }[] } | null>(null)
+
+  function persist(label: string, total: number, detail: { sides: number; value: number }[]) {
+    if (!session) return
+    recordRoll({
+      characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+      label, total, detail: detail.map((d) => `d${d.sides}: ${d.value}`).join(' · '),
+    })
+  }
 
   function addDie(sides: number) {
     setSelected((s) => ({ ...s, [sides]: (s[sides] ?? 0) + 1 }))
@@ -43,6 +55,7 @@ export default function DiceRoller({ onClose }: { onClose: () => void }) {
     }
     const total = detail.reduce((sum, d) => sum + d.value, 0)
     setResult({ total, detail })
+    persist('Rolagem manual', total, detail)
   }
 
   function rollManual() {
@@ -60,6 +73,7 @@ export default function DiceRoller({ onClose }: { onClose: () => void }) {
       }
     }
     setResult({ total, detail })
+    persist(`Rolagem: ${manual}`, total, detail)
   }
 
   return (

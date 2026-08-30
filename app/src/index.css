@@ -7,6 +7,14 @@
 }
 
 @font-face {
+  font-family: 'Secret Service Typewriter';
+  src: url('./assets/fonts/SecretServiceTypewriter-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Poppins';
   src: url('./assets/fonts/Poppins-Regular.ttf') format('truetype');
   font-weight: 400;
@@ -1717,7 +1725,7 @@ code, .counter {
   background-size: cover;
   background-position: center;
   color: #000;
-  font-family: 'Courier New', ui-monospace, monospace;
+  font-family: 'Secret Service Typewriter', 'Courier New', ui-monospace, monospace;
   font-size: clamp(0.6rem, 1.7vh, 1.3rem);
   overflow: hidden;
   padding: 1.3em 1.8em;
@@ -1742,7 +1750,7 @@ code, .counter {
 }
 
 .creation-title {
-  font-family: 'Courier New', ui-monospace, monospace;
+  font-family: 'Secret Service Typewriter', 'Courier New', ui-monospace, monospace;
   color: #000;
   text-transform: uppercase;
   letter-spacing: 0.02em;

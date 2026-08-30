@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './lib/AuthContext'
 import ProtectedRoute from './lib/ProtectedRoute'
+import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Perfil from './pages/Perfil'
+import EditarPerfil from './pages/EditarPerfil'
 import Jogar from './pages/Jogar'
 import SystemSelect from './pages/SystemSelect'
 import CharacterCreate from './pages/CharacterCreate'
@@ -13,10 +15,12 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
+          <Route path="/perfil/editar" element={<ProtectedRoute><EditarPerfil /></ProtectedRoute>} />
           <Route path="/jogar" element={<ProtectedRoute><Jogar /></ProtectedRoute>} />
           <Route path="/personagem/criar" element={<ProtectedRoute><SystemSelect /></ProtectedRoute>} />
           <Route path="/personagem/criar/:system" element={<ProtectedRoute><CharacterCreate /></ProtectedRoute>} />

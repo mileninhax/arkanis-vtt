@@ -2,9 +2,7 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
-
-const ACCENT_SWATCHES = ['#b98ee9', '#f16a63', '#f562a3', '#3f8fe0', '#1fae8e', '#22b14c', '#e0b13a', '#eaeaea']
-const BACKGROUND_SWATCHES = ['#2e2050', '#6a1f1f', '#6a1f42', '#1f3f6a', '#1f5a4a', '#1f5a2f', '#5a4a1f', '#131118']
+import { hexToRgba } from '../lib/color'
 
 export default function EditarPerfil() {
   const { session } = useAuth()
@@ -116,8 +114,12 @@ export default function EditarPerfil() {
 
   if (loading) return null
 
+  const tint = hexToRgba(backgroundColor, 0.45)
+
   return (
-    <main className="page-shell font-ashigea">
+    <main className="page-shell font-ashigea" style={{ '--profile-tint': tint, '--vignette-color': backgroundColor } as React.CSSProperties}>
+      <div className="profile-vignette" />
+
       <h1>Editar Perfil</h1>
       {error && <p role="alert">{error}</p>}
 
@@ -146,9 +148,21 @@ export default function EditarPerfil() {
         </div>
 
         <div className="editperfil-row">
-          <p className="editperfil-row-label">Banner de Perfil</p>
-          <div className="editperfil-banner-preview">
-            {bannerUrl && <img src={bannerUrl} alt="" style={{ objectPosition: `center ${bannerPositionY}%` }} />}
+          <div>
+            <p className="editperfil-row-label">Banner de Perfil</p>
+            <p className="editperfil-hint">Segure e arraste dentro da prévia pra posicionar o banner.</p>
+          </div>
+          <div
+            ref={bannerBoxRef}
+            className="editperfil-banner-preview"
+            onPointerDown={handleBannerPointerDown}
+            onPointerMove={handleBannerPointerMove}
+            onPointerUp={handleBannerPointerUp}
+            onPointerLeave={handleBannerPointerUp}
+          >
+            {bannerUrl && (
+              <img src={bannerUrl} alt="" draggable={false} style={{ objectPosition: `center ${bannerPositionY}%` }} />
+            )}
             <input ref={bannerInputRef} type="file" accept="image/*" onChange={handleBannerChange} hidden />
             <button type="button" onClick={() => bannerInputRef.current?.click()}>Mudar Banner</button>
           </div>
@@ -158,67 +172,18 @@ export default function EditarPerfil() {
       <section className="editperfil-section">
         <div className="editperfil-row">
           <div>
-            <p className="editperfil-row-label">Mini card de Perfil</p>
-            <p className="editperfil-hint">
-              Segure e arraste para posicionar o banner. Outros usuários verão seu perfil na posição que escolher para o seu banner.
-            </p>
+            <p className="editperfil-row-label">Cor de Destaque</p>
+            <p className="editperfil-hint">Cor do seu nome no perfil.</p>
           </div>
-          <div
-            ref={bannerBoxRef}
-            className="editperfil-minicard"
-            style={{ backgroundColor }}
-            onPointerDown={handleBannerPointerDown}
-            onPointerMove={handleBannerPointerMove}
-            onPointerUp={handleBannerPointerUp}
-            onPointerLeave={handleBannerPointerUp}
-          >
-            {bannerUrl && (
-              <img
-                className="editperfil-minicard-banner"
-                src={bannerUrl}
-                alt=""
-                draggable={false}
-                style={{ objectPosition: `center ${bannerPositionY}%` }}
-              />
-            )}
-            <img className="editperfil-minicard-avatar" src={avatarUrl ?? undefined} alt="" />
-            <h3 style={{ color: accentColor }}>{displayName || 'Sem nome definido'}</h3>
-            {description && <p>{description}</p>}
-          </div>
-        </div>
-      </section>
-
-      <section className="editperfil-section">
-        <div className="editperfil-row">
-          <p className="editperfil-row-label">Cor de Destaque</p>
-          <div className="editperfil-swatch-row">
-            {ACCENT_SWATCHES.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`editperfil-swatch${accentColor === c ? ' active' : ''}`}
-                style={{ backgroundColor: c }}
-                onClick={() => setAccentColor(c)}
-                aria-label={c}
-              />
-            ))}
-          </div>
+          <input type="color" value={accentColor} onChange={(e) => setAccentColor(e.target.value)} />
         </div>
 
         <div className="editperfil-row">
-          <p className="editperfil-row-label">Cor de Fundo</p>
-          <div className="editperfil-swatch-row">
-            {BACKGROUND_SWATCHES.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`editperfil-swatch${backgroundColor === c ? ' active' : ''}`}
-                style={{ backgroundColor: c }}
-                onClick={() => setBackgroundColor(c)}
-                aria-label={c}
-              />
-            ))}
+          <div>
+            <p className="editperfil-row-label">Cor de Fundo</p>
+            <p className="editperfil-hint">Cor do fundo do seu perfil e das caixas da área de início.</p>
           </div>
+          <input type="color" value={backgroundColor} onChange={(e) => setBackgroundColor(e.target.value)} />
         </div>
       </section>
 

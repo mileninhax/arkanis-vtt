@@ -287,12 +287,17 @@ code, .counter {
 }
 
 .navbar {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   gap: 1.2em;
+  margin: 1em 1.5em 0;
   padding: 0.6em 1.2em;
   background: var(--bg-panel);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .navbar a {
@@ -319,9 +324,29 @@ code, .counter {
 }
 
 .page-shell {
+  position: relative;
+  isolation: isolate;
   max-width: 900px;
   margin: 0 auto;
   padding: 1.2em;
+}
+
+.page-shell > *:not(.profile-vignette),
+.profile-page > *:not(.profile-vignette) {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 0% 0%, var(--vignette-color, transparent) 0%, transparent 45%),
+    radial-gradient(circle at 100% 0%, var(--vignette-color, transparent) 0%, transparent 45%),
+    radial-gradient(circle at 0% 100%, var(--vignette-color, transparent) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, var(--vignette-color, transparent) 0%, transparent 45%),
+    var(--bg);
 }
 
 .page-shell img[alt='Avatar'] {
@@ -340,6 +365,8 @@ code, .counter {
 /* ---- Perfil ---- */
 
 .profile-page {
+  position: relative;
+  isolation: isolate;
   padding: 1.2em 2em 2em;
 }
 
@@ -404,7 +431,7 @@ code, .counter {
 
 .profile-characters {
   flex: 1 1 480px;
-  background: var(--bg-panel);
+  background: var(--profile-tint, var(--bg-panel));
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1em 1.2em;
@@ -415,7 +442,7 @@ code, .counter {
   display: flex;
   flex-direction: column;
   gap: 0.3em;
-  background: var(--bg-panel);
+  background: var(--profile-tint, var(--bg-panel));
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.6em;
@@ -460,7 +487,7 @@ code, .counter {
 .character-card {
   display: flex;
   gap: 0.8em;
-  background: var(--bg-card);
+  background: var(--profile-tint, var(--bg-card));
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.7em 0.9em;
@@ -510,7 +537,7 @@ code, .counter {
 /* ---- Editar Perfil ---- */
 
 .editperfil-section {
-  background: var(--bg-panel);
+  background: var(--profile-tint, var(--bg-panel));
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1em 1.2em;
@@ -584,6 +611,8 @@ code, .counter {
   align-items: flex-end;
   justify-content: flex-start;
   padding: 0.5em;
+  cursor: ns-resize;
+  user-select: none;
 }
 
 .editperfil-banner-preview img {
@@ -597,62 +626,6 @@ code, .counter {
 .editperfil-banner-preview button {
   position: relative;
   z-index: 1;
-}
-
-.editperfil-minicard {
-  position: relative;
-  width: 280px;
-  min-height: 220px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border-strong);
-  padding: 1.2em 1em;
-  cursor: ns-resize;
-  user-select: none;
-}
-
-.editperfil-minicard-banner {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.editperfil-minicard-avatar {
-  position: relative;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--bg-input);
-  border: 2px solid rgba(0, 0, 0, 0.4);
-  display: block;
-  margin: 0 auto 0.6em;
-}
-
-.editperfil-minicard h3,
-.editperfil-minicard p {
-  position: relative;
-  text-align: center;
-}
-
-.editperfil-swatch-row {
-  display: flex;
-  gap: 0.6em;
-  flex-wrap: wrap;
-}
-
-.editperfil-swatch {
-  width: 2em;
-  height: 2em;
-  border-radius: 50%;
-  padding: 0;
-  border: 2px solid transparent;
-}
-
-.editperfil-swatch.active {
-  border-color: var(--text-h);
 }
 
 .vtt-topbar {

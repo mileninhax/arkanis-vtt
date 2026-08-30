@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import MeusPersonagens from '../components/MeusPersonagens'
+import { hexToRgba } from '../lib/color'
 import settingsIcon from '../assets/icons/settings-icon.svg'
 import logoutIcon from '../assets/icons/log-out-icon.svg'
 
@@ -38,9 +39,12 @@ export default function Perfil() {
 
   const accent = profile?.accent_color || undefined
   const background = profile?.background_color || undefined
+  const tint = background ? hexToRgba(background, 0.45) : undefined
 
   return (
-    <main className="profile-page font-ashigea">
+    <main className="profile-page font-ashigea" style={{ '--profile-tint': tint, '--vignette-color': background } as React.CSSProperties}>
+      <div className="profile-vignette" />
+
       <div className="profile-banner" style={{ backgroundColor: background }}>
         {profile?.banner_url && (
           <img

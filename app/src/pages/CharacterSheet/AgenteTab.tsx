@@ -10,7 +10,18 @@ import RituaisTab from './RituaisTab'
 import InventarioTab from './InventarioTab'
 import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
-import AttributeHexDiagram from './AttributeHexDiagram'
+import AttributeDiagram from './AttributeDiagram'
+import pvEmpty from '../../assets/pv-empty.svg'
+import pvLow from '../../assets/pv-low.svg'
+import pvHalf from '../../assets/pv-half.svg'
+import pvFull from '../../assets/pv-full.svg'
+
+function pvIconFor(pct: number): string {
+  if (pct <= 0) return pvEmpty
+  if (pct <= 33) return pvLow
+  if (pct <= 66) return pvHalf
+  return pvFull
+}
 
 type ClassRow = {
   pv_initial: number | null; pv_initial_attr: string | null; pv_per_nex: number | null; pv_per_nex_attr: string | null
@@ -228,7 +239,7 @@ function cycleTraining(current: Training): Training {
               </div>
             </>
           ) : (
-            <AttributeHexDiagram attributes={character.attributes} nexPercent={character.nex_percent} onRoll={rollAttribute} />
+            <AttributeDiagram attributes={character.attributes} nexPercent={character.nex_percent} onRoll={rollAttribute} />
           )}
 
           {character.optional_rules.evolucao_patente && (
@@ -244,11 +255,13 @@ function cycleTraining(current: Training): Training {
         </div>
 
         <div className="vtt-card">
-          <div className="vtt-stat-bar">
-            <p>Vida: {character.current_pv ?? 0} / {maxPv} {character.temp_pv ? `(+${character.temp_pv} temp.)` : ''}</p>
-            <div className="vtt-stat-bar-track"><div className="vtt-stat-bar-fill pv" style={{ width: `${pct(character.current_pv ?? 0, maxPv)}%` }} /></div>
-            <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}>-1</button>
-            <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}>+1</button>
+          <div className="vtt-stat-bar vtt-stat-bar-icon">
+            <img src={pvIconFor(pct(character.current_pv ?? 0, maxPv))} alt="" className="vtt-stat-icon" />
+            <div>
+              <p>Vida: {character.current_pv ?? 0} / {maxPv} {character.temp_pv ? `(+${character.temp_pv} temp.)` : ''}</p>
+              <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}>-1</button>
+              <button type="button" onClick={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}>+1</button>
+            </div>
           </div>
 
           {character.optional_rules.sem_sanidade ? (

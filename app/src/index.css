@@ -216,6 +216,18 @@ code, .counter {
 }
 
 .vtt-stat-bar-fill.pv { background: var(--red); }
+
+.vtt-stat-bar-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.vtt-stat-icon {
+  width: 56px;
+  height: 66px;
+  flex-shrink: 0;
+}
 .vtt-stat-bar-fill.sanidade { background: var(--red); }
 .vtt-stat-bar-fill.esforco { background: var(--gold); }
 .vtt-stat-bar-fill.pd { background: var(--accent); }
@@ -269,9 +281,9 @@ code, .counter {
   text-transform: uppercase;
 }
 
-/* ---- Diagrama hexagonal de atributos (SVG) ---- */
+/* ---- Diagrama de atributos (imagem real fornecida por Millie) ---- */
 
-.hex-diagram-wrap {
+.attr-diagram-wrap {
   position: relative;
   width: 100%;
   max-width: 260px;
@@ -292,45 +304,35 @@ code, .counter {
   z-index: 2;
 }
 
-.hex-attr-poly {
-  fill: var(--bg-card);
-  stroke: var(--border-strong);
-  stroke-width: 2;
+.attr-diagram {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.attr-diagram img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.attr-value-badge {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  border: 2px solid white;
+  font-weight: 700;
+  font-size: 0.95em;
+  padding: 0;
   cursor: pointer;
 }
 
-.hex-attr-group:hover .hex-attr-poly {
-  fill: var(--accent-bg);
-  stroke: var(--accent);
-}
-
-.hex-attr-value {
-  fill: var(--text-h);
-  font-size: 22px;
-  font-weight: 700;
-  text-anchor: middle;
-  pointer-events: none;
-}
-
-.hex-attr-abbr {
-  fill: var(--text-dim);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  text-anchor: middle;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-.hex-center-circle {
-  fill: var(--bg-input);
-  stroke: var(--border);
-  stroke-width: 1;
-}
-
-.hex-center-label {
-  fill: var(--text-dim);
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  text-anchor: middle;
-  text-transform: uppercase;
+.attr-value-badge:hover {
+  background: var(--accent-strong);
 }

@@ -181,12 +181,21 @@ code, .counter {
 
 .font-ashigea {
   font-family: var(--poppins);
+  font-size: 1.15em;
 }
 
 .font-ashigea h1,
 .font-ashigea h2,
 .font-ashigea h3 {
   font-family: var(--ashigea);
+}
+
+.font-ashigea h1 {
+  font-size: 2.2em;
+}
+
+.font-ashigea h2 {
+  font-size: 1.5em;
 }
 
 /* ---- Componentes reutilizáveis da ficha ---- */
@@ -291,11 +300,11 @@ code, .counter {
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 1.2em;
+  gap: 1.6em;
   width: calc(100% - 3em);
   max-width: 1400px;
   margin: 1em auto 0;
-  padding: 0.6em 1.2em;
+  padding: 0.9em 1.6em;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -305,7 +314,7 @@ code, .counter {
 .navbar a {
   font-family: var(--heading);
   text-transform: uppercase;
-  font-size: 0.85em;
+  font-size: 1.05em;
   letter-spacing: 0.04em;
   color: var(--text-dim);
 }
@@ -320,6 +329,8 @@ code, .counter {
 }
 
 .navbar-avatar img {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
@@ -410,8 +421,8 @@ code, .counter {
 }
 
 .profile-avatar {
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   background: var(--bg-card);
@@ -504,9 +515,9 @@ code, .counter {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  padding: 0.45em 1em;
+  padding: 0.6em 1.3em;
   font-weight: 600;
-  font-size: 0.9em;
+  font-size: 1em;
   color: #131118;
   background: var(--accent);
 }
@@ -539,9 +550,9 @@ code, .counter {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  width: 190px;
-  height: 190px;
-  border-radius: 12px;
+  width: 260px;
+  height: 260px;
+  border-radius: 14px;
   overflow: hidden;
   background-size: cover;
   background-position: center;

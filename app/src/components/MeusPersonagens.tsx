@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import { fallbackAvatarColor } from '../lib/color'
+import arkanisLogo from '../assets/icons/arkanis-logo.png'
 
 type CharacterListItem = {
   id: string
@@ -120,6 +121,7 @@ export default function MeusPersonagens({ variant = 'perfil' }: { variant?: 'per
                 ? { backgroundImage: `url(${c.avatar_url})` }
                 : { backgroundColor: fallbackAvatarColor(c.id) }}
             >
+              {!c.avatar_url && <img className="character-tile-watermark" src={arkanisLogo} alt="" />}
               <CardMenu c={c} />
               <div className="character-tile-info">
                 <strong>{c.name || 'Sem nome'}</strong>
@@ -137,7 +139,7 @@ export default function MeusPersonagens({ variant = 'perfil' }: { variant?: 'per
                   <img className="character-card-avatar" src={c.avatar_url} alt="" />
                 ) : (
                   <div className="character-card-avatar character-card-avatar-fallback" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
-                    {(c.name || '?').charAt(0).toUpperCase()}
+                    <img src={arkanisLogo} alt="" />
                   </div>
                 )}
               </Link>

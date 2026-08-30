@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import { fallbackAvatarColor } from '../lib/color'
+import arkanisLogo from '../assets/icons/arkanis-logo.png'
 
 type CampaignItem = {
   id: string
@@ -18,7 +19,6 @@ export default function MinhasCampanhas() {
   const [showCreate, setShowCreate] = useState(false)
   const [newName, setNewName] = useState('')
   const [newDescription, setNewDescription] = useState('')
-  const [joinCode, setJoinCode] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [accentColor, setAccentColor] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState<string | null>(null)
@@ -62,20 +62,9 @@ export default function MinhasCampanhas() {
     loadCampaigns()
   }
 
-  async function handleJoin() {
-    if (!joinCode.trim()) return
-    const { error: joinError } = await supabase.rpc('join_campaign_by_code', { p_invite_code: joinCode.trim() })
-    if (joinError) {
-      setError(joinError.message)
-      return
-    }
-    setJoinCode('')
-    setError(null)
-    loadCampaigns()
-  }
-
-  async function handleCopiarCodigo(c: CampaignItem) {
-    await navigator.clipboard.writeText(c.invite_code)
+  async function handleCopiarLink(c: CampaignItem) {
+    const url = `${window.location.origin}/campanha/entrar/${c.invite_code}`
+    await navigator.clipboard.writeText(url)
     setCopiedId(c.id)
     setMenuOpen(null)
     setTimeout(() => setCopiedId((id) => (id === c.id ? null : id)), 2000)
@@ -107,6 +96,7 @@ export default function MinhasCampanhas() {
       <div className="character-tile-grid">
         {campaigns?.map((c) => (
           <div key={c.id} className="character-tile" style={{ backgroundColor: fallbackAvatarColor(c.id) }}>
+            <img className="character-tile-watermark" src={arkanisLogo} alt="" />
             <div className="character-card-menu" onClick={(e) => e.preventDefault()}>
               <button
                 type="button"
@@ -120,7 +110,7 @@ export default function MinhasCampanhas() {
                 <>
                   <div className="dropdown-backdrop" onClick={() => setMenuOpen(null)} />
                   <ul className="character-card-dropdown">
-                    <li><button type="button" onClick={() => handleCopiarCodigo(c)}>{copiedId === c.id ? 'Código copiado!' : 'Copiar código de convite'}</button></li>
+                    <li><button type="button" onClick={() => handleCopiarLink(c)}>{copiedId === c.id ? 'Link copiado!' : 'Copiar link de convite'}</button></li>
                   </ul>
                 </>
               )}
@@ -147,14 +137,6 @@ export default function MinhasCampanhas() {
           <button type="button" onClick={() => setShowCreate(false)}>Cancelar</button>
         </div>
       )}
-
-      <div className="campaign-join-row">
-        <label className="editperfil-field">
-          Código de convite
-          <input value={joinCode} onChange={(e) => setJoinCode(e.target.value)} />
-        </label>
-        <button type="button" onClick={handleJoin}>Entrar</button>
-      </div>
     </section>
   )
 }

@@ -1,4 +1,44 @@
 @font-face {
+  font-family: 'Ashigea';
+  src: url('./assets/fonts/Ashigea-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Optima Nova LT Pro';
   src: url('./assets/fonts/OptimaNovaLTPro-Regular.otf') format('opentype');
   font-weight: 400;
@@ -41,6 +81,8 @@
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: 'Optima Nova LT Pro', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --ashigea: 'Ashigea', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --poppins: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 15px/145% var(--sans);
@@ -135,6 +177,16 @@ code, .counter {
   display: inline-flex;
   border-radius: 4px;
   color: var(--text-h);
+}
+
+.font-ashigea {
+  font-family: var(--poppins);
+}
+
+.font-ashigea h1,
+.font-ashigea h2,
+.font-ashigea h3 {
+  font-family: var(--ashigea);
 }
 
 /* ---- Componentes reutilizáveis da ficha ---- */

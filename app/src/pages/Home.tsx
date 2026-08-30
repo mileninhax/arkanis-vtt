@@ -5,7 +5,7 @@ export default function Home() {
   const { session, loading } = useAuth()
 
   return (
-    <main>
+    <main className="font-ashigea">
       <h1>VTT — Ordem Paranormal</h1>
       {loading ? null : session ? (
         <>

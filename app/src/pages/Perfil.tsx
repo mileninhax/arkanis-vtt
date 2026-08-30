@@ -40,7 +40,7 @@ export default function Perfil() {
   const background = profile?.background_color || undefined
 
   return (
-    <main className="profile-page">
+    <main className="profile-page font-ashigea">
       <div className="profile-banner" style={{ backgroundColor: background }}>
         {profile?.banner_url && (
           <img

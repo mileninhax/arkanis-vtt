@@ -117,7 +117,7 @@ export default function EditarPerfil() {
   if (loading) return null
 
   return (
-    <main className="page-shell">
+    <main className="page-shell font-ashigea">
       <h1>Editar Perfil</h1>
       {error && <p role="alert">{error}</p>}
 

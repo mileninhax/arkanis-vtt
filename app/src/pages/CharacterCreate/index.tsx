@@ -8,6 +8,7 @@ import Step2Attributes from './Step2Attributes'
 import Step3Origin from './Step3Origin'
 import Step4Class from './Step4Class'
 import Step5Auth from './Step5Auth'
+import creationBg from '../../assets/criacao/creation-background.png'
 
 const STEP_NAMES = ['Introdução', 'Atributos', 'Origem', 'Classe', 'Autenticação']
 
@@ -104,14 +105,19 @@ export default function CharacterCreate() {
   }
 
   return (
-    <main>
-      <nav>
+    <main className="creation-page">
+      <div className="creation-page-bg" style={{ backgroundImage: `url(${creationBg})` }} />
+
+      <nav className="creation-stepper">
         {STEP_NAMES.map((name, i) => (
-          <span key={name} aria-current={step === i + 1}>{name}{i < STEP_NAMES.length - 1 ? ' → ' : ''}</span>
+          <span key={name} className="creation-stepper-item">
+            <span className={`creation-stepper-pill${step === i + 1 ? ' active' : ''}`}>{name}</span>
+            {i < STEP_NAMES.length - 1 && <span className="creation-stepper-line" />}
+          </span>
         ))}
       </nav>
 
-      {error && <p role="alert">{error}</p>}
+      {error && <p role="alert" className="creation-error">{error}</p>}
 
       {step === 1 && <Step1Intro draft={draft} onNext={() => setStep(2)} />}
       {step === 2 && (

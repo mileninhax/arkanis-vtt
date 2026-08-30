@@ -14,8 +14,8 @@ const SYSTEMS = [
 
 export default function SystemSelect() {
   return (
-    <main className="font-ashigea home-hero">
-      <div className="home-hero-bg" style={{ backgroundImage: `url(${bgSystemSelect})` }} />
+    <main className="profile-page font-ashigea">
+      <div className="profile-vignette system-select-bg" style={{ backgroundImage: `url(${bgSystemSelect})` }} />
       <div className="jogar-content system-select-content">
         <div className="system-select-header">
           <h1>Novo Personagem</h1>

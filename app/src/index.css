@@ -375,6 +375,12 @@ code, .counter {
     var(--bg);
 }
 
+.system-select-bg {
+  background: none;
+  background-size: cover;
+  background-position: center;
+}
+
 .page-shell img[alt='Avatar'] {
   border-radius: 50%;
   object-fit: cover;

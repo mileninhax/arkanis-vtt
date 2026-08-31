@@ -1652,7 +1652,7 @@ code, .counter {
 }
 
 .stat-bar-arrow-left {
-  left: 22px;
+  left: 30px;
 }
 
 .stat-bar-arrow-right {
@@ -1667,19 +1667,37 @@ code, .counter {
   position: relative;
   z-index: 1;
   flex: 1;
-  height: 37px;
-  margin-left: -22px;
-  padding-left: 22px;
+  height: 28px;
+  margin-left: -30px;
+  padding-left: 30px;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.stat-bar-fill-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30px;
+  right: 0;
+  z-index: 0;
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: 3px;
-  overflow: hidden;
-  box-sizing: border-box;
+}
+
+.stat-bar-fill,
+.stat-bar-value,
+.stat-bar-arrow {
+  z-index: 1;
 }
 
 .stat-bar-fill {
   position: relative;
+  z-index: 1;
   height: 100%;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -1713,7 +1731,10 @@ code, .counter {
 
 .stat-bar-value {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 30px;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;

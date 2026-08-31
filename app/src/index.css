@@ -1780,7 +1780,7 @@ code, .counter {
 .attr-nex-badge {
   top: 11%;
   left: 21.2%;
-  font-size: 0.7em;
+  font-size: 1.05em;
   color: #000;
   text-shadow: none;
   cursor: pointer;
@@ -1805,14 +1805,16 @@ code, .counter {
   transform: translate(-50%, 0);
   margin: 1.6em 0 0;
   list-style: none;
-  padding: 0.4em 0;
-  background: var(--bg-panel);
+  padding: 0.3em 0;
+  background: #101218;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   z-index: 5;
   display: flex;
   flex-direction: column;
+  max-height: 16em;
+  overflow-y: auto;
 }
 
 .nex-dropdown button {
@@ -1821,10 +1823,12 @@ code, .counter {
   background: none;
   border: none;
   border-radius: 0;
-  color: var(--text-h);
+  color: #fff;
+  font-family: var(--heading);
+  font-weight: 700;
   text-align: center;
-  padding: 0.15em 1.2em;
-  font-size: 0.85em;
+  padding: 0.35em 1.2em;
+  font-size: 0.9em;
   cursor: pointer;
 }
 
@@ -1834,7 +1838,6 @@ code, .counter {
 
 .nex-dropdown button.active {
   color: var(--accent-strong);
-  font-weight: 700;
 }
 
 /* ---- Criação de Personagem ---- */

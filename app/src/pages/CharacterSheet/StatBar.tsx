@@ -10,6 +10,7 @@ export default function StatBar({
   onIncrement,
   onTempDecrement,
   onTempIncrement,
+  onCurrentChange,
 }: {
   label: string
   icon?: string
@@ -22,6 +23,7 @@ export default function StatBar({
   onIncrement: () => void
   onTempDecrement?: () => void
   onTempIncrement?: () => void
+  onCurrentChange?: (value: number) => void
 }) {
   const pct = max > 0 ? Math.max(0, Math.min(100, (current / max) * 100)) : 0
 
@@ -43,7 +45,18 @@ export default function StatBar({
         <div className="stat-bar-fill-wrap">
           <div className={`stat-bar-fill ${colorClass}`} style={{ width: `${pct}%` }} />
           <button type="button" className="stat-bar-arrow stat-bar-arrow-left" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>
-          <span className="stat-bar-value">{current}/{max}</span>
+          <span className="stat-bar-value">
+            {onCurrentChange ? (
+              <input
+                type="number"
+                className="stat-bar-value-input"
+                value={current}
+                onChange={(e) => onCurrentChange(Number(e.target.value))}
+                aria-label={label}
+              />
+            ) : current}
+            /{max}
+          </span>
           <button type="button" className="stat-bar-arrow stat-bar-arrow-right" onClick={onIncrement} aria-label={`+1 ${label}`}>›</button>
         </div>
         {note && <p className="stat-bar-note">{note}</p>}

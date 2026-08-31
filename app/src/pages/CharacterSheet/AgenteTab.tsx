@@ -387,6 +387,7 @@ function cycleTraining(current: Training): Training {
             onIncrement={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}
             onTempDecrement={() => updateCharacterField('temp_pv', Math.max(0, (character.temp_pv ?? 0) - 1))}
             onTempIncrement={() => updateCharacterField('temp_pv', (character.temp_pv ?? 0) + 1)}
+            onCurrentChange={(value) => updateCharacterField('current_pv', value)}
           />
 
           {character.optional_rules.sem_sanidade ? (
@@ -399,6 +400,7 @@ function cycleTraining(current: Training): Training {
               note="Substitui Sanidade/Esforço"
               onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
               onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+              onCurrentChange={(value) => updateCharacterField('current_pd', value)}
             />
           ) : (
             <>
@@ -413,6 +415,7 @@ function cycleTraining(current: Training): Training {
                 onIncrement={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}
                 onTempDecrement={() => updateCharacterField('temp_sanity', Math.max(0, (character.temp_sanity ?? 0) - 1))}
                 onTempIncrement={() => updateCharacterField('temp_sanity', (character.temp_sanity ?? 0) + 1)}
+                onCurrentChange={(value) => updateCharacterField('current_sanity', value)}
               />
               <StatBar
                 label="Esforço"
@@ -425,6 +428,7 @@ function cycleTraining(current: Training): Training {
                 onIncrement={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}
                 onTempDecrement={() => updateCharacterField('temp_pe', Math.max(0, (character.temp_pe ?? 0) - 1))}
                 onTempIncrement={() => updateCharacterField('temp_pe', (character.temp_pe ?? 0) + 1)}
+                onCurrentChange={(value) => updateCharacterField('current_pe', value)}
               />
             </>
           )}
@@ -441,6 +445,7 @@ function cycleTraining(current: Training): Training {
                 colorClass="pd"
                 onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
                 onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+                onCurrentChange={(value) => updateCharacterField('current_pd', value)}
               />
             )
           )}

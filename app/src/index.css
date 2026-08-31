@@ -1608,6 +1608,9 @@ code, .counter {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 0.15em;
+  margin-top: -8px;
+  position: relative;
+  z-index: 3;
 }
 
 .stat-bar-label {
@@ -1647,18 +1650,18 @@ code, .counter {
   z-index: 2;
   background: transparent;
   border: none;
-  padding: 0 0.4em;
-  font-size: 0.85em;
+  padding: 0 0.6em;
+  font-size: 1.15em;
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
 }
 
 .stat-bar-arrow-left {
-  left: 0;
+  left: 0.5em;
 }
 
 .stat-bar-arrow-right {
-  right: 0;
+  right: 0.5em;
 }
 
 .stat-bar-arrow:hover {
@@ -1668,13 +1671,13 @@ code, .counter {
 .stat-bar-fill-wrap {
   /* MEXA SÓ AQUI pra mover a barra inteira (fundo + números + setas, tudo junto)
      por baixo do ícone: aumenta esse número pra entrar mais, diminui pra entrar menos. */
-  --overlap: 30px;
-
+  --overlap: 13px;
+  margin-top: -19px;
   position: relative;
   z-index: 1;
   flex: none;
   width: calc(100% + var(--overlap));
-  height: 36px;
+  height: 42px;
   transform: translateX(calc(-1 * var(--overlap)));
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -1722,14 +1725,37 @@ code, .counter {
 .stat-bar-value {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.15em;
   font-family: var(--heading);
   font-size: 0.75em;
   font-weight: 700;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.stat-bar-value-input {
+  width: 2.6em;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  padding: 0 0.1em;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  -moz-appearance: textfield;
+}
+
+.stat-bar-value-input::-webkit-outer-spin-button,
+.stat-bar-value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .stat-bar-note {

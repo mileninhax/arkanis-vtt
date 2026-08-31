@@ -1428,7 +1428,7 @@ code, .counter {
   top: 100%;
   left: 0;
   margin-top: 0.3em;
-  background: var(--bg-card);
+  background: #101218;
   border: 1px solid var(--border-strong);
   border-radius: 6px;
   padding: 0.3em 0;
@@ -1440,10 +1440,11 @@ code, .counter {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.4em 0.8em;
-  font-size: 0.9em;
-  font-weight: 400;
-  color: var(--text);
+  padding: 0.5em 0.9em;
+  font-family: var(--heading);
+  font-size: 0.95em;
+  font-weight: 700;
+  color: #fff;
 }
 
 .vtt-track-menu button:hover {

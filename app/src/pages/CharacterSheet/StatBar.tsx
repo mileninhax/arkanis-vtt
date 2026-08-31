@@ -11,6 +11,8 @@ export default function StatBar({
   note,
   onDecrement,
   onIncrement,
+  onTempDecrement,
+  onTempIncrement,
 }: {
   label: string
   icon?: string
@@ -21,6 +23,8 @@ export default function StatBar({
   note?: string
   onDecrement: () => void
   onIncrement: () => void
+  onTempDecrement?: () => void
+  onTempIncrement?: () => void
 }) {
   const pct = max > 0 ? Math.max(0, Math.min(100, (current / max) * 100)) : 0
 
@@ -30,7 +34,14 @@ export default function StatBar({
       <div className="stat-bar-body">
         <div className="stat-bar-label-row">
           <span className="stat-bar-label">{label}</span>
-          {temp !== undefined && <span className="stat-bar-temp">Temp. {temp}</span>}
+          {temp !== undefined && (
+            <span className="stat-bar-temp">
+              Temp.
+              <button type="button" className="stat-bar-temp-arrow" onClick={onTempDecrement} aria-label={`-1 Temp. ${label}`}>‹</button>
+              {temp}
+              <button type="button" className="stat-bar-temp-arrow" onClick={onTempIncrement} aria-label={`+1 Temp. ${label}`}>›</button>
+            </span>
+          )}
         </div>
         <div className="stat-bar-track">
           <button type="button" className="stat-bar-arrow" onClick={onDecrement} aria-label={`-1 ${label}`}>

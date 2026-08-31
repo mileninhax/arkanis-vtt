@@ -1613,8 +1613,23 @@ code, .counter {
 }
 
 .stat-bar-temp {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
   font-size: 0.8em;
   color: var(--text-dim);
+}
+
+.stat-bar-temp-arrow {
+  background: transparent;
+  border: none;
+  padding: 0 0.1em;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.stat-bar-temp-arrow:hover {
+  color: var(--text-h);
 }
 
 .stat-bar-track {
@@ -1653,32 +1668,38 @@ code, .counter {
 }
 
 .stat-bar-fill {
+  position: relative;
   height: 100%;
   border-radius: 999px;
+  overflow: hidden;
+}
+
+.stat-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-image: url('./assets/veins-texture-bars.svg');
   background-size: cover;
   background-position: center;
-  background-blend-mode: overlay;
+  mix-blend-mode: soft-light;
+  filter: contrast(1.6) brightness(0.9);
+  opacity: 0.95;
 }
 
 .stat-bar-fill.pv {
-  background-color: #8d1515;
-  background-image: linear-gradient(90deg, #521d1d 0%, #8d1515 48.08%, #b91e1e 100%), url('./assets/veins-texture-bars.svg');
+  background: linear-gradient(90deg, #521d1d 0%, #8d1515 48.08%, #b91e1e 100%);
 }
 
 .stat-bar-fill.sanidade {
-  background-color: #6a4bb0;
-  background-image: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%), url('./assets/veins-texture-bars.svg');
+  background: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%);
 }
 
 .stat-bar-fill.esforco {
-  background-color: #b3860f;
-  background-image: linear-gradient(90deg, #5a4614 0%, #b3860f 48.08%, #e0b13a 100%), url('./assets/veins-texture-bars.svg');
+  background: linear-gradient(90deg, #5a4614 0%, #b3860f 48.08%, #e0b13a 100%);
 }
 
 .stat-bar-fill.pd {
-  background-color: #6a4bb0;
-  background-image: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%), url('./assets/veins-texture-bars.svg');
+  background: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%);
 }
 
 .stat-bar-value {

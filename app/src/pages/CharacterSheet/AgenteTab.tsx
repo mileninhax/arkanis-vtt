@@ -385,6 +385,8 @@ function cycleTraining(current: Training): Training {
             colorClass="pv"
             onDecrement={() => updateCharacterField('current_pv', (character.current_pv ?? 0) - 1)}
             onIncrement={() => updateCharacterField('current_pv', (character.current_pv ?? 0) + 1)}
+            onTempDecrement={() => updateCharacterField('temp_pv', Math.max(0, (character.temp_pv ?? 0) - 1))}
+            onTempIncrement={() => updateCharacterField('temp_pv', (character.temp_pv ?? 0) + 1)}
           />
 
           {character.optional_rules.sem_sanidade ? (
@@ -409,6 +411,8 @@ function cycleTraining(current: Training): Training {
                 colorClass="sanidade"
                 onDecrement={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) - 1)}
                 onIncrement={() => updateCharacterField('current_sanity', (character.current_sanity ?? 0) + 1)}
+                onTempDecrement={() => updateCharacterField('temp_sanity', Math.max(0, (character.temp_sanity ?? 0) - 1))}
+                onTempIncrement={() => updateCharacterField('temp_sanity', (character.temp_sanity ?? 0) + 1)}
               />
               <StatBar
                 label="Esforço"

@@ -45,7 +45,7 @@ export default function HabilidadesTab({ character }: { character: CharacterReco
   async function loadCurrent() {
     const { data } = await supabase
       .from('character_abilities')
-      .select('id, class_power_id, paranormal_power_id, general_power_id, origin_power_of, custom_ability, class_powers(name, description), paranormal_powers(name, description), general_powers(name, description), origins(power_name, power_description)')
+      .select('id, class_power_id, paranormal_power_id, general_power_id, origin_power_of, track_tier_id, custom_ability, class_powers(name, description), paranormal_powers(name, description), general_powers(name, description), origins(power_name, power_description), class_track_tiers(name, description)')
       .eq('character_id', character.id)
 
     const entries: AbilityEntry[] = (data ?? []).map((row: any) => {
@@ -54,6 +54,7 @@ export default function HabilidadesTab({ character }: { character: CharacterReco
       if (row.paranormal_powers) return { id: row.id, name: row.paranormal_powers.name, description: row.paranormal_powers.description }
       if (row.general_powers) return { id: row.id, name: row.general_powers.name, description: row.general_powers.description }
       if (row.origins) return { id: row.id, name: row.origins.power_name, description: row.origins.power_description }
+      if (row.class_track_tiers) return { id: row.id, name: row.class_track_tiers.name, description: row.class_track_tiers.description }
       return { id: row.id, name: '(desconhecida)', description: '' }
     })
     setCurrent(entries)

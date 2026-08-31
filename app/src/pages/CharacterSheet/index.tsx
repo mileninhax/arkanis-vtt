@@ -56,6 +56,7 @@ export type CharacterRecord = {
   dice_tray: string
   editable_by_others: boolean
   hidden_from_others: boolean
+  chosen_track_id: string | null
   origin_id: string | null
   custom_origin: { name: string; skill1Id: string | null; skill2Id: string | null; powerName: string; powerDescription: string } | null
   class_id: string | null
@@ -118,18 +119,9 @@ export default function CharacterSheet() {
           setClassName(data.custom_class.name)
         }
 
-        const { data: picks } = await supabase.from('character_progression_picks').select('picks').eq('character_id', id)
-        const trilhaPick = (picks ?? [])
-          .flatMap((row) => (row.picks as { kind: string; ref_id: string | null }[]) ?? [])
-          .find((p) => p.kind === 'trilha' && p.ref_id)
-        if (trilhaPick?.ref_id) {
-          const { data: tier } = await supabase.from('class_track_tiers').select('track_id').eq('id', trilhaPick.ref_id).single()
-          if (tier?.track_id) {
-            const { data: track } = await supabase.from('class_tracks').select('name').eq('id', tier.track_id).single()
-            setTrackName(track?.name ?? null)
-          } else {
-            setTrackName(null)
-          }
+        if (data?.chosen_track_id) {
+          const { data: track } = await supabase.from('class_tracks').select('name').eq('id', data.chosen_track_id).single()
+          setTrackName(track?.name ?? null)
         } else {
           setTrackName(null)
         }

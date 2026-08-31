@@ -121,27 +121,46 @@ export default function AgenteTab({
     })
   }, [character.class_id])
 
-  async function pickTrack(trackId: string) {
-    setTrackMenuOpen(false)
+  async function grantEligibleTrackTiers(trackId: string) {
     const eligibleTiers = trackTiers.filter((t) => t.track_id === trackId && t.nex_percent <= character.nex_percent)
     if (eligibleTiers.length === 0) return
 
-    const { data: existingRows } = await supabase
-      .from('character_progression_picks')
-      .select('nex_percent, note, picks')
-      .eq('character_id', character.id)
+    const [{ data: existingRows }, { data: existingAbilities }] = await Promise.all([
+      supabase.from('character_progression_picks').select('nex_percent, note, picks').eq('character_id', character.id),
+      supabase.from('character_abilities').select('track_tier_id').eq('character_id', character.id).not('track_tier_id', 'is', null),
+    ])
+    const grantedTierIds = new Set((existingAbilities ?? []).map((a) => a.track_tier_id))
 
+    let changed = false
     for (const tier of eligibleTiers) {
       const existingRow = existingRows?.find((r) => r.nex_percent === tier.nex_percent)
       const existingPicks: { kind: string; label: string; ref_id: string | null }[] = existingRow?.picks ?? []
-      if (existingPicks.some((p) => p.kind === 'trilha')) continue
-      await supabase.from('character_progression_picks').upsert(
-        { character_id: character.id, nex_percent: tier.nex_percent, note: existingRow?.note ?? '', picks: [...existingPicks, { kind: 'trilha', label: tier.name, ref_id: tier.id }] },
-        { onConflict: 'character_id,nex_percent' }
-      )
+      if (!existingPicks.some((p) => p.kind === 'trilha' && p.ref_id === tier.id)) {
+        await supabase.from('character_progression_picks').upsert(
+          { character_id: character.id, nex_percent: tier.nex_percent, note: existingRow?.note ?? '', picks: [...existingPicks, { kind: 'trilha', label: tier.name, ref_id: tier.id }] },
+          { onConflict: 'character_id,nex_percent' }
+        )
+        changed = true
+      }
+      if (!grantedTierIds.has(tier.id)) {
+        await supabase.from('character_abilities').insert({ character_id: character.id, track_tier_id: tier.id })
+        changed = true
+      }
     }
+    if (changed) onUpdated()
+  }
+
+  async function pickTrack(trackId: string) {
+    setTrackMenuOpen(false)
+    await supabase.from('characters').update({ chosen_track_id: trackId }).eq('id', character.id)
+    await grantEligibleTrackTiers(trackId)
     onUpdated()
   }
+
+  useEffect(() => {
+    if (!character.chosen_track_id || trackTiers.length === 0) return
+    grantEligibleTrackTiers(character.chosen_track_id)
+  }, [character.chosen_track_id, character.nex_percent, trackTiers])
 
   useEffect(() => {
     supabase.from('skills').select('id, name, default_attribute').order('sort_order').then(({ data }) => setSkills(data ?? []))

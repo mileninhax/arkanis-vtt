@@ -1654,7 +1654,7 @@ code, .counter {
 }
 
 .stat-bar-arrow-left {
-  left: 30px;
+  left: 0;
 }
 
 .stat-bar-arrow-right {
@@ -1666,34 +1666,21 @@ code, .counter {
 }
 
 .stat-bar-fill-wrap {
+  /* MEXA SÓ AQUI pra mover a barra inteira (fundo + números + setas, tudo junto)
+     por baixo do ícone: aumenta esse número pra entrar mais, diminui pra entrar menos. */
+  --overlap: 30px;
+
   position: relative;
   z-index: 1;
   flex: none;
-  width: 126%;
+  width: calc(100% + var(--overlap));
   height: 36px;
-  margin-left: -30px;
-  padding-left: 30px;
-  overflow: visible;
-  box-sizing: border-box;
-}
-
-.stat-bar-fill-wrap::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 30px;
-  right: 0;
-  z-index: 0;
+  transform: translateX(calc(-1 * var(--overlap)));
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: 3px;
-}
-
-.stat-bar-fill,
-.stat-bar-value,
-.stat-bar-arrow {
-  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .stat-bar-fill {
@@ -1734,10 +1721,7 @@ code, .counter {
 
 .stat-bar-value {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 30px;
-  right: 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;

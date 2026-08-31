@@ -1405,20 +1405,15 @@ code, .counter {
   font-size: 0.9em;
 }
 
-.vtt-profile-grid > span.set {
-  color: var(--text-h);
-  font-weight: 700;
-}
-
-.vtt-profile-grid > span.vtt-track-field.set {
-  color: var(--text-dim);
-  font-weight: 400;
-}
 
 .vtt-track-field button {
+  display: block;
+  width: 100%;
   background: none;
   border: none;
   padding: 0;
+  margin: 0;
+  text-align: left;
   color: inherit;
   font: inherit;
   cursor: pointer;

@@ -59,9 +59,7 @@ update extra_rules set
   content = replace(replace(replace(regexp_replace(content, '(\d+)◯+', '\1d20', 'g'), '◯◯◯', '3d20'), '◯◯', '2d20'), '◯', '1d20')
 where content like '%◯%';
 
-update hazards set
-  description = replace(replace(replace(regexp_replace(description, '(\d+)◯+', '\1d20', 'g'), '◯◯◯', '3d20'), '◯◯', '2d20'), '◯', '1d20')
-where description like '%◯%';
+-- (a tabela "hazards" ainda nao existe nesse banco -- ver 0060, que cria e semeia ela ja corrigida)
 
 update creatures set
   flavor_text     = replace(replace(replace(regexp_replace(flavor_text,     '(\d+)◯+', '\1d20', 'g'), '◯◯◯', '3d20'), '◯◯', '2d20'), '◯', '1d20'),

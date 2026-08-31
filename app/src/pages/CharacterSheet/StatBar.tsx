@@ -42,6 +42,7 @@ export default function StatBar({
             </span>
           )}
         </div>
+        {temp !== undefined && temp > 0 && <div className="stat-bar-temp-glow" />}
         <div className={`stat-bar-fill-wrap${temp !== undefined && temp > 0 ? ' stat-bar-fill-wrap-temp' : ''}`}>
           <div className={`stat-bar-fill ${colorClass}`} style={{ width: `${pct}%` }} />
           <button type="button" className="stat-bar-arrow stat-bar-arrow-left" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>

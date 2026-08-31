@@ -1697,6 +1697,14 @@ code, .counter {
 
 .stat-bar-fill-wrap-temp {
   border-color: #7de7eb;
+  box-shadow: 0 0 6px 1px rgba(125, 231, 235, 0.55);
+}
+
+.stat-bar-temp-glow {
+  height: 1px;
+  margin: 0.25em 0;
+  background: linear-gradient(90deg, transparent, #7de7eb 30%, #7de7eb 70%, transparent);
+  box-shadow: 0 0 6px 1px rgba(125, 231, 235, 0.7);
 }
 
 .stat-bar-fill {

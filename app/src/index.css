@@ -1608,8 +1608,8 @@ code, .counter {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 0.6em;
-  margin-top: -16px;
   position: relative;
+  top: -25px;
   z-index: 3;
 }
 

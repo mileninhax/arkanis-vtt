@@ -1608,14 +1608,14 @@ code, .counter {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 0.15em;
-  margin-top: -8px;
+  margin-top: -16px;
   position: relative;
   z-index: 3;
 }
 
 .stat-bar-label {
   font-family: 'Westsac', var(--heading);
-  font-size: 0.85em;
+  font-size: 1.1em;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1626,8 +1626,8 @@ code, .counter {
   display: flex;
   align-items: center;
   gap: 0.15em;
-  font-size: 0.65em;
-  color: var(--text-dim);
+  font-size: 0.75em;
+  color: #fff;
 }
 
 .stat-bar-temp-arrow {
@@ -1635,7 +1635,7 @@ code, .counter {
   border: none;
   padding: 0 0.1em;
   font-size: 0.9em;
-  color: var(--text-dim);
+  color: #fff;
   cursor: pointer;
 }
 
@@ -1651,7 +1651,7 @@ code, .counter {
   background: transparent;
   border: none;
   padding: 0 0.6em;
-  font-size: 1.15em;
+  font-size: 1.6em;
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
 }
@@ -1735,6 +1735,7 @@ code, .counter {
   font-weight: 700;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
 
 .stat-bar-value-input {
@@ -1750,6 +1751,7 @@ code, .counter {
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   -moz-appearance: textfield;
+  pointer-events: auto;
 }
 
 .stat-bar-value-input::-webkit-outer-spin-button,

@@ -1165,9 +1165,9 @@ code, .counter {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5em;
-  padding: 0.75em 1em;
+  padding: 0.4em 1em;
   background: #01031e;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #101218;
 }
 
 .vtt-topbar-logo {
@@ -1235,8 +1235,11 @@ code, .counter {
 }
 
 .vtt-icon-btn-labeled span {
-  font-size: 0.85em;
+  font-family: var(--heading);
+  font-size: 1em;
   font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   color: #fff;
   white-space: nowrap;
 }

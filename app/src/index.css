@@ -1392,6 +1392,7 @@ code, .counter {
 .vtt-profile-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: start;
   gap: 0.4em 1em;
   text-align: left;
   margin-top: 0.7em;
@@ -1407,6 +1408,11 @@ code, .counter {
 .vtt-profile-grid > span.set {
   color: var(--text-h);
   font-weight: 700;
+}
+
+.vtt-profile-grid > span.vtt-track-field.set {
+  color: var(--text-dim);
+  font-weight: 400;
 }
 
 .vtt-track-field button {

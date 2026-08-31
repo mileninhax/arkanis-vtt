@@ -1391,7 +1391,8 @@ code, .counter {
 
 .vtt-profile-grid {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-columns: max-content max-content;
+  justify-content: center;
   align-items: start;
   gap: 0.15em 1.2em;
   text-align: left;

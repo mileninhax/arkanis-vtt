@@ -1,5 +1,4 @@
 -- As habilidades de trilha (class_track_tiers) nunca apareciam na aba Habilidades
--- porque essa aba so le da tabela character_abilities, e essa tabela nao tinha uma
--- coluna pra referenciar um tier de trilha.
-
-alter table character_abilities add column track_tier_id uuid references class_track_tiers(id);
+-- porque essa aba so le da tabela character_abilities. A coluna certa pra isso
+-- (class_track_tier_id) ja existia desde o schema original (0001), so nunca tinha
+-- sido usada em lugar nenhum do app ainda.

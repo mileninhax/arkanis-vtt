@@ -45,7 +45,7 @@ export default function HabilidadesTab({ character }: { character: CharacterReco
   async function loadCurrent() {
     const { data } = await supabase
       .from('character_abilities')
-      .select('id, class_power_id, paranormal_power_id, general_power_id, origin_power_of, track_tier_id, custom_ability, class_powers(name, description), paranormal_powers(name, description), general_powers(name, description), origins(power_name, power_description), class_track_tiers(name, description)')
+      .select('id, class_power_id, paranormal_power_id, general_power_id, origin_power_of, class_track_tier_id, custom_ability, class_powers(name, description), paranormal_powers(name, description), general_powers(name, description), origins(power_name, power_description), class_track_tiers(name, description)')
       .eq('character_id', character.id)
 
     const entries: AbilityEntry[] = (data ?? []).map((row: any) => {

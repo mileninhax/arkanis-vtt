@@ -127,9 +127,9 @@ export default function AgenteTab({
 
     const [{ data: existingRows }, { data: existingAbilities }] = await Promise.all([
       supabase.from('character_progression_picks').select('nex_percent, note, picks').eq('character_id', character.id),
-      supabase.from('character_abilities').select('track_tier_id').eq('character_id', character.id).not('track_tier_id', 'is', null),
+      supabase.from('character_abilities').select('class_track_tier_id').eq('character_id', character.id).not('class_track_tier_id', 'is', null),
     ])
-    const grantedTierIds = new Set((existingAbilities ?? []).map((a) => a.track_tier_id))
+    const grantedTierIds = new Set((existingAbilities ?? []).map((a) => a.class_track_tier_id))
 
     let changed = false
     for (const tier of eligibleTiers) {
@@ -143,7 +143,7 @@ export default function AgenteTab({
         changed = true
       }
       if (!grantedTierIds.has(tier.id)) {
-        await supabase.from('character_abilities').insert({ character_id: character.id, track_tier_id: tier.id })
+        await supabase.from('character_abilities').insert({ character_id: character.id, class_track_tier_id: tier.id })
         changed = true
       }
     }

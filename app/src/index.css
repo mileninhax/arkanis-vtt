@@ -1305,7 +1305,7 @@ code, .counter {
 }
 
 .vtt-col-side {
-  flex: 0 0 292px;
+  flex: 0 0 280px;
   max-height: 100%;
   overflow-y: auto;
 }
@@ -1744,8 +1744,8 @@ code, .counter {
 
 .attr-diagram {
   position: relative;
-  width: 260px;
-  height: 262px;
+  width: 248px;
+  height: 250px;
   flex-shrink: 0;
   margin: 0.5em auto;
 }

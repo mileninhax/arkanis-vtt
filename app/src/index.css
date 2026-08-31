@@ -1329,7 +1329,7 @@ code, .counter {
 .vtt-col-side::-webkit-scrollbar,
 .vtt-col-main::-webkit-scrollbar,
 .vtt-col-combat::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
 }
 
 .vtt-col-side::-webkit-scrollbar-track,

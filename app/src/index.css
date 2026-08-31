@@ -1203,6 +1203,29 @@ code, .counter {
   opacity: 1;
 }
 
+.vtt-subtabs {
+  display: flex;
+  gap: 0.9em;
+  flex-wrap: wrap;
+  margin-bottom: 0.8em;
+}
+
+.vtt-subtabs button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
+
+.vtt-subtabs button:disabled {
+  color: var(--text-h);
+  opacity: 1;
+}
+
 .vtt-icon-btn {
   background: transparent;
   border: none;

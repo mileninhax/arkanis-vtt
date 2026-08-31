@@ -421,7 +421,7 @@ function cycleTraining(current: Training): Training {
       </div>
 
       <div className="vtt-col-combat">
-        <nav className="vtt-tabs" style={{ marginBottom: '0.8em' }}>
+        <nav className="vtt-subtabs">
           {(['Combate', 'Habilidades', 'Rituais', 'Inventário'] as const).map((t) => (
             <button key={t} type="button" onClick={() => setRightTab(t)} disabled={rightTab === t}>{t}</button>
           ))}

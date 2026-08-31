@@ -1733,7 +1733,7 @@ code, .counter {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
+  gap: 0.15em;
   font-family: var(--heading);
   font-size: 0.75em;
   font-weight: 700;

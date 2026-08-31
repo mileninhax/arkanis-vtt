@@ -17,12 +17,41 @@ import pvEmpty from '../../assets/pv-empty.svg'
 import pvLow from '../../assets/pv-low.svg'
 import pvHalf from '../../assets/pv-half.svg'
 import pvFull from '../../assets/pv-full.svg'
+import sanityEmpty from '../../assets/sanity-empty.svg'
+import sanityLow from '../../assets/sanity-low.svg'
+import sanityFull from '../../assets/sanity-full.svg'
+import effortEmpty from '../../assets/effort-empty.svg'
+import effortHalf from '../../assets/effort-half.svg'
+import effortFull from '../../assets/effort-full.svg'
+import determinationEmpty from '../../assets/determination-empty.svg'
+import determinationLow from '../../assets/determination-low.svg'
+import determinationHalf from '../../assets/determination-half.svg'
+import determinationFull from '../../assets/determination-full.svg'
 
 function pvIconFor(pct: number): string {
   if (pct <= 0) return pvEmpty
   if (pct <= 33) return pvLow
   if (pct <= 66) return pvHalf
   return pvFull
+}
+
+function sanityIconFor(pct: number): string {
+  if (pct <= 0) return sanityEmpty
+  if (pct <= 50) return sanityLow
+  return sanityFull
+}
+
+function effortIconFor(pct: number): string {
+  if (pct <= 0) return effortEmpty
+  if (pct <= 50) return effortHalf
+  return effortFull
+}
+
+function determinationIconFor(pct: number): string {
+  if (pct <= 0) return determinationEmpty
+  if (pct <= 33) return determinationLow
+  if (pct <= 66) return determinationHalf
+  return determinationFull
 }
 
 type ClassRow = {
@@ -361,6 +390,7 @@ function cycleTraining(current: Training): Training {
           {character.optional_rules.sem_sanidade ? (
             <StatBar
               label="Determinação"
+              icon={determinationIconFor(pct(character.current_pd ?? 0, derived.maxPd))}
               current={character.current_pd ?? 0}
               max={derived.maxPd}
               colorClass="pd"
@@ -372,6 +402,7 @@ function cycleTraining(current: Training): Training {
             <>
               <StatBar
                 label="Sanidade"
+                icon={sanityIconFor(pct(character.current_sanity ?? 0, maxSanity))}
                 current={character.current_sanity ?? 0}
                 max={maxSanity}
                 temp={character.temp_sanity}
@@ -381,6 +412,7 @@ function cycleTraining(current: Training): Training {
               />
               <StatBar
                 label="Esforço"
+                icon={effortIconFor(pct(character.current_pe ?? 0, derived.maxPe))}
                 current={character.current_pe ?? 0}
                 max={derived.maxPe}
                 colorClass="esforco"
@@ -396,6 +428,7 @@ function cycleTraining(current: Training): Training {
             ) : (
               <StatBar
                 label="Determinação (Patente)"
+                icon={determinationIconFor(pct(character.current_pd ?? 0, maxPdPatente))}
                 current={character.current_pd ?? 0}
                 max={maxPdPatente}
                 colorClass="pd"

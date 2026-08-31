@@ -1,3 +1,6 @@
+import arrowLeft from '../../assets/arrow-left-large-icon.svg'
+import arrowRight from '../../assets/arrow-right-large-icon.svg'
+
 export default function StatBar({
   label,
   icon,
@@ -30,12 +33,16 @@ export default function StatBar({
           {temp !== undefined && <span className="stat-bar-temp">Temp. {temp}</span>}
         </div>
         <div className="stat-bar-track">
-          <button type="button" className="stat-bar-arrow" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>
+          <button type="button" className="stat-bar-arrow" onClick={onDecrement} aria-label={`-1 ${label}`}>
+            <img src={arrowLeft} alt="" />
+          </button>
           <div className="stat-bar-fill-wrap">
             <div className={`stat-bar-fill ${colorClass}`} style={{ width: `${pct}%` }} />
             <span className="stat-bar-value">{current}/{max}</span>
           </div>
-          <button type="button" className="stat-bar-arrow" onClick={onIncrement} aria-label={`+1 ${label}`}>›</button>
+          <button type="button" className="stat-bar-arrow" onClick={onIncrement} aria-label={`+1 ${label}`}>
+            <img src={arrowRight} alt="" />
+          </button>
         </div>
         {note && <p className="stat-bar-note">{note}</p>}
       </div>

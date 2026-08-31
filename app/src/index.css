@@ -1743,6 +1743,10 @@ code, .counter {
 }
 
 .stat-bar-value-input {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.2em;
   width: 1.8em;
   margin: 0;
   background: transparent;
@@ -1751,7 +1755,7 @@ code, .counter {
   padding: 0;
   font-family: inherit;
   font-size: 1em;
-  line-height: normal;
+  line-height: 1;
   font-weight: 700;
   color: white;
   text-align: center;

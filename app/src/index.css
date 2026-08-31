@@ -1607,7 +1607,7 @@ code, .counter {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 0.15em;
+  margin-bottom: 0.6em;
   margin-top: -16px;
   position: relative;
   z-index: 3;

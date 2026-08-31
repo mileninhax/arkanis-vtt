@@ -47,6 +47,30 @@
 }
 
 @font-face {
+  font-family: 'Optima';
+  src: url('./assets/fonts/Optima-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Optima';
+  src: url('./assets/fonts/Optima-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Optima';
+  src: url('./assets/fonts/Optima-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Optima Nova LT Pro';
   src: url('./assets/fonts/OptimaNovaLTPro-Regular.otf') format('opentype');
   font-weight: 400;
@@ -1142,12 +1166,21 @@ code, .counter {
   flex-wrap: wrap;
   gap: 0.5em;
   padding: 0.75em 1em;
-  background: var(--bg-panel);
+  background: #01031e;
   border-bottom: 1px solid var(--border);
+}
+
+.vtt-topbar-logo {
+  width: 1.8em;
+  height: 1.8em;
+  object-fit: contain;
+  margin-right: 0.6em;
+  flex-shrink: 0;
 }
 
 .vtt-tabs {
   display: flex;
+  align-items: center;
   gap: 0.4em;
   flex-wrap: wrap;
 }
@@ -1156,16 +1189,18 @@ code, .counter {
   background: transparent;
   border: none;
   border-radius: 999px;
-  padding: 0.4em 0.9em;
-  color: var(--text-dim);
+  padding: 0.5em 1em;
+  color: #fff;
+  font-family: var(--heading);
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-size: 0.85em;
+  font-size: 1.05em;
 }
 
 .vtt-tabs button:disabled {
-  background: var(--accent-bg);
-  color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
   opacity: 1;
 }
 

@@ -20,6 +20,7 @@ import d20Icon from '../../assets/icons/d20-paranormal.svg'
 import changeIcon from '../../assets/icons/change-icon.svg'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
 import historyIcon from '../../assets/icons/history-icon.svg'
+import arkanisLogo from '../../assets/icons/arkanis-logo.png'
 
 const ELEMENT_BACKGROUNDS: Record<string, string> = {
   sangue: bgSangue,
@@ -149,6 +150,7 @@ export default function CharacterSheet() {
       />
       <header className="vtt-topbar">
         <nav className="vtt-tabs">
+          <img className="vtt-topbar-logo" src={arkanisLogo} alt="Arkanis" />
           {TABS.map((t) => (
             <button key={t} type="button" onClick={() => setTab(t)} disabled={tab === t}>{t}</button>
           ))}

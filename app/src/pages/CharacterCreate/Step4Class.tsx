@@ -299,7 +299,7 @@ export default function Step4Class({
                   <div className="creation-section-title">{t.name}</div>
                   {t.description && <p>{t.description}</p>}
                   {extras.tiers.filter((tier) => tier.track_id === t.id).map((tier) => (
-                    <p key={tier.id}><strong>NEX {tier.nex_percent}% — {tier.name}:</strong> {tier.description}</p>
+                    <p key={tier.id}><strong className="class-tier-label">NEX {tier.nex_percent}% — {tier.name}:</strong> {tier.description}</p>
                   ))}
                 </div>
               ))}

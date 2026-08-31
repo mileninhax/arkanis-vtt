@@ -2384,3 +2384,11 @@ code, .counter {
 .class-track-item {
   margin-bottom: 1em;
 }
+
+.class-track-item .creation-section-title {
+  font-size: 1.35em;
+}
+
+.class-tier-label {
+  font-size: 1.15em;
+}

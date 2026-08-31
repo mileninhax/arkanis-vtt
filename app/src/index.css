@@ -1188,31 +1188,31 @@ code, .counter {
 .vtt-tabs button {
   background: transparent;
   border: none;
-  border-radius: 999px;
-  padding: 0.5em 1em;
-  color: #fff;
+  padding: 0.5em 0.7em;
+  color: rgba(255, 255, 255, 0.55);
   font-family: var(--heading);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: 1.05em;
 }
 
 .vtt-tabs button:disabled {
-  background: rgba(255, 255, 255, 0.12);
+  background: transparent;
   color: #fff;
   opacity: 1;
 }
 
 .vtt-icon-btn {
-  background: var(--bg-card);
-  border-radius: 999px;
-  width: 2.4em;
-  height: 2.4em;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 0.4em;
 }
 
 .vtt-icon-btn img {
@@ -1224,9 +1224,9 @@ code, .counter {
 .vtt-icon-btn-labeled {
   width: auto;
   height: auto;
-  border-radius: 999px;
+  border-radius: 0;
   gap: 0.45em;
-  padding: 0.4em 0.9em;
+  padding: 0.4em 0.6em;
 }
 
 .vtt-icon-btn-labeled img {
@@ -1236,6 +1236,8 @@ code, .counter {
 
 .vtt-icon-btn-labeled span {
   font-size: 0.85em;
+  font-weight: 600;
+  color: #fff;
   white-space: nowrap;
 }
 

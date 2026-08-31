@@ -1657,6 +1657,7 @@ code, .counter {
   line-height: 1;
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
+  transform: translateY(-4px);
 }
 
 .stat-bar-arrow-left {

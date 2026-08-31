@@ -1391,7 +1391,7 @@ code, .counter {
 
 .vtt-profile-grid {
   display: grid;
-  grid-template-columns: 9.5em 1fr;
+  grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr);
   align-items: start;
   gap: 0.15em 1.2em;
   text-align: left;
@@ -1401,9 +1401,15 @@ code, .counter {
   line-height: 1.25;
 }
 
-.vtt-profile-grid > span,
-.vtt-profile-grid button {
+.vtt-profile-grid > span:nth-child(odd),
+.vtt-profile-grid > span:nth-child(odd) button {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vtt-profile-grid > span:nth-child(even) {
+  overflow-wrap: break-word;
 }
 
 .vtt-profile-grid > span {

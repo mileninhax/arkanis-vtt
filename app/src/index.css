@@ -1740,7 +1740,7 @@ code, .counter {
 }
 
 .stat-bar-fill.pd {
-  background: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%);
+  background: linear-gradient(90deg, #054983 0%, #146eb8 48.08%, #2185d0 100%);
 }
 
 .stat-bar-value {

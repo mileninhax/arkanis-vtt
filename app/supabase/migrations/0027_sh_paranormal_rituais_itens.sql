@@ -3,14 +3,14 @@
 insert into paranormal_powers (source_id, elemento, name, description, affinity_description, prerequisites)
 select (select id from sources where slug = 'sobrevivendo_ao_horror'), v.elemento::elemento, v.name, v.description, v.affinity, v.prereq
 from (values
-  ('sangue', 'Espreitar da Besta', '+5 Furtividade; sendo o caçador numa perseguição, usa Furtividade em vez de Atletismo; em cena de furtividade, ações discretas sem -◯.', 'Bônus sobe pra +10.', null),
+  ('sangue', 'Espreitar da Besta', '+5 Furtividade; sendo o caçador numa perseguição, usa Furtividade em vez de Atletismo; em cena de furtividade, ações discretas sem -1d20.', 'Bônus sobe pra +10.', null),
   ('sangue', 'Instintos Sanguinários', 'Visão no escuro e faro.', 'Não pode ser flanqueado, não fica desprevenido, +5 em resistência contra armadilhas.', null),
-  ('morte', 'Antecipar Vitalidade', 'Teste, acumula carga de antecipação pra +◯ (máx. = Vigor); com carga pendente, a próxima ação dormir perde uma carga em vez de recuperar PV.', 'Limite de cargas +2, perde 2 cargas por dormir (em vez de recuperar PV).', null),
+  ('morte', 'Antecipar Vitalidade', 'Teste, acumula carga de antecipação pra +1d20 (máx. = Vigor); com carga pendente, a próxima ação dormir perde uma carga em vez de recuperar PV.', 'Limite de cargas +2, perde 2 cargas por dormir (em vez de recuperar PV).', null),
   ('morte', 'Aura de Pavor', '2 PE + ação de movimento deixa pessoa/animal em alcance médio apavorado (Vontade DT Pre reduz pra abalado); não precisa ver você; só 1x/dia por alvo.', 'DT +5, pode afetar múltiplos alvos ao mesmo tempo em alcance.', null),
   ('conhecimento', 'Absorver Conhecimento', 'Empunhando fonte de conhecimento escrito, 1 PE + ação completa faz uma pergunta à fonte (resposta automática se estiver armazenada nela); combinado com ação ler, sobe o dado de bônus um passo.', 'Ritual de Conhecimento com alvo 1 pessoa (que não você), tocando o alvo, custo -1 PE.', null),
   ('conhecimento', 'Apatia Herege', 'Teste contra condição de medo, gasta 2 PE pra rerrolar (aceita o novo resultado).', 'Pode usar depois de ver o resultado, e fica com a melhor rolagem.', 'Conhecimento 1'),
   ('energia', 'Conexão Empática', 'Ação completa + 2 PE toca objeto elétrico ligado; até o fim da cena (ou soltar), "conversa" com ele (atitude inicial indiferente).', '+5 em perícias de Int/Pre com o item.', 'Energia 1'),
-  ('energia', 'Valer-se do Caos', 'Teste, escolhe controlar o caos pra +◯; se falhar o teste OU o d20 extra sair ≤5, perde 1d4 Sanidade.', 'Só perde Sanidade se o teste falhar OU o dado extra sair 1-2.', null)
+  ('energia', 'Valer-se do Caos', 'Teste, escolhe controlar o caos pra +1d20; se falhar o teste OU o d20 extra sair ≤5, perde 1d4 Sanidade.', 'Só perde Sanidade se o teste falhar OU o dado extra sair 1-2.', null)
 ) as v(elemento, name, description, affinity, prereq);
 
 insert into rituals (
@@ -39,7 +39,7 @@ from (values
    9, 'Alcance curto, alvo até 5 seres. Requer afinidade.', null, true),
 
   ('Martírio de Sangue', 'sangue', 4, 'padrão', 'pessoal', 'você', 'veja texto (sem fim natural)', null,
-   'Transforma-se numa monstruosidade bestial: faro, visão no escuro, cura acelerada 10, +10 em ataque/dano corpo a corpo/Defesa, 30 PV temporários, ataques desarmados +1 dado e letais; não pode mais focar/concentrar; -3◯ em perícias de interação social. Sem fim natural — a cada rodada perde um pedaço da mente; quando a cena termina, vira permanentemente uma criatura de Sangue (perda definitiva do personagem).',
+   'Transforma-se numa monstruosidade bestial: faro, visão no escuro, cura acelerada 10, +10 em ataque/dano corpo a corpo/Defesa, 30 PV temporários, ataques desarmados +1 dado e letais; não pode mais focar/concentrar; -3d20 em perícias de interação social. Sem fim natural — a cada rodada perde um pedaço da mente; quando a cena termina, vira permanentemente uma criatura de Sangue (perda definitiva do personagem).',
    5, 'Bônus sobem pra +20, PV temporários pra 50. Requer afinidade.', null,
    null, null, null, false),
 
@@ -54,7 +54,7 @@ from (values
    7, 'Limite sobe pra 5 rodadas; ao fim, vira uma marionete. Requer 4º círculo e afinidade.', 4, true),
 
   ('Fedor Pútrido', 'morte', 3, 'padrão', 'pessoal', 'você', 'sustentada', null,
-   'Suspende funções biológicas, cheira a cadáver; animais se afastam, -3◯ Diplomacia, +5 Furtividade, +10 Enganação pra fingir de morto; cada rodada sustentado causa 1d4 dano de Morte que ignora resistências.',
+   'Suspende funções biológicas, cheira a cadáver; animais se afastam, -3d20 Diplomacia, +5 Furtividade, +10 Enganação pra fingir de morto; cada rodada sustentado causa 1d4 dano de Morte que ignora resistências.',
    4, 'Alcance toque, alvo 1 ser voluntário.', null,
    9, 'Alcance curto, alvo até 5 voluntários. Requer afinidade.', null, true),
 
@@ -110,13 +110,13 @@ from (values
 insert into cursed_items_special (source_id, name, description, category, spaces)
 select (select id from sources where slug = 'sobrevivendo_ao_horror'), v.name, v.description, v.category::item_category, v.spaces
 from (values
-  ('Conector de Membros', 'Ação padrão reconecta braço/perna/cabeça decepados até 3 rodadas atrás; não cura PV, mas remove morrendo/morto (fica inconsciente com 1 PV); removendo o conector, a parte decepa de novo. 25% de chance de dar "vida própria" à parte (perna=lento; braço=-◯ em testes com o braço; cabeça=25% confuso em cenas de tensão).', 'III', 1),
+  ('Conector de Membros', 'Ação padrão reconecta braço/perna/cabeça decepados até 3 rodadas atrás; não cura PV, mas remove morrendo/morto (fica inconsciente com 1 PV); removendo o conector, a parte decepa de novo. 25% de chance de dar "vida própria" à parte (perna=lento; braço=-1d20 em testes com o braço; cabeça=25% confuso em cenas de tensão).', 'III', 1),
   ('Dose d''A Praga', 'Frasco; ação padrão abre e dá a você ou adjacente os poderes Arma de Sangue + Sangue de Ferro + Sangue Vivo até o fim da cena; ao acabar, Fortitude DT 20+5 por dose anterior desde o último interlúdio ou sofre 2d4 dano mental e mantém os poderes até o fim da PRÓXIMA cena também, mais o efeito de Ódio Incontrolável.', 'III', 1),
   ('Mandíbula Agonizante', 'Ação padrão pressiona + arremessa em alcance médio; grita alto (cobre sons num raio de 30m até o fim da cena); em furtividade, sucesso automático em distrair; criaturas de Sangue precisam de Vontade DT 35 pra não ir até ela; recarrega após descansar 1 cena.', 'II', 1),
-  ('Retalho Tenebroso', 'Ação padrão aplica no rosto como máscara; dá faro e visão no escuro, mas vulnerabilidade a Morte e -2◯ em perícias de interação social; a cada dia seguido usando, +1 cumulativo em rolagens de dano; mas ao fim de cada dia, perde 1d6 PV (Fortitude DT 15, +5 por teste adicional em sequência, evita); remover exige ação padrão + mesmo teste; PV perdido só recupera após remover; solta sozinho se a pessoa morrer.', 'II', 1),
+  ('Retalho Tenebroso', 'Ação padrão aplica no rosto como máscara; dá faro e visão no escuro, mas vulnerabilidade a Morte e -2d20 em perícias de interação social; a cada dia seguido usando, +1 cumulativo em rolagens de dano; mas ao fim de cada dia, perde 1d6 PV (Fortitude DT 15, +5 por teste adicional em sequência, evita); remover exige ação padrão + mesmo teste; PV perdido só recupera após remover; solta sozinho se a pessoa morrer.', 'II', 1),
   ('Ampulheta do Tempo Sofrido', 'Empunhando, gasta 5 PE pra receber imediatamente os benefícios de uma ação de interlúdio à escolha; depois de usar, só reusa gastando uma ação de interlúdio pra "devolver o tempo".', 'II', 1),
   ('Injeção de Lodo', 'Ação padrão + conteúdo injeta em si/adjacente voluntário; até o fim da cena, vulnerabilidade a balístico e Energia, mas a próxima vez que cairia a 0 PV na mesma cena, fica em 1 PV em vez disso.', 'II', 0.5),
-  ('Instantâneo Mortal', 'Empunhando + teste de perícia pra procurar pistas relacionado às circunstâncias de morte retratadas, gasta 1 PE pra +◯ (mestre define quando se aplica).', 'II', 0.5),
+  ('Instantâneo Mortal', 'Empunhando + teste de perícia pra procurar pistas relacionado às circunstâncias de morte retratadas, gasta 1 PE pra +1d20 (mestre define quando se aplica).', 'II', 0.5),
   ('Projétil de Lodo, curto', 'Troca todo o dano da arma pra Morte; a arma se degrada e desfaz ao fim da cena.', 'I', 1),
   ('Projétil de Lodo, longo', 'Troca todo o dano da arma pra Morte; a arma se degrada e desfaz ao fim da cena.', 'II', 1),
   ('Rádio Chiador', 'Pilha dura 12h; ligado, chia se houver criatura paranormal em alcance extremo (mais alto = mais perto; estima direção/categoria); criaturas paranormais são atraídas pelo chiado; funções normais de gravador não funcionam.', 'II', 1),
@@ -126,7 +126,7 @@ from (values
   ('Tablet do Saber Custoso', 'Empunhando, usa pra ter os benefícios de treinamento numa perícia por 1 teste; custa Sanidade = valor do atributo-chave dessa perícia.', 'II', 1),
   ('Arreio Neural', 'Usando, sofrer 5+ dano de eletricidade/Energia recupera 1 PE; máximo por dia = 2x Vigor.', 'II', 1),
   ('Centrifugador Existencial', 'Ação padrão + 3 PE ativa; divide você em 2 possibilidades de futuro, turno adicional na última contagem de iniciativa da rodada; sorteia qual versão se dissipa no fim da rodada.', 'III', 1),
-  ('Espelho Refletor', 'Ação de movimento observa ponto/ser fora do ângulo de visão em alcance médio, +◯ em Percepção, chance de enxergar através de cobertura total; ao sofrer dano de Energia, sacrifica o espelho pra evitar o dano e refletir de volta na origem.', 'II', 1),
+  ('Espelho Refletor', 'Ação de movimento observa ponto/ser fora do ângulo de visão em alcance médio, +1d20 em Percepção, chance de enxergar através de cobertura total; ao sofrer dano de Energia, sacrifica o espelho pra evitar o dano e refletir de volta na origem.', 'II', 1),
   ('Fuzil Alheio', 'Fuzil de precisão com mira telescópica + mira laser já embutidas; dano de Energia; não precisa de munição.', 'IV', 2),
   ('A Primeira Adaga', 'Usada como componente ritualístico, dá ao ritual os efeitos combinados dos catalisadores Ampliador + Perturbador + Potencializador + Prolongador simultaneamente, e reduz o tempo de conjuração pra 1 rodada. Preço: conjurador perde PV = metade do total (conta como dano massivo); pode usar uma vítima de sacrifício pra pagar esse preço em vida no lugar.', 'III', 1)
 ) as v(name, description, category, spaces);

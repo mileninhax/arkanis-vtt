@@ -40,7 +40,7 @@ select (select id from classes where slug = 'ocultista'), v.name, v.description,
 
 insert into general_powers (source_id, name, description, prerequisites)
 select (select id from sources where slug = 'arquivos_secretos_05'), v.name, v.description, v.prereq from (values
-  ('Apaixonado por Veículos', 'Treina Pilotagem (+2 se já treinado); +◯ em testes de segurança do veículo; com Veículos Operacionais, +1 regalia extra.', 'Agi 2'),
+  ('Apaixonado por Veículos', 'Treina Pilotagem (+2 se já treinado); +1d20 em testes de segurança do veículo; com Veículos Operacionais, +1 regalia extra.', 'Agi 2'),
   ('Desafiar o Ego', 'Reação + 1 PE ao ver aliado atacar, grita incentivo; acertando, +dano = Presença; errando, recupera PE.', 'Pre 2'),
   ('Direção Defensiva', 'Treina Pilotagem (+2 se já); dirigindo, todos no veículo +2 Defesa/resistência (+2 Defesa do veículo com Veículos Operacionais).', null)
 ) as v(name, description, prereq);

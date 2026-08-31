@@ -43,7 +43,7 @@ from (values
   ('Katana', 'I', 2, 'Arma ágil; veterano em Luta pode empunhar como arma de uma mão.', '1d10', '19', null, 'C', 'taticas', 'duas_maos', 'corpo_a_corpo'),
   ('Marreta', 'I', 2, 'Demolir paredes (ou pessoas); mesmas estatísticas de outras ferramentas de construção (picareta).', '3d4', 'x2', null, 'I', 'taticas', 'duas_maos', 'corpo_a_corpo'),
   ('Montante', 'I', 2, 'Espada de 1,5m, duas mãos.', '2d6', '19', null, 'C', 'taticas', 'duas_maos', 'corpo_a_corpo'),
-  ('Motosserra', 'I', 2, 'Rolar um 6 num dado de dano soma outro dado; -◯ nos testes de ataque; ligar é ação de movimento.', '3d6', 'x2', null, 'C', 'taticas', 'duas_maos', 'corpo_a_corpo'),
+  ('Motosserra', 'I', 2, 'Rolar um 6 num dado de dano soma outro dado; -1d20 nos testes de ataque; ligar é ação de movimento.', '3d6', 'x2', null, 'C', 'taticas', 'duas_maos', 'corpo_a_corpo'),
   -- Armas Táticas — Disparo, Duas Mãos
   ('Arco composto', 'I', 2, 'Materiais de alta tensão + roldanas; ao contrário de outras armas de disparo, soma Força no dano.', '1d10', 'x3', 'medio', 'P', 'taticas', 'duas_maos', 'disparo'),
   ('Balestra', 'I', 2, 'Besta pesada de guerra; recarregar exige ação de movimento a cada disparo.', '1d12', '19', 'medio', 'P', 'taticas', 'duas_maos', 'disparo'),
@@ -67,7 +67,7 @@ values (
   '{"dano":"1d3","critico":"x2","tipo_dano":"nao_letal","empunhadura":"leve","natureza":"corpo_a_corpo"}', false
 ), (
   (select id from sources where slug = 'ordem_paranormal'), 'arma', 'Arma Improvisada', '0', null,
-  'Objeto não feito pra combate = arma corpo a corpo de uma mão, dano 1d6, -◯ no teste de ataque.',
+  'Objeto não feito pra combate = arma corpo a corpo de uma mão, dano 1d6, -1d20 no teste de ataque.',
   '{"dano":"1d6","critico":"x2","empunhadura":"uma_mao","natureza":"corpo_a_corpo","penalidade_ataque":"-1_dado"}', false
 );
 
@@ -106,7 +106,7 @@ from (values
   ('Ferrolho Automático', 'armas_fogo', 'Arma se torna automática'),
   ('Mira Laser', 'armas_fogo', '+2 em margem de ameaça'),
   ('Mira Telescópica', 'armas_fogo', '+1 categoria de alcance; libera Ataque Furtivo em qualquer alcance'),
-  ('Silenciador', 'armas_fogo', '-◯◯ na penalidade de Furtividade pra esconder no mesmo turno em que atacou'),
+  ('Silenciador', 'armas_fogo', '-2d20 na penalidade de Furtividade pra esconder no mesmo turno em que atacou'),
   ('Tática', 'armas_fogo', 'Saca como ação livre'),
   ('Visão de Calor', 'armas_fogo', 'Ignora camuflagem do alvo ao disparar'),
   ('Dum Dum', 'municao_balas', '+1 no multiplicador de crítico'),
@@ -119,7 +119,7 @@ from (values
 
 insert into equipment_items (source_id, type, name, category, spaces, description, stats)
 values
-  ((select id from sources where slug = 'ordem_paranormal'), 'protecao', 'Proteção Leve', 'I', 2, 'Jaqueta de couro pesada ou colete de kevlar (seguranças/policiais). Sem proficiência: -◯◯ em testes baseados em Força e Agilidade.', '{"defesa":5}'),
+  ((select id from sources where slug = 'ordem_paranormal'), 'protecao', 'Proteção Leve', 'I', 2, 'Jaqueta de couro pesada ou colete de kevlar (seguranças/policiais). Sem proficiência: -2d20 em testes baseados em Força e Agilidade.', '{"defesa":5}'),
   ((select id from sources where slug = 'ordem_paranormal'), 'protecao', 'Proteção Pesada', 'II', 5, 'Capacete + ombreiras + joelheiras + caneleiras + colete multicamada (forças especiais/exército); resistência a balístico/corte/impacto/perfuração 2; -5 em perícias com penalidade de carga.', '{"defesa":10,"resistencia":{"balistico":2,"corte":2,"impacto":2,"perfuracao":2}}'),
   ((select id from sources where slug = 'ordem_paranormal'), 'protecao', 'Escudo', 'I', 2, 'Empunhado numa mão, Defesa +2 (acumula com proteção); conta como proteção pesada pra fins de proficiência.', '{"defesa":2}');
 

@@ -7,14 +7,14 @@ from (values
   ('Pregador pneumático', '0', 1, 'Conta como arma de fogo pra poderes que afetam esse tipo; 300 pregos por rolo (dura 1 missão).', '1d4', 'x4', 'curto', 'P', 'simples', 'uma_mao', 'disparo', null),
   ('Estilingue', '0', 1, 'Soma Força no dano (diferente de outras armas de disparo); bolinhas reaproveitáveis (pacote dura 1 missão); pode lançar granadas em alcance longo.', '1d4', 'x2', 'curto', 'I', 'simples', 'duas_maos', 'disparo', null),
   ('Revólver compacto', 'I', 1, 'Treinado em Crime, carrega sem ocupar espaço.', '2d4', '19/x3', 'curto', 'P', 'simples', 'leve', 'fogo', 'Balas curtas'),
-  ('Baioneta', '0', 1, 'Ação de movimento pra fixar numa arma de fogo de duas mãos, virando arma de duas mãos ágil com dano 1d6; ainda pode atacar com a arma de fogo, mas -◯ à distância com ela.', '1d4', '19', null, 'P', 'taticas', 'leve', 'corpo_a_corpo', null),
+  ('Baioneta', '0', 1, 'Ação de movimento pra fixar numa arma de fogo de duas mãos, virando arma de duas mãos ágil com dano 1d6; ainda pode atacar com a arma de fogo, mas -1d20 à distância com ela.', '1d4', '19', null, 'P', 'taticas', 'leve', 'corpo_a_corpo', null),
   ('Faca tática', 'I', 1, 'Arma ágil, pode ser arremessada; ação especial contra-ataque com ela dá +2 no teste de ataque; ação especial bloqueio, gasta 2 PE + sacrifica a faca pra +20 na RD do bloqueio.', '1d6', '19', 'curto', 'C', 'taticas', 'leve', 'corpo_a_corpo', null),
   ('Gancho de carne', '0', 1, 'Amarrado a corda/corrente, alcance sobe pra 4,5m e vira item de espaço 2.', '1d4', 'x4', null, 'P', 'taticas', 'leve', 'corpo_a_corpo', null),
   ('Bastão policial', 'I', 1, 'Arma ágil; usando a ação especial esquiva com ela, bônus na Defesa +1.', '1d6', 'x2', 'curto', 'I', 'taticas', 'uma_mao', 'corpo_a_corpo', null),
   ('Picareta', '0', 1, 'Ferramenta de mineração usável como arma.', '1d6', 'x4', null, 'P', 'taticas', 'uma_mao', 'corpo_a_corpo', null),
   ('Shuriken', 'I', 0.5, 'Veterano em Pontaria, 1x/rodada gasta 1 PE pra ataque adicional de shuriken no mesmo alvo; 1 shuriken = pacote pra 2 cenas (ou 10 unidades com contagem de munição).', '1d4', 'x2', 'curto', 'P', 'taticas', null, 'arremesso', null),
-  ('Pistola pesada', 'I', 1, '-◯ em testes de ataque (anula empunhando com as duas mãos).', '2d8', '18', 'curto', 'B', 'taticas', 'uma_mao', 'fogo', 'Balas curtas'),
-  ('Espingarda de cano duplo', 'II', 2, 'Recarrega com ação de movimento após os 2 cartuchos; pode disparar os 2 canos no mesmo alvo (-◯ no teste, dano sobe pra 6d6).', '4d6', 'x3', 'curto', 'B', 'taticas', 'duas_maos', 'fogo', 'Cartuchos')
+  ('Pistola pesada', 'I', 1, '-1d20 em testes de ataque (anula empunhando com as duas mãos).', '2d8', '18', 'curto', 'B', 'taticas', 'uma_mao', 'fogo', 'Balas curtas'),
+  ('Espingarda de cano duplo', 'II', 2, 'Recarrega com ação de movimento após os 2 cartuchos; pode disparar os 2 canos no mesmo alvo (-1d20 no teste, dano sobe pra 6d6).', '4d6', 'x3', 'curto', 'B', 'taticas', 'duas_maos', 'fogo', 'Cartuchos')
 ) as v(name, category, spaces, description, dano, critico, alcance, tipo_dano, proficiencia, empunhadura, natureza, tipo_municao);
 
 insert into equipment_items (source_id, type, name, category, spaces, description, stats)
@@ -50,7 +50,7 @@ from (values
   ('Antitérmico', 'I', 0.5, 'Ação padrão + item aplica em si/adjacente: novo teste contra condição mental 1x/cena.'),
   ('Broncodilatador', 'I', 0.5, 'Ação padrão + item aplica em si/adjacente: +5 vs. asfixiado/fatigado até fim do dia.'),
   ('Coagulante', 'I', 0.5, 'Ação padrão + item aplica em si/adjacente: +5 pra estabilizar sangrando (+5 também em Medicina pra remover morrendo, se combinado).'),
-  ('Óculos de visão noturna', 'I', 1, 'Visão no escuro; mas -◯ em resistência a ofuscado e efeitos de luz.'),
+  ('Óculos de visão noturna', 'I', 1, 'Visão no escuro; mas -1d20 em resistência a ofuscado e efeitos de luz.'),
   ('Óculos escuros', '0', 1, 'Imune a ofuscado.'),
   ('Pá', '0', 2, '+5 Força pra cavar/mover detritos; usável como bastão.'),
   ('Paraquedas', 'I', 2, 'Anula dano de queda; veterano em Acrobacia/Pilotagem/Reflexos/Tática/Profissão específica usa automaticamente; senão exige Reflexos DT 20 — falhar reduz o dano só à metade.'),

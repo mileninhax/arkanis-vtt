@@ -33,7 +33,7 @@ values ((select id from classes where slug = 'ocultista'), 'maledictologo', 'Mal
 
 insert into class_track_tiers (track_id, nex_percent, name, description)
 select (select id from class_tracks where slug = 'maledictologo'), v.nex, v.name, v.description from (values
-  (10, 'Identificação Macabra', 'Identificar item amaldiçoado/ritual, gasta 1 PE pra +1d10; identificar item amaldiçoado como ação completa sofre só -◯ (em vez da penalidade maior padrão).'),
+  (10, 'Identificação Macabra', 'Identificar item amaldiçoado/ritual, gasta 1 PE pra +1d10; identificar item amaldiçoado como ação completa sofre só -1d20 (em vez da penalidade maior padrão).'),
   (40, 'Compreensão de Maldições', 'Ação de interlúdio + 3 PE + teste de Ocultismo (DT 10+5 por categoria do item) num item amaldiçoado; falhar perde 2d4+2 Sanidade; passando com item que contém ritual, perde 1d4+1 Sanidade + aprende o ritual (item consumido); passando sem ritual, perde 1d4+1 Sanidade + transfere as maldições pra outro item ou pra uma tatuagem.'),
   (65, 'Reproduzir Maldição', 'Ação de interlúdio + 3 PE memoriza uma maldição já conhecida; depois, ação de interlúdio + 3 PE + Ocultismo (DT 10+5 por categoria) aplica a maldição memorizada num item novo até o fim da missão; falhar perde 2d8+2 Sanidade, passar perde 1d8+1 Sanidade; maldições sobem categoria, máximo categoria IV.'),
   (99, 'Maldição Suprema', 'Usando Reproduzir Maldição, item conta 3 categorias efetivas a menos (ex.: categoria IV conta como I) até voltar à categoria real.')
@@ -43,7 +43,7 @@ select (select id from class_tracks where slug = 'maledictologo'), v.nex, v.name
 insert into general_powers (source_id, name, description, prerequisites)
 select (select id from sources where slug = 'arquivos_secretos_01'), v.name, v.description, v.prereq from (values
   ('<Habilidade> Aprimorada', 'Escolhe habilidade/ritual com DT; DT pra resistir +2 (pode escolher de novo pra outras, ou até 2x na mesma — total +5).', null),
-  ('Cicatrizes Expostas', 'Ação de movimento expõe cicatriz; enquanto exposta, +1d8 dano do mesmo tipo em tudo que causa, mas -◯ em Vontade e testes que exijam calma; outro ser pode expor à força; dura até o fim da cena.', 'Ter cicatrizes'),
+  ('Cicatrizes Expostas', 'Ação de movimento expõe cicatriz; enquanto exposta, +1d8 dano do mesmo tipo em tudo que causa, mas -1d20 em Vontade e testes que exijam calma; outro ser pode expor à força; dura até o fim da cena.', 'Ter cicatrizes'),
   ('Curiosidade Oculta', 'Treina (ou +2) Ocultismo; teste de Vontade, gasta 2 PE pra usar Ocultismo no lugar.', 'Int 2'),
   ('Especialista Esotérico', 'Combina até 3 catalisadores ritualísticos ao conjurar (em vez de 1).', 'Int 3, conjurar ritual de 2º círculo, Domínio Esotérico'),
   ('Instintos Urbanos', 'Treina (ou +2) Crime; em ambiente fechado, Crime DT 20 identifica rota de fuga — ação de movimento extra no 1º turno de fuga + 2 Defesa até fugir (ou +2 Defesa permanente se não houver rota).', 'Agi 2')

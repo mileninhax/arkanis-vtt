@@ -35,7 +35,7 @@ Exemplos de fontes de medo (dano · DT Vontade):
 Efeitos de Medo: Sanidade reduzida a 0 por dano mental (ou sofrer dano mental já em Sanidade 0) causa um efeito de medo — rola 2d10 na tabela; dura até recuperar 1+ Sanidade. Sofrer mais de um efeito na mesma cena soma +1 na rolagem por vez adicional; rolar um efeito que já tem avança pro próximo da tabela.
 
 Tabela de Efeitos de Medo (2d10):
-2 Encorajamento — recupera 1 SAN a cada 5% NEX; +◯ num teste à escolha até o fim da cena.
+2 Encorajamento — recupera 1 SAN a cada 5% NEX; +1d20 num teste à escolha até o fim da cena.
 3 Surto de adrenalina — +5 ataque/dano até o fim da cena; qualquer ação que não seja agredir exige Vontade DT 20 ou perde a ação.
 4 Hesitação — atordoado 1 rodada.
 5 Fraqueza — fica fraco.
@@ -43,9 +43,9 @@ Tabela de Efeitos de Medo (2d10):
 7 Ansiedade — falha automática no próximo teste (ou perde ação padrão fazendo algo "inútil" pra evitar).
 8 Desorientação — fica desprevenido.
 9 Desespero — falha automática em testes de Vontade.
-10 Histeria — ri/chora 1d4 rodadas; -◯ em todos os testes.
+10 Histeria — ri/chora 1d4 rodadas; -1d20 em todos os testes.
 11 Abalo — fica abalado.
-12 Alucinação — testa; se o maior ◯ sair ímpar, falha automática.
+12 Alucinação — testa; se o maior 1d20 sair ímpar, falha automática.
 13 Susto — fica apavorado.
 14 Confusão — fica confuso.
 15 Paralisia — paralisado 1d4 rodadas, depois abalado.
@@ -68,16 +68,16 @@ Ações contra o medo:
   'Resolvida com teste estendido de Atletismo: 3 sucessos antes de 3 falhas. Caçador que vence alcança a presa (pode atacar); presa que vence escapa. DT conforme velocidade do oponente: pessoas comuns 15, pessoas velozes/animais ou criaturas comuns 20, animais/criaturas velozes 25+. Outras perícias podem substituir Atletismo se justificadas narrativamente (cada uma só 1x por perseguição; Atletismo sem esse limite). Perseguição motorizada: usa Pilotagem (ou Adestramento pra montaria) no lugar de Atletismo.
 
 Ações em perseguição:
-- Cortar Caminho: -2◯ no teste; passando, ganha 2 sucessos (em vez de 1).
-- Esforço Extra: +◯ no teste; perde 1d4 PV (2d4 na 2ª vez na mesma cena, 3d4 na 3ª...).
-- Criar Obstáculo (só presa): -◯ no teste + teste de Força DT 15; passando, reduz a DT do teste de Atletismo em -5 pra todos nessa rodada; só 1 personagem por rodada.
+- Cortar Caminho: -2d20 no teste; passando, ganha 2 sucessos (em vez de 1).
+- Esforço Extra: +1d20 no teste; perde 1d4 PV (2d4 na 2ª vez na mesma cena, 3d4 na 3ª...).
+- Criar Obstáculo (só presa): -1d20 no teste + teste de Força DT 15; passando, reduz a DT do teste de Atletismo em -5 pra todos nessa rodada; só 1 personagem por rodada.
 - Despistar (só presa, precisa já ter 1+ sucesso): substitui Atletismo por Furtividade; passando, ganha 2 sucessos; falhando, sofre 2 falhas.
-- Sacrifício: falha automática no Atletismo da rodada, mas dá +◯ no teste dos outros.
-- Atrapalhar (só presa): -◯ no próprio Atletismo + Luta oposto a Luta/Reflexos da vítima; vencendo, -2◯ no Atletismo dela.
+- Sacrifício: falha automática no Atletismo da rodada, mas dá +1d20 no teste dos outros.
+- Atrapalhar (só presa): -1d20 no próprio Atletismo + Luta oposto a Luta/Reflexos da vítima; vencendo, -2d20 no Atletismo dela.
 
 Perseguições menores/maiores: mestre pode exigir 2 sucessos/2 falhas (curtas) ou 5-7 sucessos/3 falhas (longas).
 
-Eventos de Perseguição (d20): 1-8 nenhum · 9-10 Obstáculo (entulho, Força DT 15) · 11-12 Obstáculo (piso escorregadio, Acrobacia DT 20) · 13-14 Obstáculo (entulho rolando, Reflexos DT 20) · 15 Obstáculo (multidão, Intimidação DT 20) · 16-17 Obstáculo (caminho bloqueado, Força DT 15) · 18 Atalho (vias labirínticas, Percepção DT 20) · 19 Atalho (porta trancada, Crime DT 25) · 20 Atalho (vegetação, Sobrevivência DT 20). Obstáculo: falhar dá -2◯ no Atletismo da rodada. Atalho: passar dá +2◯; falhar dá -2◯.',
+Eventos de Perseguição (d20): 1-8 nenhum · 9-10 Obstáculo (entulho, Força DT 15) · 11-12 Obstáculo (piso escorregadio, Acrobacia DT 20) · 13-14 Obstáculo (entulho rolando, Reflexos DT 20) · 15 Obstáculo (multidão, Intimidação DT 20) · 16-17 Obstáculo (caminho bloqueado, Força DT 15) · 18 Atalho (vias labirínticas, Percepção DT 20) · 19 Atalho (porta trancada, Crime DT 25) · 20 Atalho (vegetação, Sobrevivência DT 20). Obstáculo: falhar dá -2d20 no Atletismo da rodada. Atalho: passar dá +2d20; falhar dá -2d20.',
   2
 ),
 (
@@ -87,7 +87,7 @@ Eventos de Perseguição (d20): 1-8 nenhum · 9-10 Obstáculo (entulho, Força D
 
 Ações e efeito na visibilidade:
 - Ação comum (falar normal, andar, investigar): sem alteração de visibilidade.
-- Ação discreta (+0 visibilidade): anda na metade do deslocamento, sussurra; qualquer teste feito sofre -◯.
+- Ação discreta (+0 visibilidade): anda na metade do deslocamento, sussurra; qualquer teste feito sofre -1d20.
 - Ação chamativa (+2 visibilidade): correr, gritar, atacar, conjurar.
 - Esconder-se: teste de Furtividade DT 15; passando, -1 visibilidade.
 - Distrair: teste de Enganação DT 15; passando, -1 na sua visibilidade ou de aliado próximo; falhando, +1 na própria; só 1 personagem por rodada; DT +5 a cada uso na mesma cena.

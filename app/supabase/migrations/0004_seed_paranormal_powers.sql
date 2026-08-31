@@ -9,7 +9,7 @@ from (values
   ('conhecimento', 'Expansão de Conhecimento', 'Aprende um poder de classe de outra classe (cumprindo pré-requisitos).', 'Aprende um segundo poder de classe de fora da sua.', 'Conhecimento 1'),
   ('conhecimento', 'Percepção Paranormal', 'Em cena de investigação, ao testar procurar pistas, pode rerrolar um d20 com resultado menor que 10 (aceita o segundo resultado).', 'Pode rerrolar até dois dados.', null),
   ('conhecimento', 'Precognição', '+2 em Defesa e testes de resistência.', 'Imune à condição desprevenido.', 'Conhecimento 1'),
-  ('conhecimento', 'Sensitivo', '+5 em Diplomacia, Intimidação e Intuição.', 'Em teste oposto com essas perícias, o oponente sofre -◯.', null),
+  ('conhecimento', 'Sensitivo', '+5 em Diplomacia, Intimidação e Intuição.', 'Em teste oposto com essas perícias, o oponente sofre -1d20.', null),
   ('conhecimento', 'Visão do Oculto', '+5 em Percepção e enxerga no escuro.', 'Ignora camuflagem.', null),
 
   ('energia', 'Afortunado', '1x/rolagem, rerrola um resultado 1 em dado que não seja d20.', 'Também pode rerrolar um resultado 1 em d20, 1x/teste.', null),

@@ -176,12 +176,12 @@ select (select id from classes where slug = 'combatente'), v.name, v.description
   ('Armamento Pesado', 'Proficiência com armas pesadas.', 'For 2', 1),
   ('Artista Marcial', 'Ataques desarmados causam 1d6 (1d8 em NEX 35%, 1d10 em NEX 70%), podem causar dano letal e se tornam ágeis.', null, 2),
   ('Ataque de Oportunidade', 'Quando um ser sai voluntariamente de um espaço adjacente ao seu, gasta reação + 1 PE pra ataque corpo a corpo contra ele.', null, 3),
-  ('Combater com Duas Armas', 'Empunhando duas armas (uma leve), ao agredir pode atacar com as duas; sofre -◯ em testes de ataque até o próximo turno.', 'Agi 3, treinado em Luta ou Pontaria', 4),
-  ('Combate Defensivo', 'Ao agredir, pode combater defensivamente: -◯ em testes de ataque até o próximo turno, mas +5 na Defesa.', 'Int 2', 5),
+  ('Combater com Duas Armas', 'Empunhando duas armas (uma leve), ao agredir pode atacar com as duas; sofre -1d20 em testes de ataque até o próximo turno.', 'Agi 3, treinado em Luta ou Pontaria', 4),
+  ('Combate Defensivo', 'Ao agredir, pode combater defensivamente: -1d20 em testes de ataque até o próximo turno, mas +5 na Defesa.', 'Int 2', 5),
   ('Golpe Demolidor', 'Ao quebrar ou atacar um objeto, gasta 1 PE pra causar +2 dados de dano do mesmo tipo da arma.', 'For 2, treinado em Luta', 6),
   ('Golpe Pesado', 'Empunhando arma corpo a corpo, o dano dela aumenta em +1 dado do mesmo tipo.', null, 7),
   ('Incansável', 'Uma vez por cena, gasta 2 PE pra ação de investigação adicional usando Força ou Agilidade como atributo-base.', null, 8),
-  ('Presteza Atlética', 'Em teste de facilitar investigação, gasta 1 PE pra usar Força/Agilidade no lugar do atributo-base; se passar, o próximo aliado que usar esse bônus recebe +◯.', null, 9),
+  ('Presteza Atlética', 'Em teste de facilitar investigação, gasta 1 PE pra usar Força/Agilidade no lugar do atributo-base; se passar, o próximo aliado que usar esse bônus recebe +1d20.', null, 9),
   ('Proteção Pesada', 'Proficiência com Proteções Pesadas.', 'NEX 30%', 10),
   ('Reflexos Defensivos', '+2 em Defesa e testes de resistência.', 'Agi 2', 11),
   ('Saque Rápido', 'Saca/guarda itens como ação livre; com Contagem de Munição ativa, recarrega uma arma de disparo 1x/rodada como ação livre.', 'Treinado em Iniciativa', 12),
@@ -207,12 +207,12 @@ select (select id from classes where slug = 'especialista'), v.name, v.descripti
   ('Mãos Rápidas', 'Teste de Crime, paga 1 PE pra fazê-lo como ação livre.', 'Agi 3, treinado em Crime', 5),
   ('Mochila de Utilidades', 'Um item à escolha (exceto armas) conta como categoria abaixo e ocupa 1 espaço a menos.', null, 6),
   ('Movimento Tático', 'Gasta 1 PE pra ignorar penalidade de deslocamento por terreno difícil/escalar até o fim do turno.', 'Treinado em Atletismo', 7),
-  ('Na Trilha Certa', 'Ao ter sucesso em teste de procurar pistas, gasta 1 PE pra +◯ no próximo teste (custo e bônus cumulativos).', null, 8),
+  ('Na Trilha Certa', 'Ao ter sucesso em teste de procurar pistas, gasta 1 PE pra +1d20 no próximo teste (custo e bônus cumulativos).', null, 8),
   ('Nerd', '1x/cena, gasta 2 PE pra teste de Atualidades (DT 20); se passar, recebe uma informação útil pra cena.', null, 9),
   ('Ninja Urbano', 'Proficiência com armas táticas corpo a corpo e de disparo (exceto fogo) e +2 em dano com elas.', null, 10),
   ('Pensamento Ágil', '1x/rodada em cena de investigação, gasta 2 PE pra ação de procurar pistas adicional.', null, 11),
   ('Perito em Explosivos', 'Soma Intelecto na DT de resistir aos próprios explosivos; exclui número de alvos igual ao Intelecto dos efeitos.', null, 12),
-  ('Primeira Impressão', '+◯◯ no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição numa cena.', null, 13),
+  ('Primeira Impressão', '+2d20 no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição numa cena.', null, 13),
   ('Transcender', 'Recebe um poder paranormal à escolha, sem ganhar Sanidade nesse aumento de NEX. Pode escolher várias vezes.', null, 14),
   ('Treinamento em Perícia', 'Treina-se em duas perícias (a partir de NEX 35% treinado→veterano; a partir de 70% veterano→expert). Pode escolher várias vezes.', null, 15)
 ) as v(name, description, prereq, ord);
@@ -320,7 +320,7 @@ select (select id from class_tracks where slug = 'infiltrador' and class_id = (s
   (10, 'Ataque Furtivo', '1x/rodada, ao atingir alvo desprevenido/flanqueado em corpo a corpo ou alcance curto, gasta 1 PE pra +1d6 de dano (escala +2d6/+3d6/+4d6 em NEX 40/65/99%).'),
   (40, 'Gatuno', '+5 em Atletismo e Crime; percorre deslocamento normal ao se esconder sem penalidade.'),
   (65, 'Assassinar', 'Ação de movimento + 3 PE pra analisar alvo em alcance curto; próximo Ataque Furtivo tem dano extra dobrado, e se causar dano deixa o alvo inconsciente ou morrendo (Fortitude DT Agi evita).'),
-  (99, 'Sombra Fugaz', 'Após atacar/ação chamativa, gasta 3 PE pra não sofrer a penalidade de -◯◯◯ no teste de Furtividade.')
+  (99, 'Sombra Fugaz', 'Após atacar/ação chamativa, gasta 3 PE pra não sofrer a penalidade de -3d20 no teste de Furtividade.')
 ) as v(nex, name, description);
 
 insert into class_track_tiers (track_id, nex_percent, name, description)
@@ -334,7 +334,7 @@ select (select id from class_tracks where slug = 'medico_de_campo' and class_id 
 insert into class_track_tiers (track_id, nex_percent, name, description)
 select (select id from class_tracks where slug = 'negociador' and class_id = (select id from classes where slug = 'especialista')), v.nex, v.name, v.description from (values
   (10, 'Eloquência', 'Ação completa + 1 PE por alvo em alcance curto; teste de Diplomacia/Enganação/Intimidação vs. Vontade — vencendo, alvos ficam fascinados enquanto se concentrar.'),
-  (40, 'Discurso Motivador', 'Ação padrão + 4 PE pra +◯ em testes de perícia de aliados em alcance curto até o fim da cena (8 PE pra +◯◯ a partir de NEX65%).'),
+  (40, 'Discurso Motivador', 'Ação padrão + 4 PE pra +1d20 em testes de perícia de aliados em alcance curto até o fim da cena (8 PE pra +2d20 a partir de NEX65%).'),
   (65, 'Eu Conheço um Cara', '1x/missão, ativa rede de contatos pra um favor (trocar equipamento, local de descanso, resgate — a critério do mestre).'),
   (99, 'Truque de Mestre', 'Gasta 5 PE pra simular o efeito de qualquer habilidade vista num aliado durante a cena, ignorando pré-requisitos (mas pagando custos normalmente).')
 ) as v(nex, name, description);

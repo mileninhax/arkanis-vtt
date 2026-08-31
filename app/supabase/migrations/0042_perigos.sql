@@ -25,7 +25,7 @@ values
 ),
 (
   (select id from sources where slug = 'ordem_paranormal'), 'Clima',
-  'Calor 50°C+/frio -10°C+ exige Fortitude por dia (DT 5+5 por teste anterior) ou 1d6 dano de fogo/frio; extremos (60°C+/-20°C) por minuto. Neblina espessa = camuflagem leve a 1,5m, total além disso. Chuva: -5 Percepção + efeitos de vento forte. Granizo: como chuva + 1 dano de impacto/rodada. Neve: como chuva + terreno difícil. Tempestade: -◯◯ Percepção + vendaval; 1d10 por rodada, resultado 1 = raio aleatório (8d12 elétrico). Vento Forte: -◯ ataque à distância, 50%/rodada apaga chamas/névoas. Vendaval: -◯◯ ataque à distância, sempre apaga. Furacão: ataque à distância impossível; Médio ou menor faz Fortitude DT 15/rodada ou cai e é arrastado (1d6 dano/1,5m). Tornado: idem mas DT 25, afeta até Grande, 1d12x1,5m arrastado.', 3
+  'Calor 50°C+/frio -10°C+ exige Fortitude por dia (DT 5+5 por teste anterior) ou 1d6 dano de fogo/frio; extremos (60°C+/-20°C) por minuto. Neblina espessa = camuflagem leve a 1,5m, total além disso. Chuva: -5 Percepção + efeitos de vento forte. Granizo: como chuva + 1 dano de impacto/rodada. Neve: como chuva + terreno difícil. Tempestade: -2d20 Percepção + vendaval; 1d10 por rodada, resultado 1 = raio aleatório (8d12 elétrico). Vento Forte: -1d20 ataque à distância, 50%/rodada apaga chamas/névoas. Vendaval: -2d20 ataque à distância, sempre apaga. Furacão: ataque à distância impossível; Médio ou menor faz Fortitude DT 15/rodada ou cai e é arrastado (1d6 dano/1,5m). Tornado: idem mas DT 25, afeta até Grande, 1d12x1,5m arrastado.', 3
 ),
 (
   (select id from sources where slug = 'ordem_paranormal'), 'Doenças',

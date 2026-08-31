@@ -17,10 +17,10 @@ const RULES: { key: keyof OptionalRules; label: string }[] = [
 ]
 
 const NODES: { key: keyof Attributes; top: string; left: string }[] = [
-  { key: 'agilidade', top: '20.2%', left: '47.9%' },
+  { key: 'agilidade', top: '18.2%', left: '47.9%' },
   { key: 'intelecto', top: '42.3%', left: '72.45%' },
-  { key: 'vigor', top: '78.2%', left: '62.5%' },
-  { key: 'presenca', top: '77.85%', left: '33.3%' },
+  { key: 'vigor', top: '81%', left: '62.5%' },
+  { key: 'presenca', top: '81%', left: '33.3%' },
   { key: 'forca', top: '42.6%', left: '23.6%' },
 ]
 

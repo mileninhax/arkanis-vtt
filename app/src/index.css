@@ -1284,6 +1284,7 @@ code, .counter {
   max-width: 1180px;
   margin: 0 auto;
   flex-wrap: wrap;
+  zoom: 1.3;
 }
 
 .vtt-col-side {

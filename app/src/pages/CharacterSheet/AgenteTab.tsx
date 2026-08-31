@@ -12,6 +12,7 @@ import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 import AttributeDiagram from './AttributeDiagram'
 import StatBar from './StatBar'
+import { getClassExtras, type ClassTrack, type ClassTrackTier } from '../../lib/content'
 import pvEmpty from '../../assets/pv-empty.svg'
 import pvLow from '../../assets/pv-low.svg'
 import pvHalf from '../../assets/pv-half.svg'
@@ -84,6 +85,9 @@ export default function AgenteTab({
   const [onlyTrained, setOnlyTrained] = useState(false)
   const [addingCondition, setAddingCondition] = useState(false)
   const [conditionDraft, setConditionDraft] = useState('')
+  const [tracks, setTracks] = useState<ClassTrack[]>([])
+  const [trackTiers, setTrackTiers] = useState<ClassTrackTier[]>([])
+  const [trackMenuOpen, setTrackMenuOpen] = useState(false)
 
   useEffect(() => {
     if (character.class_id) {
@@ -104,6 +108,40 @@ export default function AgenteTab({
       })
     }
   }, [character.class_id, character.custom_class])
+
+  useEffect(() => {
+    if (!character.class_id) {
+      setTracks([])
+      setTrackTiers([])
+      return
+    }
+    getClassExtras(character.class_id).then((extras) => {
+      setTracks(extras.tracks)
+      setTrackTiers(extras.tiers)
+    })
+  }, [character.class_id])
+
+  async function pickTrack(trackId: string) {
+    setTrackMenuOpen(false)
+    const eligibleTiers = trackTiers.filter((t) => t.track_id === trackId && t.nex_percent <= character.nex_percent)
+    if (eligibleTiers.length === 0) return
+
+    const { data: existingRows } = await supabase
+      .from('character_progression_picks')
+      .select('nex_percent, note, picks')
+      .eq('character_id', character.id)
+
+    for (const tier of eligibleTiers) {
+      const existingRow = existingRows?.find((r) => r.nex_percent === tier.nex_percent)
+      const existingPicks: { kind: string; label: string; ref_id: string | null }[] = existingRow?.picks ?? []
+      if (existingPicks.some((p) => p.kind === 'trilha')) continue
+      await supabase.from('character_progression_picks').upsert(
+        { character_id: character.id, nex_percent: tier.nex_percent, note: existingRow?.note ?? '', picks: [...existingPicks, { kind: 'trilha', label: tier.name, ref_id: tier.id }] },
+        { onConflict: 'character_id,nex_percent' }
+      )
+    }
+    onUpdated()
+  }
 
   useEffect(() => {
     supabase.from('skills').select('id, name, default_attribute').order('sort_order').then(({ data }) => setSkills(data ?? []))
@@ -226,17 +264,28 @@ function cycleTraining(current: Training): Training {
           )}
 
           {editMode ? (
-            <input value={character.name} onChange={(e) => onNameChange(e.target.value)} style={{ textAlign: 'center', width: '100%' }} />
+            <input value={character.name} onChange={(e) => onNameChange(e.target.value)} className="vtt-name-input" style={{ textAlign: 'center', width: '100%' }} />
           ) : (
-            <h2>{character.name}</h2>
+            <h2 className="vtt-name">{character.name}</h2>
           )}
-          <p style={{ color: 'var(--text-dim)' }}>{originName}</p>
-          <p style={{ color: 'var(--text-dim)' }}>{className}</p>
-          {elementoNome && <p style={{ color: 'var(--text-dim)' }}>Afinidade: {elementoNome}</p>}
-          {trackName && <p style={{ color: 'var(--text-dim)' }}>Trilha: {trackName}</p>}
-          <p style={{ color: 'var(--text-dim)' }}>
-            NEX {character.nex_percent}%{character.nex_mode === 'nex_experiencia' ? ` · Exp. ${character.experience ?? 0}` : ''}
-          </p>
+
+          <div className="vtt-profile-grid">
+            <span className={originName ? 'set' : undefined}>{originName || 'Origem'}</span>
+            <span className={className ? 'set' : undefined}>{className || 'Classe'}</span>
+            <span className={`vtt-track-field${trackName ? ' set' : ''}`} style={{ position: 'relative' }}>
+              <button type="button" onClick={() => setTrackMenuOpen((v) => !v)} disabled={tracks.length === 0}>
+                {trackName || 'Trilha'}
+              </button>
+              {trackMenuOpen && (
+                <ul className="vtt-track-menu">
+                  {tracks.map((t) => (
+                    <li key={t.id}><button type="button" onClick={() => pickTrack(t.id)}>{t.name}</button></li>
+                  ))}
+                </ul>
+              )}
+            </span>
+            <span className={elementoNome ? 'set' : undefined}>{elementoNome || 'Afinidade'}</span>
+          </div>
         </div>
 
         <div className="vtt-card">

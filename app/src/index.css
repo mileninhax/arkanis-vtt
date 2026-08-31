@@ -71,6 +71,14 @@
 }
 
 @font-face {
+  font-family: 'Dico Typewriter';
+  src: url('./assets/fonts/Dico-Typewriter.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Optima Nova LT Pro';
   src: url('./assets/fonts/OptimaNovaLTPro-Regular.otf') format('opentype');
   font-weight: 400;
@@ -1301,6 +1309,81 @@ code, .counter {
   border: none;
   border-radius: 0;
   padding: 0.9em 1em;
+}
+
+.vtt-name {
+  font-family: 'Dico Typewriter', var(--heading);
+  font-size: 1.7em;
+}
+
+.vtt-name-input {
+  font-family: 'Dico Typewriter', var(--heading);
+  font-size: 1.4em;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text-h);
+}
+
+.vtt-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4em 1em;
+  text-align: left;
+  margin-top: 0.7em;
+  padding-top: 0.6em;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.vtt-profile-grid > span {
+  color: var(--text-dim);
+  font-size: 0.9em;
+}
+
+.vtt-profile-grid > span.set {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.vtt-track-field button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.vtt-track-field button:disabled {
+  cursor: default;
+}
+
+.vtt-track-menu {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 0;
+  margin-top: 0.3em;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.3em 0;
+  min-width: 10em;
+  list-style: none;
+}
+
+.vtt-track-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.4em 0.8em;
+  font-size: 0.9em;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.vtt-track-menu button:hover {
+  background: var(--accent-bg);
 }
 
 .vtt-card {

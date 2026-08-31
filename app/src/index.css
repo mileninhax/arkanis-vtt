@@ -1609,7 +1609,7 @@ code, .counter {
   align-items: baseline;
   margin-bottom: 0.6em;
   position: relative;
-  top: -25px;
+  top: -10px;
   z-index: 3;
 }
 
@@ -1672,7 +1672,7 @@ code, .counter {
   /* MEXA SÓ AQUI pra mover a barra inteira (fundo + números + setas, tudo junto)
      por baixo do ícone: aumenta esse número pra entrar mais, diminui pra entrar menos. */
   --overlap: 13px;
-  margin-top: -19px;
+  margin-top: -22px;
   position: relative;
   z-index: 1;
   flex: none;
@@ -1740,9 +1740,9 @@ code, .counter {
 
 .stat-bar-value-input {
   width: 2.6em;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   padding: 0 0.1em;
   font-family: inherit;
   font-size: 1em;

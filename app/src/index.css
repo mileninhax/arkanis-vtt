@@ -1586,26 +1586,29 @@ code, .counter {
 
 .stat-bar-row {
   display: flex;
-  align-items: center;
-  gap: 0.7em;
-  margin-bottom: 0.9em;
+  align-items: stretch;
+  gap: 0.3em;
+  margin-bottom: 0.7em;
 }
 
 .stat-bar-body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .stat-bar-label-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.15em;
 }
 
 .stat-bar-label {
   font-family: 'Westsac', var(--heading);
-  font-size: 1.5em;
+  font-size: 0.85em;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1615,8 +1618,8 @@ code, .counter {
 .stat-bar-temp {
   display: flex;
   align-items: center;
-  gap: 0.3em;
-  font-size: 0.8em;
+  gap: 0.15em;
+  font-size: 0.65em;
   color: var(--text-dim);
 }
 
@@ -1624,6 +1627,7 @@ code, .counter {
   background: transparent;
   border: none;
   padding: 0 0.1em;
+  font-size: 0.9em;
   color: var(--text-dim);
   cursor: pointer;
 }
@@ -1632,45 +1636,44 @@ code, .counter {
   color: var(--text-h);
 }
 
-.stat-bar-track {
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-}
-
 .stat-bar-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 0 0.4em;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
 }
 
-.stat-bar-arrow img {
-  width: 0.9em;
-  height: 0.9em;
-  opacity: 0.7;
+.stat-bar-arrow-left {
+  left: 0;
 }
 
-.stat-bar-arrow:hover img {
-  opacity: 1;
+.stat-bar-arrow-right {
+  right: 0;
+}
+
+.stat-bar-arrow:hover {
+  color: #fff;
 }
 
 .stat-bar-fill-wrap {
   position: relative;
   flex: 1;
-  height: 1.4em;
+  min-height: 3.4em;
   background: var(--bg-input);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .stat-bar-fill {
   position: relative;
   height: 100%;
-  border-radius: 999px;
   overflow: hidden;
 }
 
@@ -1691,11 +1694,11 @@ code, .counter {
 }
 
 .stat-bar-fill.sanidade {
-  background: linear-gradient(90deg, #2e2050 0%, #6a4bb0 48.08%, #9b6fe0 100%);
+  background: linear-gradient(90deg, #53277c 0%, #61158d 48.08%, #8d1eb9 100%);
 }
 
 .stat-bar-fill.esforco {
-  background: linear-gradient(90deg, #5a4614 0%, #b3860f 48.08%, #e0b13a 100%);
+  background: linear-gradient(90deg, #9e6900 0%, #bb8f16 48.08%, #e7a516 100%);
 }
 
 .stat-bar-fill.pd {
@@ -1709,7 +1712,7 @@ code, .counter {
   align-items: center;
   justify-content: center;
   font-family: var(--heading);
-  font-size: 0.9em;
+  font-size: 0.75em;
   font-weight: 700;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);

@@ -46,6 +46,7 @@ export type CharacterRecord = {
   temp_sanity: number
   max_sanity_override: number | null
   current_pe: number | null
+  temp_pe: number
   current_pd: number | null
   patente: string
   prestigio: number

@@ -419,9 +419,12 @@ function cycleTraining(current: Training): Training {
                 icon={effortIconFor(pct(character.current_pe ?? 0, derived.maxPe))}
                 current={character.current_pe ?? 0}
                 max={derived.maxPe}
+                temp={character.temp_pe}
                 colorClass="esforco"
                 onDecrement={() => updateCharacterField('current_pe', (character.current_pe ?? 0) - 1)}
                 onIncrement={() => updateCharacterField('current_pe', (character.current_pe ?? 0) + 1)}
+                onTempDecrement={() => updateCharacterField('temp_pe', Math.max(0, (character.temp_pe ?? 0) - 1))}
+                onTempIncrement={() => updateCharacterField('temp_pe', (character.temp_pe ?? 0) + 1)}
               />
             </>
           )}

@@ -1630,6 +1630,11 @@ code, .counter {
   color: #fff;
 }
 
+.stat-bar-temp-active,
+.stat-bar-temp-active .stat-bar-temp-arrow {
+  color: #7de7eb;
+}
+
 .stat-bar-temp-arrow {
   background: transparent;
   border: none;
@@ -1688,6 +1693,10 @@ code, .counter {
   border-radius: 3px;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+.stat-bar-fill-wrap-temp {
+  border-color: #7de7eb;
 }
 
 .stat-bar-fill {

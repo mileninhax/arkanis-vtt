@@ -34,7 +34,7 @@ export default function StatBar({
         <div className="stat-bar-label-row">
           <span className="stat-bar-label">{label}</span>
           {temp !== undefined && (
-            <span className="stat-bar-temp">
+            <span className={`stat-bar-temp${temp > 0 ? ' stat-bar-temp-active' : ''}`}>
               Temp.
               <button type="button" className="stat-bar-temp-arrow" onClick={onTempDecrement} aria-label={`-1 Temp. ${label}`}>‹</button>
               {temp}
@@ -42,7 +42,7 @@ export default function StatBar({
             </span>
           )}
         </div>
-        <div className="stat-bar-fill-wrap">
+        <div className={`stat-bar-fill-wrap${temp !== undefined && temp > 0 ? ' stat-bar-fill-wrap-temp' : ''}`}>
           <div className={`stat-bar-fill ${colorClass}`} style={{ width: `${pct}%` }} />
           <button type="button" className="stat-bar-arrow stat-bar-arrow-left" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>
           <span className="stat-bar-value">

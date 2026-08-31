@@ -78,7 +78,7 @@ export default function CharacterCreate() {
         current_pe: derived.pe,
         current_pd: derived.pd,
         optional_rules: draft.optionalRules,
-        photo_url: draft.photoUrl,
+        avatar_url: draft.photoUrl,
         aparencia: draft.appearance,
         personalidade: draft.personality,
         historico: draft.history,

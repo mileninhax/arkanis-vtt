@@ -1,7 +1,6 @@
 -- Passo 5.5 da criação de ficha (Autenticação): permite escolher uma foto pro
--- personagem. Cria a coluna + bucket de Storage seguindo o mesmo padrão de avatars/banners.
-
-alter table characters add column photo_url text;
+-- personagem. A coluna já existe (characters.avatar_url, desde a 0001) -- só falta o
+-- bucket de Storage, seguindo o mesmo padrão de avatars/banners.
 
 insert into storage.buckets (id, name, public)
 values ('character_photos', 'character_photos', true)

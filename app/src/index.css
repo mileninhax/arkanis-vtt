@@ -1326,6 +1326,46 @@ code, .counter {
   overflow-y: auto;
 }
 
+.vtt-col-side::-webkit-scrollbar,
+.vtt-col-main::-webkit-scrollbar,
+.vtt-col-combat::-webkit-scrollbar {
+  width: 4px;
+}
+
+.vtt-col-side::-webkit-scrollbar-track,
+.vtt-col-main::-webkit-scrollbar-track,
+.vtt-col-combat::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vtt-col-side::-webkit-scrollbar-thumb,
+.vtt-col-main::-webkit-scrollbar-thumb,
+.vtt-col-combat::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+.vtt-col-side::-webkit-scrollbar-thumb:hover,
+.vtt-col-main::-webkit-scrollbar-thumb:hover,
+.vtt-col-combat::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.vtt-col-side::-webkit-scrollbar-button,
+.vtt-col-main::-webkit-scrollbar-button,
+.vtt-col-combat::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.vtt-col-side,
+.vtt-col-main,
+.vtt-col-combat {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
 .vtt-col-side,
 .vtt-col-main,
 .vtt-col-combat {

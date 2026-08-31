@@ -1393,11 +1393,12 @@ code, .counter {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: start;
-  gap: 0.4em 1em;
+  gap: 0.15em 0.8em;
   text-align: left;
-  margin-top: 0.7em;
-  padding-top: 0.6em;
+  margin-top: 0.4em;
+  padding-top: 0.35em;
   border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  line-height: 1.25;
 }
 
 .vtt-profile-grid > span {

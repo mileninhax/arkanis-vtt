@@ -48,6 +48,11 @@ export type CharacterDraft = {
   nexPercent: number
   experience: number | null
   name: string
+  photoUrl: string | null
+  appearance: string
+  personality: string
+  history: string
+  objective: string
 }
 
 export const emptyDraft: CharacterDraft = {
@@ -67,4 +72,9 @@ export const emptyDraft: CharacterDraft = {
   nexPercent: 0,
   experience: null,
   name: '',
+  photoUrl: null,
+  appearance: '',
+  personality: '',
+  history: '',
+  objective: '',
 }

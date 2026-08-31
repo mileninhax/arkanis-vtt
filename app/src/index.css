@@ -1837,7 +1837,7 @@ code, .counter {
 }
 
 .nex-dropdown button.active {
-  color: var(--accent-strong);
+  color: var(--text-dim);
 }
 
 /* ---- Criação de Personagem ---- */

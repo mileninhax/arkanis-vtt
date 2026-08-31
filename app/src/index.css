@@ -1667,7 +1667,7 @@ code, .counter {
   position: relative;
   z-index: 1;
   flex: 1;
-  height: 20px;
+  height: 22px;
   margin-left: -30px;
   padding-left: 30px;
   overflow: visible;

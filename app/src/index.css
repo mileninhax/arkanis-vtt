@@ -1586,7 +1586,7 @@ code, .counter {
 .vtt-condition-add {
   width: 1.8em;
   height: 1.8em;
-  border-radius: 999px;
+  border-radius: 3px;
   padding: 0;
   display: inline-flex;
   align-items: center;

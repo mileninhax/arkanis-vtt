@@ -1602,8 +1602,8 @@ code, .counter {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  background: #0a0a0a;
-  border: 1px solid #2a2a2a;
+  background: #1c1c1c;
+  border: 1px solid #3a3a3a;
   border-radius: 10px;
   padding: 0.55em 0.6em 0.55em 1.1em;
   font-family: inherit;

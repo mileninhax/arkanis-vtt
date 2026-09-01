@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import conditionsIcon from '../../assets/condicoes/conditions.svg'
 import enemyEffectsIcon from '../../assets/condicoes/enemy-effects.svg'
 import ritualsIcon from '../../assets/condicoes/rituals.svg'
@@ -32,7 +33,7 @@ export default function ConditionsModal({
     setCustomName('')
   }
 
-  return (
+  return createPortal(
     <div className="conditions-modal-backdrop" onClick={onClose}>
       <div className="conditions-modal-shell" onClick={(e) => e.stopPropagation()}>
         <nav className="conditions-modal-sidebar">
@@ -83,6 +84,7 @@ export default function ConditionsModal({
           <button type="button" className="conditions-modal-close" onClick={onClose} aria-label="Fechar">×</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

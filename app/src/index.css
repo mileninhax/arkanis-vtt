@@ -1544,6 +1544,7 @@ code, .counter {
 .vtt-condition-header .vtt-condition-add {
   font-family: 'Westsac', var(--heading);
   flex-shrink: 0;
+  padding-top: 0.4em;
 }
 
 .conditions-modal-backdrop {
@@ -1827,8 +1828,8 @@ code, .counter {
   flex-shrink: 0;
   width: 1.7em;
   height: 1.7em;
-  background: rgba(51, 51, 51, 0.5);
-  border: 1px solid rgba(51, 51, 51, 0.5);
+  background: rgba(51, 51, 51, 0.69);
+  border: 1px solid rgba(51, 51, 51, 0.69);
   border-radius: 6px;
   padding: 0;
   display: inline-flex;
@@ -1907,8 +1908,8 @@ code, .counter {
   justify-content: center;
   font-size: 0.95em;
   line-height: 1;
-  background: rgba(51, 51, 51, 0.5);
-  border: 1px solid rgba(51, 51, 51, 0.5);
+  background: rgba(51, 51, 51, 0.69);
+  border: 1px solid rgba(51, 51, 51, 0.69);
   color: var(--text-dim);
 }
 

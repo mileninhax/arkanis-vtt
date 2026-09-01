@@ -1560,7 +1560,7 @@ code, .counter {
 .conditions-modal-shell {
   display: flex;
   align-items: stretch;
-  gap: 0.7em;
+  gap: 0;
   font-family: 'Dico Typewriter', var(--sans);
 }
 
@@ -1590,9 +1590,10 @@ code, .counter {
 }
 
 .conditions-modal-sidebar {
-  flex: 0 0 170px;
+  flex: 0 0 185px;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   padding: 1em 0;
   gap: 0.5em;
 }
@@ -1604,7 +1605,7 @@ code, .counter {
   background: #0a0a0a;
   border: 1px solid #2a2a2a;
   border-radius: 10px;
-  padding: 0.55em 0.6em;
+  padding: 0.55em 0.6em 0.55em 1.1em;
   font-family: inherit;
   font-size: 0.78em;
   color: var(--text-dim);

@@ -1633,12 +1633,14 @@ code, .counter {
 }
 
 .conditions-modal-custom {
-  color: #e0c98f;
+  background: #e0c98f;
+  color: #000;
 }
 
-.conditions-modal-custom.active {
-  background: rgba(224, 201, 143, 0.15);
-  color: #e0c98f;
+.conditions-modal-custom.active,
+.conditions-modal-custom:hover {
+  background: #ecd9a9;
+  color: #000;
 }
 
 .conditions-modal-content {

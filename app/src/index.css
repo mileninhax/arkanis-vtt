@@ -1600,20 +1600,25 @@ code, .counter {
 .conditions-modal-nav-btn {
   display: flex;
   align-items: center;
-  gap: 0.6em;
+  gap: 0.5em;
   background: #0a0a0a;
   border: 1px solid #2a2a2a;
   border-radius: 10px;
-  padding: 0.6em 0.7em;
+  padding: 0.55em 0.6em;
   font-family: inherit;
-  font-size: 0.95em;
+  font-size: 0.78em;
   color: var(--text-dim);
   text-align: left;
+  white-space: nowrap;
+}
+
+.conditions-modal-nav-btn span {
+  white-space: nowrap;
 }
 
 .conditions-modal-nav-btn img {
-  width: 1.6em;
-  height: 1.6em;
+  width: 1.4em;
+  height: 1.4em;
   object-fit: contain;
   flex-shrink: 0;
 }

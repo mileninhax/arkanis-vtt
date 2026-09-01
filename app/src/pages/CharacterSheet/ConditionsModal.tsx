@@ -34,9 +34,7 @@ export default function ConditionsModal({
 
   return (
     <div className="conditions-modal-backdrop" onClick={onClose}>
-      <div className="conditions-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="conditions-modal-texture" />
-
+      <div className="conditions-modal-shell" onClick={(e) => e.stopPropagation()}>
         <nav className="conditions-modal-sidebar">
           {CATEGORIES.map((cat) => (
             <button
@@ -50,37 +48,40 @@ export default function ConditionsModal({
             </button>
           ))}
 
-          <div className="conditions-modal-sidebar-divider" />
-
           <button
             type="button"
             className={`conditions-modal-nav-btn conditions-modal-custom${active === 'custom' ? ' active' : ''}`}
             onClick={() => setActive('custom')}
           >
+            <span className="conditions-modal-custom-icon">!</span>
             <span>Personalizado</span>
           </button>
         </nav>
 
-        <div className="conditions-modal-content">
-          <h3>{active === 'custom' ? 'Personalizado' : activeCategory?.label}</h3>
+        <div className="conditions-modal">
+          <div className="conditions-modal-texture" />
 
-          {active === 'custom' ? (
-            <div className="conditions-modal-custom-form">
-              <input
-                autoFocus
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && submitCustom()}
-                placeholder="Nome da condição"
-              />
-              <button type="button" onClick={submitCustom}>Adicionar</button>
-            </div>
-          ) : (
-            <p className="conditions-modal-placeholder">Em breve.</p>
-          )}
+          <div className="conditions-modal-content">
+            <h3>{active === 'custom' ? 'Personalizado' : activeCategory?.label}</h3>
+
+            {active === 'custom' ? (
+              <div className="conditions-modal-custom-form">
+                <input
+                  autoFocus
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && submitCustom()}
+                  placeholder="Nome da condição"
+                />
+                <button type="button" onClick={submitCustom}>Adicionar</button>
+              </div>
+            ) : (
+              <p className="conditions-modal-placeholder">Em breve.</p>
+            )}
+          </div>
+
+          <button type="button" className="conditions-modal-close" onClick={onClose} aria-label="Fechar">×</button>
         </div>
-
-        <button type="button" className="conditions-modal-close" onClick={onClose} aria-label="Fechar">×</button>
       </div>
     </div>
   )

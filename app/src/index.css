@@ -1543,6 +1543,7 @@ code, .counter {
 .vtt-condition-header .vtt-condition-add {
   font-family: 'Westsac', var(--heading);
   flex-shrink: 0;
+  transform: translateY(4px);
 }
 
 .vtt-condition-tags {

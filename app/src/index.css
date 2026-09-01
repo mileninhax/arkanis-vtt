@@ -1826,8 +1826,8 @@ code, .counter {
 
 .vtt-condition-remove {
   flex-shrink: 0;
-  width: 2.2em;
-  height: 2.2em;
+  width: 1.7em;
+  height: 1.7em;
   background: #111;
   border: 1px solid #333;
   border-radius: 6px;
@@ -1836,7 +1836,7 @@ code, .counter {
   align-items: center;
   justify-content: center;
   font-family: 'Westsac', var(--heading);
-  font-size: 1.5em;
+  font-size: 0.95em;
   line-height: 1;
   color: var(--text-dim);
 }

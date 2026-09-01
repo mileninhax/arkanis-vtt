@@ -48,6 +48,7 @@ export type CharacterRecord = {
   current_pe: number | null
   temp_pe: number
   current_pd: number | null
+  temp_pd: number
   patente: string
   prestigio: number
   optional_rules: Record<string, boolean>

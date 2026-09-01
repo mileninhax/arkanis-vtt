@@ -396,9 +396,12 @@ function cycleTraining(current: Training): Training {
               icon={determinationIconFor(pct(character.current_pd ?? 0, derived.maxPd))}
               current={character.current_pd ?? 0}
               max={derived.maxPd}
+              temp={character.temp_pd}
               colorClass="pd"
               onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
               onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+              onTempDecrement={() => updateCharacterField('temp_pd', Math.max(0, (character.temp_pd ?? 0) - 1))}
+              onTempIncrement={() => updateCharacterField('temp_pd', (character.temp_pd ?? 0) + 1)}
               onCurrentChange={(value) => updateCharacterField('current_pd', value)}
             />
           ) : (
@@ -441,9 +444,12 @@ function cycleTraining(current: Training): Training {
                 icon={determinationIconFor(pct(character.current_pd ?? 0, maxPdPatente))}
                 current={character.current_pd ?? 0}
                 max={maxPdPatente}
+                temp={character.temp_pd}
                 colorClass="pd"
                 onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
                 onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
+                onTempDecrement={() => updateCharacterField('temp_pd', Math.max(0, (character.temp_pd ?? 0) - 1))}
+                onTempIncrement={() => updateCharacterField('temp_pd', (character.temp_pd ?? 0) + 1)}
                 onCurrentChange={(value) => updateCharacterField('current_pd', value)}
               />
             )

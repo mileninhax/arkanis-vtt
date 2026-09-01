@@ -1793,7 +1793,7 @@ code, .counter {
 
 .vtt-condition-tag-row {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 0.4em;
 }
 
@@ -1827,22 +1827,25 @@ code, .counter {
 .vtt-condition-remove {
   flex-shrink: 0;
   width: 2em;
-  background: rgba(17, 17, 17, 0.5);
-  border: 1px solid rgba(51, 51, 51, 0.5);
+  height: 2em;
+  background: #111;
+  border: 1px solid #333;
   border-radius: 6px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: 'Westsac', var(--heading);
-  font-size: 0.85em;
+  font-size: 1.1em;
   line-height: 1;
   color: var(--text-dim);
+  opacity: 0.55;
 }
 
 .vtt-condition-remove:hover {
-  color: var(--danger);
-  border-color: var(--danger);
+  opacity: 1;
+  color: #fff;
+  border-color: #fff;
 }
 
 .vtt-condition-detail-backdrop {

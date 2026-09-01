@@ -1,3 +1,29 @@
+/**
+ * Condições que, ao serem sofridas de novo, viram uma condição mais grave
+ * (Livro Base, Apêndice de Condições).
+ */
+export const CONDITION_ESCALATION: Record<string, string> = {
+  'Abalado': 'Apavorado',
+  'Fraco': 'Debilitado',
+  'Debilitado': 'Inconsciente',
+  'Fatigado': 'Exausto',
+  'Exausto': 'Inconsciente',
+  'Frustrado': 'Esmorecido',
+}
+
+/**
+ * Condições com penalidade de dado genérica (testes, ou testes de ataque),
+ * aplicada automaticamente como um Modificador de Teste/Ataque na ficha.
+ * Condições com penalidade restrita a atributos/perícias específicas, ou a
+ * valores fixos (Defesa etc.), ficam de fora — quem joga aplica na mão.
+ */
+export const CONDITION_TEST_MODIFIERS: Record<string, { scope: 'teste' | 'ataque'; dice_bonus: number }> = {
+  'Abalado': { scope: 'teste', dice_bonus: -1 },
+  'Apavorado': { scope: 'teste', dice_bonus: -2 },
+  'Agarrado': { scope: 'ataque', dice_bonus: -1 },
+  'Enredado': { scope: 'ataque', dice_bonus: -1 },
+}
+
 export type AttributeKey = 'forca' | 'agilidade' | 'intelecto' | 'vigor' | 'presenca'
 
 export type Attributes = Record<AttributeKey, number>

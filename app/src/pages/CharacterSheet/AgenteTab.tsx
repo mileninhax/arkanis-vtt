@@ -12,6 +12,7 @@ import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 import AttributeDiagram from './AttributeDiagram'
 import StatBar from './StatBar'
+import ConditionsModal from './ConditionsModal'
 import { getClassExtras, type ClassTrack, type ClassTrackTier } from '../../lib/content'
 import pvEmpty from '../../assets/pv-empty.svg'
 import pvLow from '../../assets/pv-low.svg'
@@ -114,8 +115,7 @@ export default function AgenteTab({
   const [testModifiers, setTestModifiers] = useState<Modifier[]>([])
   const [testDraft, setTestDraft] = useState({ diceBonus: 0, valueBonus: 0 })
   const [onlyTrained, setOnlyTrained] = useState(false)
-  const [addingCondition, setAddingCondition] = useState(false)
-  const [conditionDraft, setConditionDraft] = useState('')
+  const [showConditionsModal, setShowConditionsModal] = useState(false)
   const [tracks, setTracks] = useState<ClassTrack[]>([])
   const [trackTiers, setTrackTiers] = useState<ClassTrackTier[]>([])
   const [trackMenuOpen, setTrackMenuOpen] = useState(false)
@@ -460,9 +460,7 @@ function cycleTraining(current: Training): Training {
           <img className="vtt-condition-border" src={conditionsBorderTop} alt="" />
           <div className="vtt-condition-header">
             <h3>Condições e Efeitos</h3>
-            {!addingCondition && (
-              <button type="button" className="vtt-condition-add" onClick={() => setAddingCondition(true)} aria-label="Adicionar condição">+</button>
-            )}
+            <button type="button" className="vtt-condition-add" onClick={() => setShowConditionsModal(true)} aria-label="Adicionar condição">+</button>
           </div>
           <img className="vtt-condition-border" src={conditionsBorderBottom} alt="" />
           <div className="vtt-condition-tags">
@@ -472,30 +470,13 @@ function cycleTraining(current: Training): Training {
                 <button type="button" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>
               </span>
             ))}
-            {addingCondition && (
-              <input
-                autoFocus
-                value={conditionDraft}
-                onChange={(e) => setConditionDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && conditionDraft.trim()) {
-                    addCondition(conditionDraft.trim())
-                    setConditionDraft('')
-                    setAddingCondition(false)
-                  }
-                  if (e.key === 'Escape') {
-                    setConditionDraft('')
-                    setAddingCondition(false)
-                  }
-                }}
-                onBlur={() => { setConditionDraft(''); setAddingCondition(false) }}
-                placeholder="Nome da condição"
-                style={{ width: '10em' }}
-              />
-            )}
           </div>
         </div>
       </div>
+
+      {showConditionsModal && (
+        <ConditionsModal onClose={() => setShowConditionsModal(false)} onAddCondition={addCondition} />
+      )}
 
       <div className="vtt-col-main">
         <div className="vtt-card">

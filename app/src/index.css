@@ -1547,6 +1547,154 @@ code, .counter {
   transform: translateY(-4px);
 }
 
+.conditions-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conditions-modal {
+  position: relative;
+  width: min(760px, 92vw);
+  height: min(520px, 86vh);
+  display: flex;
+  background: #16110c;
+  border: 1px solid #3a2c1f;
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: 'Dico Typewriter', var(--sans);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.conditions-modal-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('./assets/condicoes/veins-texture.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.conditions-modal-sidebar {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 190px;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0.6em;
+  gap: 0.3em;
+  background: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid #3a2c1f;
+  overflow-y: auto;
+}
+
+.conditions-modal-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 0.6em;
+  font-family: inherit;
+  font-size: 0.95em;
+  color: var(--text-dim);
+  text-align: left;
+}
+
+.conditions-modal-nav-btn img {
+  width: 1.6em;
+  height: 1.6em;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.conditions-modal-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-h);
+}
+
+.conditions-modal-nav-btn.active {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.conditions-modal-sidebar-divider {
+  height: 1px;
+  background: #3a2c1f;
+  margin: 0.5em 0;
+}
+
+.conditions-modal-custom {
+  color: #e0c98f;
+}
+
+.conditions-modal-custom.active {
+  background: rgba(224, 201, 143, 0.15);
+  color: #e0c98f;
+}
+
+.conditions-modal-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  padding: 1.2em 1.4em;
+  overflow-y: auto;
+  color: var(--text);
+}
+
+.conditions-modal-content h3 {
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.7em;
+}
+
+.conditions-modal-placeholder {
+  color: var(--text-dim);
+}
+
+.conditions-modal-custom-form {
+  display: flex;
+  gap: 0.6em;
+}
+
+.conditions-modal-custom-form input {
+  flex: 1;
+  font-family: inherit;
+}
+
+.conditions-modal-close {
+  position: absolute;
+  top: 0.6em;
+  right: 0.6em;
+  z-index: 2;
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #3a2c1f;
+  color: var(--text-dim);
+}
+
+.conditions-modal-close:hover {
+  color: var(--text-h);
+}
+
 .vtt-condition-tags {
   display: flex;
   flex-wrap: wrap;

@@ -27,6 +27,8 @@ import determinationEmpty from '../../assets/determination-empty.svg'
 import determinationLow from '../../assets/determination-low.svg'
 import determinationHalf from '../../assets/determination-half.svg'
 import determinationFull from '../../assets/determination-full.svg'
+import conditionsBorderTop from '../../assets/conditions-border-top.svg'
+import conditionsBorderBottom from '../../assets/conditions-border-bottom.svg'
 
 function pvIconFor(pct: number): string {
   if (pct <= 0) return pvEmpty
@@ -455,8 +457,14 @@ function cycleTraining(current: Training): Training {
             )
           )}
 
-          <div className="vtt-divider"><span /></div>
-          <h3>Condições e Efeitos</h3>
+          <img className="vtt-condition-border" src={conditionsBorderTop} alt="" />
+          <div className="vtt-condition-header">
+            <h3>Condições e Efeitos</h3>
+            {!addingCondition && (
+              <button type="button" className="vtt-condition-add" onClick={() => setAddingCondition(true)} aria-label="Adicionar condição">+</button>
+            )}
+          </div>
+          <img className="vtt-condition-border" src={conditionsBorderBottom} alt="" />
           <div className="vtt-condition-tags">
             {(character.conditions ?? []).map((cond, i) => (
               <span key={i} className="vtt-condition-tag">
@@ -464,7 +472,7 @@ function cycleTraining(current: Training): Training {
                 <button type="button" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>
               </span>
             ))}
-            {addingCondition ? (
+            {addingCondition && (
               <input
                 autoFocus
                 value={conditionDraft}
@@ -484,8 +492,6 @@ function cycleTraining(current: Training): Training {
                 placeholder="Nome da condição"
                 style={{ width: '10em' }}
               />
-            ) : (
-              <button type="button" className="vtt-condition-add" onClick={() => setAddingCondition(true)} aria-label="Adicionar condição">+</button>
             )}
           </div>
         </div>

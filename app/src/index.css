@@ -1787,40 +1787,113 @@ code, .counter {
 
 .vtt-condition-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vtt-condition-tag-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4em;
 }
 
 .vtt-condition-tag {
-  display: inline-flex;
+  flex: 1;
+  min-width: 0;
+  display: flex;
   align-items: center;
-  gap: 0.4em;
-  background: var(--accent-bg);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  padding: 0.25em 0.5em 0.25em 0.7em;
-  font-size: 0.85em;
-  color: var(--accent-strong);
+  gap: 0.6em;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.5em 0.8em;
+  font-family: 'Dico Typewriter', var(--sans);
+  font-size: 0.9em;
+  color: var(--text-h);
+  text-align: left;
 }
 
-.vtt-condition-tag button {
-  background: none;
-  border: none;
+.vtt-condition-tag img {
+  width: 1.4em;
+  height: 1.4em;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.vtt-condition-tag:hover {
+  border-color: #555;
+}
+
+.vtt-condition-remove {
+  flex-shrink: 0;
+  width: 2em;
+  background: #333;
+  border: 1px solid #333;
+  border-radius: 6px;
   padding: 0;
-  width: 1.2em;
-  height: 1.2em;
-  line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.1em;
+  line-height: 1;
   color: var(--text-dim);
-  border-radius: 999px;
 }
 
-.vtt-condition-tag button:hover {
+.vtt-condition-remove:hover {
   color: var(--danger);
-  border-color: transparent;
+  border-color: var(--danger);
+}
+
+.vtt-condition-detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vtt-condition-detail-card {
+  width: min(420px, 90vw);
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 1.2em;
+  font-family: 'Dico Typewriter', var(--sans);
+  color: var(--text);
+}
+
+.vtt-condition-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-bottom: 0.7em;
+}
+
+.vtt-condition-detail-header img {
+  width: 1.6em;
+  height: 1.6em;
+}
+
+.vtt-condition-detail-header h4 {
+  flex: 1;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-h);
+}
+
+.vtt-condition-detail-header button {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.vtt-condition-detail-header button:hover {
+  color: var(--text-h);
 }
 
 .vtt-condition-add {

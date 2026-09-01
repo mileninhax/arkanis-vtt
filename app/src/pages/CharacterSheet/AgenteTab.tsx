@@ -13,6 +13,11 @@ import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 import AttributeDiagram from './AttributeDiagram'
 import StatBar from './StatBar'
 import ConditionsModal from './ConditionsModal'
+import conditionsIcon from '../../assets/condicoes/conditions.svg'
+import enemyEffectsIcon from '../../assets/condicoes/enemy-effects.svg'
+import ritualsIcon from '../../assets/condicoes/rituals.svg'
+import skillsIcon from '../../assets/condicoes/skills.svg'
+import extraIcon from '../../assets/condicoes/extra.svg'
 import { getClassExtras, type ClassTrack, type ClassTrackTier } from '../../lib/content'
 import pvEmpty from '../../assets/pv-empty.svg'
 import pvLow from '../../assets/pv-low.svg'
@@ -116,9 +121,33 @@ export default function AgenteTab({
   const [testDraft, setTestDraft] = useState({ diceBonus: 0, valueBonus: 0 })
   const [onlyTrained, setOnlyTrained] = useState(false)
   const [showConditionsModal, setShowConditionsModal] = useState(false)
+  const [conditionCatalog, setConditionCatalog] = useState<Record<string, { icon: string; description: string }>>({})
+  const [openConditionDetail, setOpenConditionDetail] = useState<string | null>(null)
   const [tracks, setTracks] = useState<ClassTrack[]>([])
   const [trackTiers, setTrackTiers] = useState<ClassTrackTier[]>([])
   const [trackMenuOpen, setTrackMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const categoryIcon: Record<string, string> = {
+      condicao: conditionsIcon,
+      efeito_inimigo: enemyEffectsIcon,
+      habilidade: skillsIcon,
+      extra: extraIcon,
+    }
+    Promise.all([
+      supabase.from('effects_catalog').select('category, name, description'),
+      supabase.from('rituals').select('name, effect'),
+    ]).then(([effects, rituals]) => {
+      const map: Record<string, { icon: string; description: string }> = {}
+      for (const row of effects.data ?? []) {
+        map[row.name] = { icon: categoryIcon[row.category] ?? conditionsIcon, description: row.description }
+      }
+      for (const row of rituals.data ?? []) {
+        map[row.name] = { icon: ritualsIcon, description: row.effect }
+      }
+      setConditionCatalog(map)
+    })
+  }, [])
 
   useEffect(() => {
     if (character.class_id) {
@@ -491,13 +520,32 @@ function cycleTraining(current: Training): Training {
           </div>
           <img className="vtt-condition-border" src={conditionsBorderBottom} alt="" />
           <div className="vtt-condition-tags">
-            {(character.conditions ?? []).map((cond, i) => (
-              <span key={i} className="vtt-condition-tag">
-                {cond}
-                <button type="button" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>
-              </span>
-            ))}
+            {(character.conditions ?? []).map((cond, i) => {
+              const info = conditionCatalog[cond]
+              return (
+                <div key={i} className="vtt-condition-tag-row">
+                  <button type="button" className="vtt-condition-tag" onClick={() => setOpenConditionDetail(cond)}>
+                    {info && <img src={info.icon} alt="" />}
+                    <span>{cond}</span>
+                  </button>
+                  <button type="button" className="vtt-condition-remove" onClick={() => removeCondition(i)} aria-label={`Remover ${cond}`}>×</button>
+                </div>
+              )
+            })}
           </div>
+
+          {openConditionDetail && (
+            <div className="vtt-condition-detail-backdrop" onClick={() => setOpenConditionDetail(null)}>
+              <div className="vtt-condition-detail-card" onClick={(e) => e.stopPropagation()}>
+                <div className="vtt-condition-detail-header">
+                  {conditionCatalog[openConditionDetail] && <img src={conditionCatalog[openConditionDetail].icon} alt="" />}
+                  <h4>{openConditionDetail}</h4>
+                  <button type="button" onClick={() => setOpenConditionDetail(null)} aria-label="Fechar">×</button>
+                </div>
+                <p>{conditionCatalog[openConditionDetail]?.description ?? 'Condição personalizada.'}</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

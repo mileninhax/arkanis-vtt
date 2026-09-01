@@ -1544,7 +1544,6 @@ code, .counter {
 .vtt-condition-header .vtt-condition-add {
   font-family: 'Westsac', var(--heading);
   flex-shrink: 0;
-  transform: translateY(-4px);
 }
 
 .conditions-modal-backdrop {
@@ -1828,8 +1827,8 @@ code, .counter {
   flex-shrink: 0;
   width: 1.7em;
   height: 1.7em;
-  background: #111;
-  border: 1px solid #333;
+  background: rgba(51, 51, 51, 0.5);
+  border: 1px solid rgba(51, 51, 51, 0.5);
   border-radius: 6px;
   padding: 0;
   display: inline-flex;
@@ -1899,16 +1898,23 @@ code, .counter {
 }
 
 .vtt-condition-add {
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: 3px;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 6px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1em;
+  font-size: 0.95em;
   line-height: 1;
-  background: var(--bg-input);
+  background: rgba(51, 51, 51, 0.5);
+  border: 1px solid rgba(51, 51, 51, 0.5);
+  color: var(--text-dim);
+}
+
+.vtt-condition-add:hover {
+  color: #fff;
+  border-color: #fff;
 }
 
 .vtt-avatar {

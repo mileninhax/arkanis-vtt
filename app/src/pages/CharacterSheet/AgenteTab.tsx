@@ -397,7 +397,6 @@ function cycleTraining(current: Training): Training {
               current={character.current_pd ?? 0}
               max={derived.maxPd}
               colorClass="pd"
-              note="Substitui Sanidade/Esforço"
               onDecrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) - 1)}
               onIncrement={() => updateCharacterField('current_pd', (character.current_pd ?? 0) + 1)}
               onCurrentChange={(value) => updateCharacterField('current_pd', value)}

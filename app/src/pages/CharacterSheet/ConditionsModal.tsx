@@ -188,6 +188,16 @@ export default function ConditionsModal({
 
   return createPortal(
     <div className="conditions-modal-backdrop" onClick={onClose}>
+      <svg className="conditions-modal-svg-defs" width="0" height="0">
+        <defs>
+          <filter id="conditions-liquid-flow">
+            <feTurbulence type="fractalNoise" numOctaves={2} seed={7} result="noise">
+              <animate attributeName="baseFrequency" values="0.008 0.015;0.014 0.009;0.008 0.015" dur="18s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="28" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
       <div className="conditions-modal-shell" onClick={(e) => e.stopPropagation()}>
         <nav className="conditions-modal-sidebar">
           {CATEGORIES.map((cat) => (

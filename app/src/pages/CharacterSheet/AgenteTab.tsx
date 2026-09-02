@@ -446,6 +446,9 @@ function cycleTraining(current: Training): Training {
             onTempDecrement={() => updateCharacterField('temp_pv', Math.max(0, (character.temp_pv ?? 0) - 1))}
             onTempIncrement={() => updateCharacterField('temp_pv', (character.temp_pv ?? 0) + 1)}
             onCurrentChange={(value) => updateCharacterField('current_pv', value)}
+            deathMarks={character.pv_death_marks ?? 0}
+            onToggleDeathMark={(i) => updateCharacterField('pv_death_marks', (character.pv_death_marks ?? 0) ^ (1 << i))}
+            onHeal={() => { updateCharacterField('current_pv', 1); updateCharacterField('pv_death_marks', 0) }}
           />
 
           {character.optional_rules.sem_sanidade ? (
@@ -476,6 +479,9 @@ function cycleTraining(current: Training): Training {
                 onTempDecrement={() => updateCharacterField('temp_sanity', Math.max(0, (character.temp_sanity ?? 0) - 1))}
                 onTempIncrement={() => updateCharacterField('temp_sanity', (character.temp_sanity ?? 0) + 1)}
                 onCurrentChange={(value) => updateCharacterField('current_sanity', value)}
+                deathMarks={character.sanity_death_marks ?? 0}
+                onToggleDeathMark={(i) => updateCharacterField('sanity_death_marks', (character.sanity_death_marks ?? 0) ^ (1 << i))}
+                onHeal={() => { updateCharacterField('current_sanity', 1); updateCharacterField('sanity_death_marks', 0) }}
               />
               <StatBar
                 label="Esforço"

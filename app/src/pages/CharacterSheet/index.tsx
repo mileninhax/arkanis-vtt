@@ -42,9 +42,11 @@ export type CharacterRecord = {
   current_pv: number | null
   temp_pv: number
   max_pv_override: number | null
+  pv_death_marks: number
   current_sanity: number | null
   temp_sanity: number
   max_sanity_override: number | null
+  sanity_death_marks: number
   current_pe: number | null
   temp_pe: number
   current_pd: number | null

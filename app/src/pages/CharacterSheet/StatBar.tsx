@@ -1,3 +1,5 @@
+import skullIcon from '../../assets/condicoes/enemy-effects.svg'
+
 export default function StatBar({
   label,
   icon,
@@ -11,6 +13,9 @@ export default function StatBar({
   onTempDecrement,
   onTempIncrement,
   onCurrentChange,
+  deathMarks,
+  onToggleDeathMark,
+  onHeal,
 }: {
   label: string
   icon?: string
@@ -24,8 +29,12 @@ export default function StatBar({
   onTempDecrement?: () => void
   onTempIncrement?: () => void
   onCurrentChange?: (value: number) => void
+  deathMarks?: number
+  onToggleDeathMark?: (index: number) => void
+  onHeal?: () => void
 }) {
   const pct = max > 0 ? Math.max(0, Math.min(100, (current / max) * 100)) : 0
+  const dying = current <= 0 && deathMarks !== undefined
 
   return (
     <div className="stat-bar-row">
@@ -45,20 +54,47 @@ export default function StatBar({
         {temp !== undefined && temp > 0 && <div className="stat-bar-temp-glow" />}
         <div className={`stat-bar-fill-wrap${temp !== undefined && temp > 0 ? ' stat-bar-fill-wrap-temp' : ''}`}>
           <div className={`stat-bar-fill ${colorClass}`} style={{ width: `${pct}%` }} />
-          <button type="button" className="stat-bar-arrow stat-bar-arrow-left" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>
-          <span className="stat-bar-value">
-            {onCurrentChange ? (
-              <input
-                type="number"
-                className="stat-bar-value-input"
-                value={current}
-                onChange={(e) => onCurrentChange(Number(e.target.value))}
-                aria-label={label}
-              />
-            ) : current}
-            /{max}
-          </span>
-          <button type="button" className="stat-bar-arrow stat-bar-arrow-right" onClick={onIncrement} aria-label={`+1 ${label}`}>›</button>
+          {dying ? (
+            <>
+              <button type="button" className="stat-bar-heal-btn" onClick={onHeal}>
+                <span className="stat-bar-heal-icon">+</span>
+                Curar
+              </button>
+              <span className="stat-bar-value">
+                {current}/{max}
+              </span>
+              <span className="stat-bar-death-marks">
+                {[0, 1, 2].map((i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`stat-bar-death-mark${((deathMarks ?? 0) >> i) & 1 ? ' marked' : ''}`}
+                    onClick={() => onToggleDeathMark?.(i)}
+                    aria-label={`Marca de morte ${i + 1}`}
+                  >
+                    <img src={skullIcon} alt="" />
+                  </button>
+                ))}
+              </span>
+            </>
+          ) : (
+            <>
+              <button type="button" className="stat-bar-arrow stat-bar-arrow-left" onClick={onDecrement} aria-label={`-1 ${label}`}>‹</button>
+              <span className="stat-bar-value">
+                {onCurrentChange ? (
+                  <input
+                    type="number"
+                    className="stat-bar-value-input"
+                    value={current}
+                    onChange={(e) => onCurrentChange(Number(e.target.value))}
+                    aria-label={label}
+                  />
+                ) : current}
+                /{max}
+              </span>
+              <button type="button" className="stat-bar-arrow stat-bar-arrow-right" onClick={onIncrement} aria-label={`+1 ${label}`}>›</button>
+            </>
+          )}
         </div>
         {note && <p className="stat-bar-note">{note}</p>}
       </div>

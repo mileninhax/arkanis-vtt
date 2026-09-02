@@ -2147,17 +2147,18 @@ code, .counter {
   font-size: 0.75em;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #39d353;
+  color: #00b597;
   cursor: pointer;
 }
 
 .stat-bar-heal-btn:hover {
-  color: #5cef79;
+  color: #1dd6b6;
 }
 
 .stat-bar-heal-icon {
-  font-size: 1.6em;
-  line-height: 1;
+  width: 0.9em;
+  height: 0.9em;
+  object-fit: contain;
 }
 
 .stat-bar-death-marks {

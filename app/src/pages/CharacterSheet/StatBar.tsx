@@ -1,4 +1,5 @@
 import skullIcon from '../../assets/condicoes/enemy-effects.svg'
+import healIcon from '../../assets/heal-icon.svg'
 
 export default function StatBar({
   label,
@@ -57,7 +58,7 @@ export default function StatBar({
           {dying ? (
             <>
               <button type="button" className="stat-bar-heal-btn" onClick={onHeal}>
-                <span className="stat-bar-heal-icon">+</span>
+                <img src={healIcon} alt="" className="stat-bar-heal-icon" />
                 Curar
               </button>
               <span className="stat-bar-value">

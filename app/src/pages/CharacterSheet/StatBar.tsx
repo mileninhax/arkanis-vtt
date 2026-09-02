@@ -1,5 +1,8 @@
-import skullIcon from '../../assets/condicoes/enemy-effects.svg'
 import healIcon from '../../assets/heal-icon.svg'
+import emptySkullIcon from '../../assets/empty-skull-icon.svg'
+import markedSkullIcon from '../../assets/marked-skull-icon.svg'
+import emptyBrainIcon from '../../assets/empty-brain-icon.svg'
+import markedBrainIcon from '../../assets/marked-brain-icon.svg'
 
 export default function StatBar({
   label,
@@ -36,6 +39,8 @@ export default function StatBar({
 }) {
   const pct = max > 0 ? Math.max(0, Math.min(100, (current / max) * 100)) : 0
   const dying = current <= 0 && deathMarks !== undefined
+  const emptyMarkIcon = colorClass === 'sanidade' ? emptyBrainIcon : emptySkullIcon
+  const markedMarkIcon = colorClass === 'sanidade' ? markedBrainIcon : markedSkullIcon
 
   return (
     <div className="stat-bar-row">
@@ -69,11 +74,11 @@ export default function StatBar({
                   <button
                     key={i}
                     type="button"
-                    className={`stat-bar-death-mark${((deathMarks ?? 0) >> i) & 1 ? ' marked' : ''}`}
+                    className="stat-bar-death-mark"
                     onClick={() => onToggleDeathMark?.(i)}
                     aria-label={`Marca de morte ${i + 1}`}
                   >
-                    <img src={skullIcon} alt="" />
+                    <img src={((deathMarks ?? 0) >> i) & 1 ? markedMarkIcon : emptyMarkIcon} alt="" />
                   </button>
                 ))}
               </span>

@@ -2143,7 +2143,7 @@ code, .counter {
   background: transparent;
   border: none;
   padding: 0;
-  font-family: var(--heading);
+  font-family: var(--poppins);
   font-size: 0.75em;
   font-weight: 700;
   letter-spacing: 0.02em;

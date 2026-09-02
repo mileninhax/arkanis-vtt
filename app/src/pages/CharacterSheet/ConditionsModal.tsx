@@ -104,26 +104,6 @@ export default function ConditionsModal({
       return
     }
 
-    if (active === 'skills') {
-      Promise.all([
-        supabase.from('class_powers').select('id, name, description'),
-        supabase.from('class_track_tiers').select('id, name, description, nex_percent'),
-        supabase.from('paranormal_powers').select('id, name, description'),
-        supabase.from('effects_catalog').select('id, name, description').eq('category', 'habilidade'),
-      ]).then(([classPowers, trackTiers, paranormalPowers, effectsHabilidade]) => {
-        const merged: CatalogItem[] = [
-          ...(classPowers.data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.description })),
-          ...(trackTiers.data ?? []).map((r) => ({ id: r.id, name: `NEX ${r.nex_percent}% - ${r.name}`, description: r.description })),
-          ...(paranormalPowers.data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.description })),
-          ...(effectsHabilidade.data ?? []),
-        ]
-        merged.sort((a, b) => a.name.localeCompare(b.name))
-        setItems(merged)
-        setLoading(false)
-      })
-      return
-    }
-
     const category = EFFECTS_CATEGORY[active]
     supabase
       .from('effects_catalog')

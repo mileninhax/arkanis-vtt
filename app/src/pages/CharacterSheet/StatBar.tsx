@@ -17,6 +17,7 @@ export default function StatBar({
   onTempDecrement,
   onTempIncrement,
   onCurrentChange,
+  onMaxChange,
   deathMarks,
   onToggleDeathMark,
   onHeal,
@@ -33,6 +34,7 @@ export default function StatBar({
   onTempDecrement?: () => void
   onTempIncrement?: () => void
   onCurrentChange?: (value: number) => void
+  onMaxChange?: (value: number) => void
   deathMarks?: number
   onToggleDeathMark?: (index: number) => void
   onHeal?: () => void
@@ -96,7 +98,16 @@ export default function StatBar({
                     aria-label={label}
                   />
                 ) : current}
-                /{max}
+                /
+                {onMaxChange ? (
+                  <input
+                    type="number"
+                    className="stat-bar-value-input stat-bar-max-input"
+                    value={max}
+                    onChange={(e) => onMaxChange(Number(e.target.value))}
+                    aria-label={`Máximo de ${label}`}
+                  />
+                ) : max}
               </span>
               <button type="button" className="stat-bar-arrow stat-bar-arrow-right" onClick={onIncrement} aria-label={`+1 ${label}`}>›</button>
             </>

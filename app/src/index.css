@@ -1838,6 +1838,7 @@ code, .counter {
   font-family: 'Westsac', var(--heading);
   font-size: 0.95em;
   line-height: 1;
+  padding-top: 0.4em;
   color: var(--text-dim);
 }
 

@@ -1703,8 +1703,8 @@ code, .counter {
 
 .conditions-modal-custom {
   margin-top: auto;
-  background: #e0c98f;
-  color: #000;
+  background: #4a4a4a;
+  color: var(--text-h);
 }
 
 .conditions-modal-custom-icon {
@@ -1716,15 +1716,15 @@ code, .counter {
   flex-shrink: 0;
   border-radius: 999px;
   background: #000;
-  color: #e0c98f;
+  color: #ccc;
   font-family: var(--heading);
   font-weight: 700;
 }
 
 .conditions-modal-custom.active,
 .conditions-modal-custom:hover {
-  background: #ecd9a9;
-  color: #000;
+  background: #5c5c5c;
+  color: var(--text-h);
 }
 
 .conditions-modal-custom.active {
@@ -1752,14 +1752,78 @@ code, .counter {
   color: var(--text-dim);
 }
 
-.conditions-modal-custom-form {
-  display: flex;
-  gap: 0.6em;
+.conditions-modal-custom-section-title {
+  margin: 0 0 0.9em;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-h);
 }
 
-.conditions-modal-custom-form input {
-  flex: 1;
+.conditions-modal-custom-label {
+  display: block;
+  margin: 0.9em 0 0.4em;
+  font-size: 0.85em;
+  color: var(--text-dim);
+}
+
+.conditions-modal-custom-name,
+.conditions-modal-custom-description {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.6em 0.7em;
   font-family: inherit;
+  color: var(--text-h);
+}
+
+.conditions-modal-custom-description {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.conditions-modal-custom-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.7em;
+}
+
+.conditions-modal-custom-icon-btn {
+  width: 2.2em;
+  height: 2.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 6px;
+}
+
+.conditions-modal-custom-icon-btn img {
+  width: 1.4em;
+  height: 1.4em;
+  object-fit: contain;
+}
+
+.conditions-modal-custom-icon-btn:hover {
+  border-color: #666;
+}
+
+.conditions-modal-custom-icon-btn.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.conditions-modal-custom-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2em;
 }
 
 .conditions-modal-close {

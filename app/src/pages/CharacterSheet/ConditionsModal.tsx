@@ -24,6 +24,8 @@ const EFFECTS_CATEGORY: Partial<Record<CategoryKey, string>> = {
   extra: 'extra',
 }
 
+const CUSTOM_ICONS = [conditionsIcon, enemyEffectsIcon, ritualsIcon, skillsIcon, extraIcon]
+
 type CatalogItem = { id: string; name: string; description: string }
 
 export default function ConditionsModal({
@@ -35,6 +37,8 @@ export default function ConditionsModal({
 }) {
   const [active, setActive] = useState<CategoryKey | 'custom'>('conditions')
   const [customName, setCustomName] = useState('')
+  const [customIcon, setCustomIcon] = useState(CUSTOM_ICONS[0])
+  const [customDescription, setCustomDescription] = useState('')
   const [items, setItems] = useState<CatalogItem[]>([])
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState('')
@@ -77,6 +81,7 @@ export default function ConditionsModal({
     if (!customName.trim()) return
     onAddCondition(customName.trim())
     setCustomName('')
+    setCustomDescription('')
   }
 
   return createPortal(
@@ -110,16 +115,41 @@ export default function ConditionsModal({
             <div className="conditions-modal-texture" />
 
             <div className="conditions-modal-content">
-              <h3>Personalizado</h3>
-              <div className="conditions-modal-custom-form">
-                <input
-                  autoFocus
-                  value={customName}
-                  onChange={(e) => setCustomName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && submitCustom()}
-                  placeholder="Nome da condição"
-                />
-                <button type="button" onClick={submitCustom}>Adicionar</button>
+              <h4 className="conditions-modal-custom-section-title">Informações Gerais</h4>
+
+              <label className="conditions-modal-custom-label">Nome</label>
+              <input
+                autoFocus
+                className="conditions-modal-custom-name"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                placeholder="Nome do Efeito"
+              />
+
+              <label className="conditions-modal-custom-label">Ícone</label>
+              <div className="conditions-modal-custom-icons">
+                {CUSTOM_ICONS.map((icon, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`conditions-modal-custom-icon-btn${customIcon === icon ? ' active' : ''}`}
+                    onClick={() => setCustomIcon(icon)}
+                  >
+                    <img src={icon} alt="" />
+                  </button>
+                ))}
+              </div>
+
+              <label className="conditions-modal-custom-label">Descrição</label>
+              <textarea
+                className="conditions-modal-custom-description"
+                value={customDescription}
+                onChange={(e) => setCustomDescription(e.target.value)}
+                placeholder="Escreva aqui a descrição"
+              />
+
+              <div className="conditions-modal-custom-submit-row">
+                <button type="button" className="conditions-modal-add-btn" onClick={submitCustom}>Adicionar</button>
               </div>
             </div>
 

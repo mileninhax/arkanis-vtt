@@ -6,6 +6,18 @@ import enemyEffectsIcon from '../../assets/condicoes/enemy-effects.svg'
 import ritualsIcon from '../../assets/condicoes/rituals.svg'
 import skillsIcon from '../../assets/condicoes/skills.svg'
 import extraIcon from '../../assets/condicoes/extra.svg'
+import biteIcon from '../../assets/condicoes/bite.svg'
+import fearIcon from '../../assets/condicoes/fear.svg'
+import fireIcon from '../../assets/condicoes/fire.svg'
+import flowerIcon from '../../assets/condicoes/flower.svg'
+import handIcon from '../../assets/condicoes/hand.svg'
+import mentalIcon from '../../assets/condicoes/mental.svg'
+import paralysisIcon from '../../assets/condicoes/paralysis.svg'
+import resetIcon from '../../assets/condicoes/reset.svg'
+import tiredIcon from '../../assets/condicoes/tired.svg'
+import ritual1Icon from '../../assets/condicoes/ritual-1.svg'
+import ritual2Icon from '../../assets/condicoes/ritual-2.svg'
+import ritual3Icon from '../../assets/condicoes/ritual-3.svg'
 
 type CategoryKey = 'conditions' | 'enemy-effects' | 'rituals' | 'skills' | 'extra'
 
@@ -24,7 +36,11 @@ const EFFECTS_CATEGORY: Partial<Record<CategoryKey, string>> = {
   extra: 'extra',
 }
 
-const CUSTOM_ICONS = [conditionsIcon, enemyEffectsIcon, ritualsIcon, skillsIcon, extraIcon]
+const CUSTOM_ICONS = [
+  conditionsIcon, enemyEffectsIcon, ritualsIcon, skillsIcon, extraIcon,
+  biteIcon, fearIcon, fireIcon, flowerIcon, handIcon, mentalIcon, paralysisIcon, resetIcon, tiredIcon,
+  ritual1Icon, ritual2Icon, ritual3Icon,
+]
 
 type CatalogItem = { id: string; name: string; description: string }
 

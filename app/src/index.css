@@ -2133,7 +2133,7 @@ code, .counter {
 
 .stat-bar-heal-btn {
   position: absolute;
-  left: 1.1em;
+  left: 1.5em;
   top: 0;
   bottom: 0;
   z-index: 3;

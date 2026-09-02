@@ -42,7 +42,26 @@ const CUSTOM_ICONS = [
   ritual1Icon, ritual2Icon, ritual3Icon,
 ]
 
-type CatalogItem = { id: string; name: string; description: string }
+type CatalogItem = {
+  id: string
+  name: string
+  description: string
+  discenteCost?: number | null
+  discenteEffect?: string | null
+  discenteCircle?: number | null
+  verdadeiroCost?: number | null
+  verdadeiroEffect?: string | null
+  verdadeiroCircle?: number | null
+  verdadeiroAffinity?: boolean
+}
+
+type RitualMode = 'normal' | 'discente' | 'verdadeiro'
+
+const RITUAL_MODES: { key: RitualMode; label: string; icon: string }[] = [
+  { key: 'normal', label: 'Normal', icon: ritual1Icon },
+  { key: 'discente', label: 'Discente', icon: ritual2Icon },
+  { key: 'verdadeiro', label: 'Verdadeiro', icon: ritual3Icon },
+]
 
 export default function ConditionsModal({
   onClose,
@@ -59,20 +78,27 @@ export default function ConditionsModal({
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [ritualMode, setRitualMode] = useState<RitualMode>('normal')
   const activeCategory = CATEGORIES.find((c) => c.key === active)
 
   useEffect(() => {
     if (active === 'custom') return
     setLoading(true)
     setSelectedId(null)
+    setRitualMode('normal')
 
     if (active === 'rituals') {
       supabase
         .from('rituals')
-        .select('id, name, effect')
+        .select('id, name, effect, discente_cost, discente_effect, discente_requires_circle, verdadeiro_cost, verdadeiro_effect, verdadeiro_requires_circle, verdadeiro_requires_affinity')
         .order('name')
         .then(({ data }) => {
-          setItems((data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.effect })))
+          setItems((data ?? []).map((r) => ({
+            id: r.id, name: r.name, description: r.effect,
+            discenteCost: r.discente_cost, discenteEffect: r.discente_effect, discenteCircle: r.discente_requires_circle,
+            verdadeiroCost: r.verdadeiro_cost, verdadeiroEffect: r.verdadeiro_effect, verdadeiroCircle: r.verdadeiro_requires_circle,
+            verdadeiroAffinity: r.verdadeiro_requires_affinity,
+          })))
           setLoading(false)
         })
       return
@@ -92,6 +118,28 @@ export default function ConditionsModal({
 
   const filteredItems = items.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
   const selectedItem = items.find((item) => item.id === selectedId) ?? null
+
+  const availableRitualModes = RITUAL_MODES.filter((m) => {
+    if (m.key === 'discente') return selectedItem?.discenteCost != null
+    if (m.key === 'verdadeiro') return selectedItem?.verdadeiroCost != null
+    return true
+  })
+
+  function ritualDescription(item: CatalogItem): string {
+    const parts = [item.description]
+    if (item.discenteCost != null) {
+      parts.push(`Discente (+${item.discenteCost} PE): ${item.discenteEffect ?? ''}${item.discenteCircle ? ` Requer ${item.discenteCircle}º círculo.` : ''}`)
+    }
+    if (item.verdadeiroCost != null) {
+      parts.push(`Verdadeiro (+${item.verdadeiroCost} PE): ${item.verdadeiroEffect ?? ''}${item.verdadeiroCircle ? ` Requer ${item.verdadeiroCircle}º círculo.` : ''}${item.verdadeiroAffinity ? ' Requer afinidade.' : ''}`)
+    }
+    return parts.join('\n\n')
+  }
+
+  function ritualLabel(item: CatalogItem, mode: RitualMode): string {
+    if (mode === 'normal') return item.name
+    return `${item.name} (${mode === 'discente' ? 'Discente' : 'Verdadeiro'})`
+  }
 
   function submitCustom() {
     if (!customName.trim()) return
@@ -192,7 +240,7 @@ export default function ConditionsModal({
                     key={item.id}
                     type="button"
                     className={`conditions-modal-list-item${selectedId === item.id ? ' active' : ''}`}
-                    onClick={() => setSelectedId(item.id)}
+                    onClick={() => { setSelectedId(item.id); setRitualMode('normal') }}
                   >
                     {item.name}
                   </button>
@@ -206,9 +254,32 @@ export default function ConditionsModal({
                 {selectedItem ? (
                   <>
                     <h3>{selectedItem.name}</h3>
-                    <p className="conditions-modal-detail-text">{selectedItem.description}</p>
-                    <button type="button" className="conditions-modal-add-btn" onClick={() => onAddCondition(selectedItem.name)}>
-                      Adicionar
+                    <p className="conditions-modal-detail-text">
+                      {active === 'rituals' ? ritualDescription(selectedItem) : selectedItem.description}
+                    </p>
+
+                    {active === 'rituals' && (
+                      <div className="conditions-modal-ritual-modes">
+                        {availableRitualModes.map((m) => (
+                          <button
+                            key={m.key}
+                            type="button"
+                            className={`conditions-modal-ritual-mode-btn${ritualMode === m.key ? ' active' : ''}`}
+                            onClick={() => setRitualMode(m.key)}
+                          >
+                            <span>{m.label}</span>
+                            <img src={m.icon} alt="" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      className="conditions-modal-add-btn"
+                      onClick={() => onAddCondition(active === 'rituals' ? ritualLabel(selectedItem, ritualMode) : selectedItem.name)}
+                    >
+                      Adicionar à Ficha
                     </button>
                   </>
                 ) : (

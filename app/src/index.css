@@ -1656,6 +1656,43 @@ code, .counter {
   font-family: inherit;
 }
 
+.conditions-modal-ritual-modes {
+  display: flex;
+  gap: 0.8em;
+  margin-top: 1.2em;
+}
+
+.conditions-modal-ritual-mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  width: 6.5em;
+  padding: 0.6em;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85em;
+  color: var(--text-dim);
+}
+
+.conditions-modal-ritual-mode-btn img {
+  width: 2.4em;
+  height: 2.4em;
+  object-fit: contain;
+}
+
+.conditions-modal-ritual-mode-btn:hover {
+  border-color: #666;
+}
+
+.conditions-modal-ritual-mode-btn.active {
+  border-color: #fff;
+  color: var(--text-h);
+  box-shadow: 0 0 0 1px #fff;
+}
+
 .conditions-modal-sidebar {
   flex: 0 0 185px;
   display: flex;

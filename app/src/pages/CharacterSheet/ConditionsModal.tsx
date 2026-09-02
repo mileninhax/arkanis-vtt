@@ -36,6 +36,21 @@ const EFFECTS_CATEGORY: Partial<Record<CategoryKey, string>> = {
   extra: 'extra',
 }
 
+const CURATED_SKILLS: { table: 'class_powers' | 'paranormal_powers' | 'general_powers' | 'class_track_tiers'; name: string }[] = [
+  { table: 'paranormal_powers', name: 'Arma de Sangue' },
+  { table: 'paranormal_powers', name: 'Aura de Pavor' },
+  { table: 'paranormal_powers', name: 'Encarar a Morte' },
+  { table: 'class_track_tiers', name: 'Discurso Motivador' },
+  { table: 'class_track_tiers', name: 'Gladiador Paranormal' },
+  { table: 'class_powers', name: 'Nos Olhos do Monstro' },
+  { table: 'general_powers', name: 'Palavras de Devoção' },
+  { table: 'general_powers', name: 'Poder da Amizade' },
+  { table: 'paranormal_powers', name: 'Potencial Reaproveitado' },
+  { table: 'paranormal_powers', name: 'Sangue Vivo' },
+  { table: 'class_powers', name: 'Sentido Tático' },
+  { table: 'class_powers', name: 'Sincronia Paranormal' },
+]
+
 const CUSTOM_ICONS = [
   conditionsIcon, enemyEffectsIcon, ritualsIcon, skillsIcon, extraIcon,
   biteIcon, fearIcon, fireIcon, flowerIcon, handIcon, mentalIcon, paralysisIcon, resetIcon, tiredIcon,
@@ -101,6 +116,29 @@ export default function ConditionsModal({
           })))
           setLoading(false)
         })
+      return
+    }
+
+    if (active === 'skills') {
+      const namesFor = (table: string) => CURATED_SKILLS.filter((s) => s.table === table).map((s) => s.name)
+      Promise.all([
+        supabase.from('class_powers').select('id, name, description').in('name', namesFor('class_powers')),
+        supabase.from('paranormal_powers').select('id, name, description').in('name', namesFor('paranormal_powers')),
+        supabase.from('general_powers').select('id, name, description').in('name', namesFor('general_powers')),
+        supabase.from('class_track_tiers').select('id, name, description, nex_percent').in('name', namesFor('class_track_tiers')),
+        supabase.from('effects_catalog').select('id, name, description').eq('category', 'habilidade'),
+      ]).then(([classPowers, paranormalPowers, generalPowers, trackTiers, effectsHabilidade]) => {
+        const merged: CatalogItem[] = [
+          ...(classPowers.data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.description })),
+          ...(paranormalPowers.data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.description })),
+          ...(generalPowers.data ?? []).map((r) => ({ id: r.id, name: r.name, description: r.description })),
+          ...(trackTiers.data ?? []).map((r) => ({ id: r.id, name: `NEX ${r.nex_percent}% - ${r.name}`, description: r.description })),
+          ...(effectsHabilidade.data ?? []),
+        ]
+        merged.sort((a, b) => a.name.localeCompare(b.name))
+        setItems(merged)
+        setLoading(false)
+      })
       return
     }
 

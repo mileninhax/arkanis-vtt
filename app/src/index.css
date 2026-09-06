@@ -3973,23 +3973,24 @@ code, .counter {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.9em;
 }
 
 .roll-card-die-icon {
-  width: 2.2em;
-  height: 2.2em;
+  width: 1.8em;
+  height: 1.8em;
   object-fit: contain;
 }
 
 .roll-card-die-value {
   position: absolute;
-  top: -1.1em;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--poppins);
   font-weight: 800;
-  font-size: 0.95em;
+  font-size: 0.8em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
   white-space: nowrap;
 }
 
@@ -4007,8 +4008,8 @@ code, .counter {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.2em;
-  height: 2.2em;
+  width: 1.8em;
+  height: 1.8em;
   border: 2px solid;
   border-radius: 6px;
   font-size: 0.75em;

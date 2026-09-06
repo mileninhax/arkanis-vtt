@@ -30,14 +30,15 @@ export type RollCardDie = { sides: number; value: number; discarded?: boolean }
 
 export function Die({ sides, value, discarded }: RollCardDie) {
   const color = DIE_COLOR[sides] ?? '#fff'
+  const valueColor = value === 1 ? '#e0393e' : value === sides ? '#3ecf6e' : '#fff'
   return (
     <div className={`roll-card-die${discarded ? ' discarded' : ''}`}>
-      <span className="roll-card-die-value" style={{ color }}>{value}</span>
       {DIE_ICON[sides] ? (
         <img src={DIE_ICON[sides]} alt={`d${sides}`} className="roll-card-die-icon" />
       ) : (
-        <span className="roll-card-die-fallback" style={{ borderColor: color }}>d{sides}</span>
+        <span className="roll-card-die-fallback" style={{ borderColor: color }} />
       )}
+      <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
     </div>
   )
 }

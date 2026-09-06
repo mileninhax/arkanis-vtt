@@ -2055,6 +2055,7 @@ code, .counter {
   border: 1px solid rgba(242, 242, 242, 0.2);
   border-radius: 999px;
   color: #fff;
+  cursor: pointer;
 }
 
 .vtt-avatar-action-btn:hover {

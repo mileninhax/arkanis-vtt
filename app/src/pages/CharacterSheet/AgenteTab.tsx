@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ChangeEvent } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/AuthContext'
 import { recordRoll } from '../../lib/rollHistory'
@@ -251,6 +251,16 @@ export default function AgenteTab({
     onUpdated()
   }
 
+  async function handlePhotoChange(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !session) return
+    const path = `${session.user.id}/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage.from('character_photos').upload(path, file, { upsert: true })
+    if (error) return
+    const { publicUrl } = supabase.storage.from('character_photos').getPublicUrl(path).data
+    await updateCharacterField('avatar_url', publicUrl)
+  }
+
   async function syncConditionModifier(name: string) {
     const rule = CONDITION_TEST_MODIFIERS[name]
     if (!rule) return
@@ -364,7 +374,10 @@ function cycleTraining(current: Training): Training {
           <img className="vtt-avatar" src={character.avatar_url ?? undefined} alt="" />
           {editMode && (
             <div className="vtt-avatar-actions">
-              <button type="button" className="vtt-avatar-action-btn">Mudar foto</button>
+              <label className="vtt-avatar-action-btn">
+                Mudar foto
+                <input type="file" accept="image/*" onChange={handlePhotoChange} hidden />
+              </label>
               <button type="button" className="vtt-avatar-action-btn">Mudar moldura</button>
             </div>
           )}

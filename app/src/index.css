@@ -336,18 +336,6 @@ code, .counter {
   animation: sheet-bg-chaos 18s ease-in-out infinite;
 }
 
-.sheet-bg.bg-energia::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle at 30% 30%, rgba(155, 111, 224, 0.55), transparent 55%),
-    radial-gradient(circle at 70% 70%, rgba(60, 130, 240, 0.5), transparent 55%);
-  background-size: 260% 260%;
-  mix-blend-mode: screen;
-  opacity: 0.6;
-  animation: sheet-bg-chaos 18s ease-in-out infinite;
-}
-
 @keyframes sheet-bg-chaos {
   0% { background-position: 35% 40%; }
   15% { background-position: 50% 35%; }

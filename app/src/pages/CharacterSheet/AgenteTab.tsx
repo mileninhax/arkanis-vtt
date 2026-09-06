@@ -304,7 +304,7 @@ export default function AgenteTab({
     const score = character.attributes[key]
     const { rolls, kept } = rollAttributeTest(score)
     const label = `Teste de ${abbr}`
-    setRoll({ label, rolls, kept, bonus: 0 })
+    setRoll({ label, rolls, kept, bonus: 0, characterName: character.name })
     if (session) {
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
@@ -345,7 +345,7 @@ function cycleTraining(current: Training): Training {
     const { rolls, kept } = rollAttributeTest(score)
     const bonus = trainingBonus(cs.training) + cs.extra_bonus + testValueBonus
     const label = `Teste de ${skill.name}`
-    setRoll({ label, rolls, kept, bonus })
+    setRoll({ label, rolls, kept, bonus, characterName: character.name })
     if (session) {
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,

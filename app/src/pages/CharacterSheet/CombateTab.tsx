@@ -173,6 +173,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       damage,
       municao: attack.general_info?.municao ?? null,
       modificadores: attack.general_info?.modificadores ?? [],
+      characterName: character.name,
     })
 
     if (ammoInv) consumeAmmo(ammoInv)

@@ -277,7 +277,7 @@ export default function InterludioTab({ character, onUpdated }: { character: Cha
               const { rolls, kept } = rollAttributeTest(score)
               const bonus = trainingBonus(cs.training) + cs.extra_bonus + (prato === 'rapido' ? 5 : 0)
               const label = `Revisar Caso — Teste de ${skill.name}`
-              setRoll({ label, rolls, kept, bonus })
+              setRoll({ label, rolls, kept, bonus, characterName: character.name })
               if (session) {
                 recordRoll({
                   characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,

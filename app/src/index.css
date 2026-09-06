@@ -469,11 +469,12 @@ code, .counter {
 }
 
 .settings-row-sub {
-  margin-left: 1.6em;
+  margin-left: 3.3em;
 }
 
 .settings-lock {
   font-size: 0.85em;
+  line-height: 1;
   opacity: 0.6;
 }
 

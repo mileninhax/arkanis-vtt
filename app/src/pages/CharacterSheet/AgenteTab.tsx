@@ -363,9 +363,9 @@ function cycleTraining(current: Training): Training {
         <div className="vtt-card" style={{ textAlign: 'center' }}>
           <img className="vtt-avatar" src={character.avatar_url ?? undefined} alt="" />
           {editMode && (
-            <div>
-              <button type="button">Mudar foto</button>
-              <button type="button">Mudar moldura</button>
+            <div className="vtt-avatar-actions">
+              <button type="button" className="vtt-avatar-action-btn">Mudar foto</button>
+              <button type="button" className="vtt-avatar-action-btn">Mudar moldura</button>
             </div>
           )}
 
@@ -395,31 +395,14 @@ function cycleTraining(current: Training): Training {
         </div>
 
         <div className="vtt-card">
-          {editMode ? (
-            <>
-              <h3>Atributos</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5em' }}>
-                {ATTR_LABELS.map(({ key, abbr }) => (
-                  <label key={key}>
-                    {abbr}
-                    <input
-                      type="number"
-                      value={character.attributes[key]}
-                      onChange={(e) => updateAttribute(key, Number(e.target.value))}
-                      style={{ width: '3em' }}
-                    />
-                  </label>
-                ))}
-              </div>
-            </>
-          ) : (
-            <AttributeDiagram
-              attributes={character.attributes}
-              nexPercent={character.nex_percent}
-              onRoll={rollAttribute}
-              onNexChange={(value) => updateCharacterField('nex_percent', value)}
-            />
-          )}
+          <AttributeDiagram
+            attributes={character.attributes}
+            nexPercent={character.nex_percent}
+            onRoll={rollAttribute}
+            onNexChange={(value) => updateCharacterField('nex_percent', value)}
+            editable={editMode}
+            onAttributeChange={updateAttribute}
+          />
 
           {character.optional_rules.evolucao_patente && (
             <label style={{ display: 'block', marginTop: '0.6em' }}>

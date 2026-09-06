@@ -2040,6 +2040,28 @@ code, .counter {
   object-fit: cover;
 }
 
+.vtt-avatar-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  margin-bottom: 0.7em;
+}
+
+.vtt-avatar-action-btn {
+  font-family: var(--poppins);
+  font-size: 0.78em;
+  padding: 0.4em 0.8em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-dim);
+}
+
+.vtt-avatar-action-btn:hover {
+  color: var(--text-h);
+  border-color: var(--text-dim);
+}
+
 .vtt-stat-icon {
   width: 72px;
   height: 84px;
@@ -2420,6 +2442,20 @@ code, .counter {
 
 .attr-value-badge:hover {
   color: var(--accent-strong);
+}
+
+.attr-value-input {
+  width: 1.6em;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  -moz-appearance: textfield;
+}
+
+.attr-value-input::-webkit-outer-spin-button,
+.attr-value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .attr-nex-badge {

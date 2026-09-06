@@ -17,11 +17,15 @@ export default function AttributeDiagram({
   nexPercent,
   onRoll,
   onNexChange,
+  editable,
+  onAttributeChange,
 }: {
   attributes: Attributes
   nexPercent: number
   onRoll: (key: AttributeKey, abbr: string) => void
   onNexChange: (value: number) => void
+  editable?: boolean
+  onAttributeChange?: (key: AttributeKey, value: number) => void
 }) {
   const [nexOpen, setNexOpen] = useState(false)
 
@@ -54,18 +58,30 @@ export default function AttributeDiagram({
           </ul>
         </>
       )}
-      {ATTRS.map(({ key, abbr, top, left }) => (
-        <button
-          key={key}
-          type="button"
-          className="attr-value-badge"
-          style={{ top, left }}
-          onClick={() => onRoll(key, abbr)}
-          aria-label={`Rolar ${abbr}`}
-        >
-          {attributes[key]}
-        </button>
-      ))}
+      {ATTRS.map(({ key, abbr, top, left }) =>
+        editable ? (
+          <input
+            key={key}
+            type="number"
+            className="attr-value-badge attr-value-input"
+            style={{ top, left }}
+            value={attributes[key]}
+            onChange={(e) => onAttributeChange?.(key, Number(e.target.value))}
+            aria-label={abbr}
+          />
+        ) : (
+          <button
+            key={key}
+            type="button"
+            className="attr-value-badge"
+            style={{ top, left }}
+            onClick={() => onRoll(key, abbr)}
+            aria-label={`Rolar ${abbr}`}
+          >
+            {attributes[key]}
+          </button>
+        )
+      )}
     </div>
   )
 }

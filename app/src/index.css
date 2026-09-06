@@ -151,6 +151,7 @@ body {
   margin: 0;
   background: var(--bg);
   min-height: 100svh;
+  overflow-x: hidden;
 }
 
 #root {
@@ -1386,6 +1387,9 @@ code, .counter {
 .vtt-name {
   font-family: 'Dico Typewriter', var(--heading);
   font-size: 1.7em;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .vtt-name-input {

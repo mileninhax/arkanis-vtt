@@ -2048,18 +2048,18 @@ code, .counter {
 }
 
 .vtt-avatar-action-btn {
-  font-family: var(--poppins);
+  font-family: 'Poppins', var(--poppins);
   font-size: 0.78em;
   padding: 0.4em 0.8em;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-strong);
+  background: #2e313a;
+  border: 1px solid rgba(242, 242, 242, 0.2);
   border-radius: 999px;
   color: var(--text-dim);
 }
 
 .vtt-avatar-action-btn:hover {
   color: var(--text-h);
-  border-color: var(--text-dim);
+  border-color: rgba(242, 242, 242, 0.4);
 }
 
 .vtt-stat-icon {

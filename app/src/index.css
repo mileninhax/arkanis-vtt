@@ -2050,7 +2050,7 @@ code, .counter {
 .vtt-avatar-action-btn {
   font-family: 'Poppins', var(--poppins);
   font-size: 0.62em;
-  padding: 0.3em 0.6em;
+  padding: 0.02em 0.6em;
   background: #2e313a;
   border: 1px solid rgba(242, 242, 242, 0.2);
   border-radius: 999px;

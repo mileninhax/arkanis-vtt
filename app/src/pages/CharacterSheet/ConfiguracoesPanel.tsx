@@ -3,49 +3,37 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
 
-const RULES: { key: string; label: string }[] = [
+const RULES: { key: string; label: string; locked?: boolean }[] = [
   { key: 'nex_experiencia', label: 'NEX & Experiência' },
-  { key: 'contagem_municao', label: 'Contagem de Munição' },
+  { key: 'evolucao_patente', label: 'Evolução por Patentes', locked: true },
   { key: 'sem_sanidade', label: 'Jogando sem Sanidade' },
-  { key: 'evolucao_patente', label: 'Evolução por Patente' },
-  { key: 'ferimentos_debilitantes', label: 'Ferimentos Debilitantes' },
+  { key: 'contagem_municao', label: 'Contagem de Munição' },
+]
+
+const ELEMENTOS: { key: string | null; label: string; color: string }[] = [
+  { key: null, label: 'Nenhum', color: '#1a1a1a' },
+  { key: 'sangue', label: 'Sangue', color: '#a01f2e' },
+  { key: 'energia', label: 'Energia', color: '#2452c9' },
+  { key: 'conhecimento', label: 'Conhecimento', color: '#c98a1f' },
+  { key: 'morte', label: 'Morte', color: '#6b3fa0' },
 ]
 
 const CONFIG_TABS = ['Aparência', 'Mecânicas', 'Preferências'] as const
 
-function BannerPicker({
-  label,
-  value,
-  elemento,
-  onSave,
-}: {
-  label: string
-  value: string
-  elemento: string | null
-  onSave: (v: string) => void
-}) {
-  const [open, setOpen] = useState(false)
-  const [choice, setChoice] = useState(value)
-
+function Toggle({ checked, onChange }: { checked: boolean; onChange: () => void }) {
   return (
-    <div>
-      <p>{label}: {value === 'padrao' ? 'Padrão' : value}</p>
-      <button type="button" onClick={() => { setChoice(value); setOpen(true) }}>Mudar {label}</button>
-      {open && (
-        <div role="dialog">
-          <p>Selecione um {label.toLowerCase()}</p>
-          <label>
-            <input type="radio" name={label} checked={choice === 'padrao'} onChange={() => setChoice('padrao')} />
-            Padrão (preto)
-          </label>
-          <label>
-            <input type="radio" name={label} disabled={!elemento} checked={choice === 'tema_afinidade'} onChange={() => setChoice('tema_afinidade')} />
-            Tema da Afinidade ({elemento ?? 'escolha uma Afinidade primeiro'}) — visual ainda não definido
-          </label>
-          <button type="button" onClick={() => { onSave(choice); setOpen(false) }}>Salvar</button>
-          <button type="button" onClick={() => setOpen(false)}>Cancelar</button>
-        </div>
-      )}
+    <button type="button" className={`settings-toggle${checked ? ' on' : ''}`} onClick={onChange} role="switch" aria-checked={checked}>
+      <span className="settings-toggle-knob">{checked ? '✓' : '×'}</span>
+    </button>
+  )
+}
+
+function BannerPicker({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="settings-picker">
+      <div className="settings-picker-preview" />
+      <p className="settings-picker-value">{value === 'padrao' ? 'Padrão' : value}</p>
+      <button type="button" className="settings-picker-btn">Mudar {label}</button>
     </div>
   )
 }
@@ -62,11 +50,13 @@ export default function ConfiguracoesPanel({
   const [configTab, setConfigTab] = useState<(typeof CONFIG_TABS)[number]>('Aparência')
   const [volume, setVolume] = useState(100)
   const [muted, setMuted] = useState(false)
+  const [bgAnimated, setBgAnimated] = useState(true)
 
   useEffect(() => {
     const stored = localStorage.getItem('vtt_volume')
     if (stored) setVolume(Number(stored))
     setMuted(localStorage.getItem('vtt_muted') === 'true')
+    setBgAnimated(localStorage.getItem('vtt_bg_animated') !== 'false')
   }, [])
 
   async function updateField(patch: Partial<CharacterRecord>) {
@@ -89,107 +79,135 @@ export default function ConfiguracoesPanel({
     localStorage.setItem('vtt_muted', String(next))
   }
 
+  function toggleBgAnimated() {
+    const next = !bgAnimated
+    setBgAnimated(next)
+    localStorage.setItem('vtt_bg_animated', String(next))
+    window.dispatchEvent(new Event('vtt-bg-animated-change'))
+  }
+
   return (
-    <aside role="dialog" aria-label="Configurações">
-      <header>
+    <aside role="dialog" aria-label="Configurações" className="settings-panel">
+      <header className="settings-header">
         <h2>Configurações</h2>
-        <button type="button" onClick={onClose}>Fechar</button>
+        <button type="button" className="settings-close" onClick={onClose} aria-label="Fechar">×</button>
       </header>
 
-      <nav>
+      <nav className="settings-tabs">
         {CONFIG_TABS.map((t) => (
-          <button key={t} type="button" onClick={() => setConfigTab(t)} disabled={configTab === t}>{t}</button>
+          <button
+            key={t}
+            type="button"
+            className={`settings-tab${configTab === t ? ' active' : ''}`}
+            onClick={() => setConfigTab(t)}
+          >
+            {t}
+          </button>
         ))}
       </nav>
 
-      {configTab === 'Aparência' && (
-        <section>
-          <BannerPicker
-            label="Banner"
-            value={character.sheet_banner}
-            elemento={character.afinidade_elemento}
-            onSave={(v) => updateField({ sheet_banner: v })}
-          />
-          <BannerPicker
-            label="Bandeja de Dados"
-            value={character.dice_tray}
-            elemento={character.afinidade_elemento}
-            onSave={(v) => updateField({ dice_tray: v })}
-          />
-        </section>
-      )}
+      <div className="settings-body">
+        {configTab === 'Aparência' && (
+          <section>
+            <h3 className="settings-section-title">Editar aparência</h3>
 
-      {configTab === 'Mecânicas' && (
-        <section>
-          <h3>Regras Opcionais</h3>
-          {RULES.map(({ key, label }) => (
-            <label key={key}>
-              <input
-                type="checkbox"
-                checked={Boolean(character.optional_rules[key])}
-                onChange={() => toggleRule(key)}
-              />
-              {label}
-            </label>
-          ))}
-
-          {character.optional_rules.evolucao_patente && (
-            <div>
-              <p>Patente ajustável na aba Agente.</p>
-              <label>
-                Pontos de Prestígio:
-                <input
-                  type="number"
-                  value={character.prestigio}
-                  onChange={(e) => updateField({ prestigio: Number(e.target.value) })}
-                />
-              </label>
+            <p className="settings-label">Elemento em destaque</p>
+            <div className="settings-elemento-row">
+              {ELEMENTOS.map((e) => (
+                <button
+                  key={e.label}
+                  type="button"
+                  className={`settings-elemento-swatch${character.afinidade_elemento === e.key ? ' active' : ''}`}
+                  style={{ background: e.color }}
+                  onClick={() => updateField({ afinidade_elemento: e.key })}
+                  aria-label={e.label}
+                  title={e.label}
+                >
+                  {e.key === null && '×'}
+                </button>
+              ))}
             </div>
-          )}
-        </section>
-      )}
 
-      {configTab === 'Preferências' && (
-        <section>
-          <h3>Navegação</h3>
-          <nav style={{ display: 'flex', gap: '1em' }}>
-            <Link to="/perfil">Perfil</Link>
-            <Link to="/jogar">Jogar</Link>
-          </nav>
+            <div className="settings-row">
+              <Toggle checked={bgAnimated} onChange={toggleBgAnimated} />
+              <span>Fundo animado</span>
+            </div>
 
-          <h3>Privacidade</h3>
-          <label>
-            <input
-              type="checkbox"
-              checked={character.editable_by_others}
-              onChange={(e) => updateField({ editable_by_others: e.target.checked })}
-            />
-            Editável para outros jogadores
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={character.hidden_from_others}
-              onChange={(e) => updateField({ hidden_from_others: e.target.checked })}
-            />
-            Oculta para outros jogadores
-          </label>
+            <p className="settings-label settings-label-block">Banner de fundo</p>
+            <BannerPicker label="Banner" value={character.sheet_banner} />
 
-          <h3>Som</h3>
-          <label>
-            Volume
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={volume}
-              disabled={muted}
-              onChange={(e) => setVolumeAndStore(Number(e.target.value))}
-            />
-          </label>
-          <button type="button" onClick={toggleMuted}>{muted ? 'Ligar Som' : 'Desligar Som'}</button>
-        </section>
-      )}
+            <p className="settings-label settings-label-block">Bandeja de dados</p>
+            <BannerPicker label="Bandeja" value={character.dice_tray} />
+          </section>
+        )}
+
+        {configTab === 'Mecânicas' && (
+          <section>
+            <h3 className="settings-section-title">Regras Opcionais</h3>
+            {RULES.map(({ key, label, locked }) => (
+              <div key={key} className={`settings-row${locked ? ' settings-row-sub' : ''}`}>
+                <Toggle checked={Boolean(character.optional_rules[key])} onChange={() => toggleRule(key)} />
+                <span>{label}</span>
+                {locked && <span className="settings-lock">🔒</span>}
+              </div>
+            ))}
+
+            {character.optional_rules.evolucao_patente && (
+              <div className="settings-subsection">
+                <p>Patente ajustável na aba Agente.</p>
+                <label className="settings-label-block">
+                  Pontos de Prestígio
+                  <input
+                    type="number"
+                    className="settings-input"
+                    value={character.prestigio}
+                    onChange={(e) => updateField({ prestigio: Number(e.target.value) })}
+                  />
+                </label>
+              </div>
+            )}
+          </section>
+        )}
+
+        {configTab === 'Preferências' && (
+          <section>
+            <h3 className="settings-section-title">Opções de privacidade</h3>
+            <div className="settings-row">
+              <Toggle checked={character.editable_by_others} onChange={() => updateField({ editable_by_others: !character.editable_by_others })} />
+              <span>Editável por outros jogadores</span>
+            </div>
+            <div className="settings-row">
+              <Toggle checked={character.hidden_from_others} onChange={() => updateField({ hidden_from_others: !character.hidden_from_others })} />
+              <span>Oculta para outros jogadores</span>
+            </div>
+
+            <h3 className="settings-section-title settings-section-title-spaced">Opções de som</h3>
+            <p className="settings-label">Volume</p>
+            <div className="settings-volume-row">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={volume}
+                disabled={muted}
+                onChange={(e) => setVolumeAndStore(Number(e.target.value))}
+                className="settings-slider"
+              />
+              <span className="settings-volume-value">{volume}</span>
+            </div>
+            <div className="settings-row">
+              <Toggle checked={muted} onChange={toggleMuted} />
+              <span>Desligar sons</span>
+            </div>
+
+            <h3 className="settings-section-title settings-section-title-spaced">Navegação</h3>
+            <div className="settings-nav-links">
+              <Link to="/perfil">Perfil</Link>
+              <Link to="/jogar">Jogar</Link>
+            </div>
+          </section>
+        )}
+      </div>
     </aside>
   )
 }

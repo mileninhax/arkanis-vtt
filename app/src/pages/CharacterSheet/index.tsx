@@ -100,6 +100,13 @@ export default function CharacterSheet() {
   const [showDice, setShowDice] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [showConfig, setShowConfig] = useState(false)
+  const [bgAnimated, setBgAnimated] = useState(() => localStorage.getItem('vtt_bg_animated') !== 'false')
+
+  useEffect(() => {
+    function onChange() { setBgAnimated(localStorage.getItem('vtt_bg_animated') !== 'false') }
+    window.addEventListener('vtt-bg-animated-change', onChange)
+    return () => window.removeEventListener('vtt-bg-animated-change', onChange)
+  }, [])
   const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
@@ -142,7 +149,7 @@ export default function CharacterSheet() {
   return (
     <main className="sheet-root">
       <div
-        className={`sheet-bg ${bgClass}`}
+        className={`sheet-bg ${bgClass}${bgAnimated ? '' : ' sheet-bg-static'}`}
         style={{ backgroundImage: `linear-gradient(rgba(19,17,24,0.4), rgba(19,17,24,0.4)), url(${bgImage})` }}
       />
       <header className="vtt-topbar">

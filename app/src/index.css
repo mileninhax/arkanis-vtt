@@ -2033,7 +2033,7 @@ code, .counter {
 .vtt-avatar-wrap {
   position: relative;
   width: 140px;
-  margin: 0 auto 0.6em;
+  margin: 0 auto 1.3em;
 }
 
 .vtt-avatar {
@@ -2049,8 +2049,8 @@ code, .counter {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200px;
-  height: 200px;
+  width: 172px;
+  height: 172px;
   transform: translate(-50%, -50%);
   pointer-events: none;
   object-fit: contain;
@@ -2060,7 +2060,6 @@ code, .counter {
   display: flex;
   justify-content: center;
   gap: 0.5em;
-  margin-top: 3.2em;
   margin-bottom: 0.7em;
 }
 

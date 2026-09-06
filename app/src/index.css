@@ -3999,7 +3999,7 @@ code, .counter {
 }
 
 .roll-card-die-plus {
-  margin: 0 0.35em;
+  margin: 0 0.1em;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 700;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
@@ -86,7 +87,7 @@ export default function ConfiguracoesPanel({
     window.dispatchEvent(new Event('vtt-bg-animated-change'))
   }
 
-  return (
+  return createPortal(
     <aside role="dialog" aria-label="Configurações" className="settings-panel">
       <header className="settings-header">
         <h2>Configurações</h2>
@@ -208,6 +209,7 @@ export default function ConfiguracoesPanel({
           </section>
         )}
       </div>
-    </aside>
+    </aside>,
+    document.body,
   )
 }

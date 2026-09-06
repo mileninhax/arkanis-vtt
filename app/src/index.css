@@ -3899,7 +3899,6 @@ code, .counter {
   flex-direction: column;
   align-items: center;
   gap: 0.8em;
-  perspective: 1200px;
 }
 
 .roll-card {
@@ -3913,14 +3912,13 @@ code, .counter {
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.2em 1.4em;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  animation: roll-card-flip-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
-  transform-style: preserve-3d;
+  animation: roll-card-flip-in 0.4s ease-out;
 }
 
 @keyframes roll-card-flip-in {
-  0% { transform: rotateY(-100deg) scale(0.85); opacity: 0; }
-  60% { transform: rotateY(12deg) scale(1.02); opacity: 1; }
-  100% { transform: rotateY(0) scale(1); opacity: 1; }
+  0% { transform: scaleX(0.05); opacity: 0; }
+  70% { transform: scaleX(1.08); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 1; }
 }
 
 .roll-card-header {
@@ -4005,15 +4003,7 @@ code, .counter {
 }
 
 .roll-card-die-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.8em;
-  height: 1.8em;
-  border: 2px solid;
-  border-radius: 6px;
-  font-size: 0.75em;
-  color: #fff;
+  overflow: visible;
 }
 
 .roll-card-extra {

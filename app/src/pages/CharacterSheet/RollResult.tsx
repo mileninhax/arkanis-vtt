@@ -36,7 +36,9 @@ export function Die({ sides, value, discarded }: RollCardDie) {
       {DIE_ICON[sides] ? (
         <img src={DIE_ICON[sides]} alt={`d${sides}`} className="roll-card-die-icon" />
       ) : (
-        <span className="roll-card-die-fallback" style={{ borderColor: color }} />
+        <svg viewBox="0 0 24 24" className="roll-card-die-icon roll-card-die-fallback">
+          <polygon points="12,3 21,19 3,19" fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+        </svg>
       )}
       <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
     </div>

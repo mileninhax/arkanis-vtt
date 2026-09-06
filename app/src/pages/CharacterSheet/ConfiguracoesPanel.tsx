@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
+import DiceTrayModal from './DiceTrayModal'
 
 const RULES: { key: string; label: string; locked?: boolean }[] = [
   { key: 'nex_experiencia', label: 'NEX & Experiência' },
@@ -29,14 +30,9 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: () => void 
   )
 }
 
-function BannerPicker({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="settings-picker">
-      <div className="settings-picker-preview" />
-      <p className="settings-picker-value">{value === 'padrao' ? 'Padrão' : value}</p>
-      <button type="button" className="settings-picker-btn">Mudar {label}</button>
-    </div>
-  )
+function TrayPreview({ tray }: { tray: string }) {
+  if (tray === 'padrao') return <p className="settings-picker-value">Padrão</p>
+  return <div className="settings-picker-preview" style={{ backgroundImage: `url(${tray})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
 }
 
 export default function ConfiguracoesPanel({
@@ -52,6 +48,7 @@ export default function ConfiguracoesPanel({
   const [volume, setVolume] = useState(100)
   const [muted, setMuted] = useState(false)
   const [bgAnimated, setBgAnimated] = useState(true)
+  const [showTrayModal, setShowTrayModal] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem('vtt_volume')
@@ -134,11 +131,19 @@ export default function ConfiguracoesPanel({
               <span>Fundo animado</span>
             </div>
 
-            <p className="settings-label settings-label-block">Banner de fundo</p>
-            <BannerPicker label="Banner" value={character.sheet_banner} />
-
             <p className="settings-label settings-label-block">Bandeja de dados</p>
-            <BannerPicker label="Bandeja" value={character.dice_tray} />
+            <div className="settings-picker">
+              <TrayPreview tray={character.dice_tray} />
+              <button type="button" className="settings-picker-btn" onClick={() => setShowTrayModal(true)}>Mudar Bandeja</button>
+            </div>
+
+            {showTrayModal && (
+              <DiceTrayModal
+                currentTray={character.dice_tray}
+                onClose={() => setShowTrayModal(false)}
+                onSave={(tray) => { updateField({ dice_tray: tray }); setShowTrayModal(false) }}
+              />
+            )}
           </section>
         )}
 

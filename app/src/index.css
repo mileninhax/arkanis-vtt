@@ -2030,14 +2030,30 @@ code, .counter {
   border-color: #fff;
 }
 
+.vtt-avatar-wrap {
+  position: relative;
+  width: 140px;
+  margin: 0 auto 0.6em;
+}
+
 .vtt-avatar {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--accent-strong), var(--accent) 60%, #3a2a55 100%);
   display: block;
-  margin: 0 auto 0.6em;
   object-fit: cover;
+}
+
+.vtt-avatar-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  object-fit: contain;
 }
 
 .vtt-avatar-actions {

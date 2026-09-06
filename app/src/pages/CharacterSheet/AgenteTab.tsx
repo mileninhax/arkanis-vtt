@@ -373,7 +373,10 @@ function cycleTraining(current: Training): Training {
 
       <div className="vtt-col-side">
         <div className="vtt-card" style={{ textAlign: 'center' }}>
-          <img className="vtt-avatar" src={character.avatar_url ?? undefined} alt="" />
+          <div className="vtt-avatar-wrap">
+            <img className="vtt-avatar" src={character.avatar_url ?? undefined} alt="" />
+            {character.avatar_frame && <img className="vtt-avatar-frame" src={character.avatar_frame} alt="" />}
+          </div>
           {editMode && (
             <div className="vtt-avatar-actions">
               <label className="vtt-avatar-action-btn">

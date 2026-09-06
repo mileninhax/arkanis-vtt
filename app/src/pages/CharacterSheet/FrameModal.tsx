@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
+import frameMorte from '../../assets/frame-morte.png'
 
 type FrameOption = { key: string; label: string; icon?: string }
 
 const FRAME_OPTIONS: FrameOption[] = [
   { key: 'none', label: 'Sem moldura' },
+  { key: frameMorte, label: 'Morte', icon: frameMorte },
 ]
 
 export default function FrameModal({

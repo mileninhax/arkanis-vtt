@@ -26,7 +26,9 @@ export type RollResultData = {
   modificadores?: RollContextModifier[]
 }
 
-function Die({ sides, value, discarded }: { sides: number; value: number; discarded?: boolean }) {
+export type RollCardDie = { sides: number; value: number; discarded?: boolean }
+
+export function Die({ sides, value, discarded }: RollCardDie) {
   const color = DIE_COLOR[sides] ?? '#fff'
   return (
     <div className={`roll-card-die${discarded ? ' discarded' : ''}`}>
@@ -37,6 +39,55 @@ function Die({ sides, value, discarded }: { sides: number; value: number; discar
         <span className="roll-card-die-fallback" style={{ borderColor: color }}>d{sides}</span>
       )}
     </div>
+  )
+}
+
+export function RollCard({
+  title,
+  subtitle,
+  total,
+  dice,
+  extraLines,
+  onClose,
+}: {
+  title: string
+  subtitle: string
+  total: number
+  dice: RollCardDie[]
+  extraLines?: string[]
+  onClose: () => void
+}) {
+  return createPortal(
+    <div className="roll-card-wrap">
+      <div className="roll-card" style={{ backgroundImage: `url(${cardBg})` }}>
+        <div className="roll-card-header">
+          <span className="roll-card-title">{title}</span>
+          <span className="roll-card-subtitle">{subtitle}</span>
+        </div>
+
+        <div className="roll-card-total">{total}</div>
+
+        <div className="roll-card-divider" />
+
+        <div className="roll-card-dice">
+          {dice.map((d, i) => (
+            <div key={i} className="roll-card-die-slot">
+              <Die sides={d.sides} value={d.value} discarded={d.discarded} />
+              {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
+            </div>
+          ))}
+        </div>
+
+        {extraLines && extraLines.length > 0 && (
+          <div className="roll-card-extra">
+            {extraLines.map((l, i) => <p key={i}>{l}</p>)}
+          </div>
+        )}
+      </div>
+
+      <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>
+    </div>,
+    document.body,
   )
 }
 
@@ -57,36 +108,14 @@ export default function RollResult({ result, onClose }: { result: RollResultData
     extraLines.push(`[${m.origem} · ${m.kind === 'modificacao' ? 'Modificação' : 'Maldição'}] ${m.name}${m.elemento ? ` (${m.elemento})` : ''}: ${m.effect}`)
   })
 
-  return createPortal(
-    <div className="roll-card-wrap">
-      <div className="roll-card" style={{ backgroundImage: `url(${cardBg})` }}>
-        <div className="roll-card-header">
-          <span className="roll-card-title">{result.characterName}</span>
-          <span className="roll-card-subtitle">{result.label}</span>
-        </div>
-
-        <div className="roll-card-total">{total}</div>
-
-        <div className="roll-card-divider" />
-
-        <div className="roll-card-dice">
-          {result.rolls.map((v, i) => (
-            <div key={i} className="roll-card-die-slot">
-              <Die sides={20} value={v} discarded={v !== result.kept} />
-              {i < result.rolls.length - 1 && <span className="roll-card-die-plus">+</span>}
-            </div>
-          ))}
-        </div>
-
-        {extraLines.length > 0 && (
-          <div className="roll-card-extra">
-            {extraLines.map((l, i) => <p key={i}>{l}</p>)}
-          </div>
-        )}
-      </div>
-
-      <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>
-    </div>,
-    document.body,
+  return (
+    <RollCard
+      title={result.characterName}
+      subtitle={result.label}
+      total={total}
+      dice={result.rolls.map((v) => ({ sides: 20, value: v, discarded: v !== result.kept }))}
+      extraLines={extraLines}
+      onClose={onClose}
+    />
   )
 }

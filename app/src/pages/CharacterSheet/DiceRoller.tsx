@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../../lib/AuthContext'
 import { recordRoll } from '../../lib/rollHistory'
+import { RollCard } from './RollResult'
 import type { CharacterRecord } from './index'
 
 const DICE = [4, 6, 8, 10, 12, 20]
@@ -33,7 +34,7 @@ export default function DiceRoller({ character, onClose }: { character: Characte
   const { session } = useAuth()
   const [selected, setSelected] = useState<Record<number, number>>({})
   const [manual, setManual] = useState('')
-  const [result, setResult] = useState<{ total: number; detail: { sides: number; value: number }[] } | null>(null)
+  const [result, setResult] = useState<{ label: string; total: number; detail: { sides: number; value: number }[] } | null>(null)
 
   function persist(label: string, total: number, detail: { sides: number; value: number }[]) {
     if (!session) return
@@ -54,7 +55,7 @@ export default function DiceRoller({ character, onClose }: { character: Characte
       for (let i = 0; i < count; i++) detail.push({ sides, value: rollDie(sides) })
     }
     const total = detail.reduce((sum, d) => sum + d.value, 0)
-    setResult({ total, detail })
+    setResult({ label: 'Rolagem', total, detail })
     persist('Rolagem manual', total, detail)
   }
 
@@ -72,37 +73,41 @@ export default function DiceRoller({ character, onClose }: { character: Characte
         total += sign * value
       }
     }
-    setResult({ total, detail })
+    setResult({ label: 'Rolagem', total, detail })
     persist(`Rolagem: ${manual}`, total, detail)
+  }
+
+  if (result) {
+    return (
+      <RollCard
+        title={character.name}
+        subtitle={result.label}
+        total={result.total}
+        dice={result.detail.map((d) => ({ sides: d.sides, value: d.value }))}
+        onClose={() => { setResult(null); setSelected({}) }}
+      />
+    )
   }
 
   return (
     <div role="dialog">
       <button type="button" onClick={onClose}>Fechar Dados</button>
 
-      {!result ? (
+      <div>
         <div>
-          <div>
-            {DICE.map((sides) => (
-              <button key={sides} type="button" onClick={() => addDie(sides)}>
-                d{sides} {selected[sides] ? `x${selected[sides]}` : ''}
-              </button>
-            ))}
-          </div>
-          <button type="button" onClick={rollSelected} disabled={Object.keys(selected).length === 0}>Rolar</button>
+          {DICE.map((sides) => (
+            <button key={sides} type="button" onClick={() => addDie(sides)}>
+              d{sides} {selected[sides] ? `x${selected[sides]}` : ''}
+            </button>
+          ))}
+        </div>
+        <button type="button" onClick={rollSelected} disabled={Object.keys(selected).length === 0}>Rolar</button>
 
-          <div>
-            <input placeholder="ex.: 2d4+3" value={manual} onChange={(e) => setManual(e.target.value)} />
-            <button type="button" onClick={rollManual}>Rolar fórmula</button>
-          </div>
-        </div>
-      ) : (
         <div>
-          <p>Total: {result.total}</p>
-          <p>{result.detail.map((d) => `d${d.sides}: ${d.value}`).join(' · ')}</p>
-          <button type="button" onClick={() => { setResult(null); setSelected({}) }}>Voltar</button>
+          <input placeholder="ex.: 2d4+3" value={manual} onChange={(e) => setManual(e.target.value)} />
+          <button type="button" onClick={rollManual}>Rolar fórmula</button>
         </div>
-      )}
+      </div>
     </div>
   )
 }

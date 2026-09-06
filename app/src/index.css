@@ -2060,6 +2060,7 @@ code, .counter {
   display: flex;
   justify-content: center;
   gap: 0.5em;
+  margin-top: 3.2em;
   margin-bottom: 0.7em;
 }
 

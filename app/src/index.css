@@ -2049,16 +2049,15 @@ code, .counter {
 
 .vtt-avatar-action-btn {
   font-family: 'Poppins', var(--poppins);
-  font-size: 0.78em;
-  padding: 0.4em 0.8em;
+  font-size: 0.62em;
+  padding: 0.3em 0.6em;
   background: #2e313a;
   border: 1px solid rgba(242, 242, 242, 0.2);
   border-radius: 999px;
-  color: var(--text-dim);
+  color: #fff;
 }
 
 .vtt-avatar-action-btn:hover {
-  color: var(--text-h);
   border-color: rgba(242, 242, 242, 0.4);
 }
 

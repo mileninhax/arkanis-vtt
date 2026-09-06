@@ -2062,6 +2062,124 @@ code, .counter {
   border-color: rgba(242, 242, 242, 0.4);
 }
 
+.frame-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame-modal {
+  width: min(400px, 90vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: #16151c;
+  border: 1px solid #2a2a35;
+  border-radius: 14px;
+  padding: 1.4em;
+}
+
+.frame-modal h3 {
+  margin: 0 0 1em;
+  font-family: var(--heading);
+  color: var(--text-h);
+}
+
+.frame-modal-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.8em;
+  padding-right: 0.4em;
+}
+
+.frame-modal-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  padding: 1em;
+  background: #1e1d26;
+  border: 1px solid #2a2a35;
+  border-radius: 10px;
+  color: var(--text-h);
+}
+
+.frame-modal-option.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.frame-modal-option-preview {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame-modal-option-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.frame-modal-none-icon {
+  width: 100%;
+  height: 100%;
+  color: var(--text-h);
+}
+
+.frame-modal-option-label {
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+.frame-modal-actions {
+  display: flex;
+  gap: 0.7em;
+  margin-top: 1.2em;
+}
+
+.frame-modal-save,
+.frame-modal-cancel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.7em;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.frame-modal-save {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+}
+
+.frame-modal-save:hover {
+  background: var(--accent-strong);
+}
+
+.frame-modal-cancel {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.frame-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .vtt-stat-icon {
   width: 72px;
   height: 84px;

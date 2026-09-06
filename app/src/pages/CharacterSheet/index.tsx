@@ -34,6 +34,7 @@ export type CharacterRecord = {
   campaign_id: string | null
   name: string
   avatar_url: string | null
+  avatar_frame: string | null
   doc_number: string
   attributes: Attributes
   nex_percent: number

@@ -13,6 +13,7 @@ import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 import AttributeDiagram from './AttributeDiagram'
 import StatBar from './StatBar'
 import ConditionsModal from './ConditionsModal'
+import FrameModal from './FrameModal'
 import conditionsIcon from '../../assets/condicoes/conditions.svg'
 import enemyEffectsIcon from '../../assets/condicoes/enemy-effects.svg'
 import ritualsIcon from '../../assets/condicoes/rituals.svg'
@@ -121,6 +122,7 @@ export default function AgenteTab({
   const [testDraft, setTestDraft] = useState({ diceBonus: 0, valueBonus: 0 })
   const [onlyTrained, setOnlyTrained] = useState(false)
   const [showConditionsModal, setShowConditionsModal] = useState(false)
+  const [showFrameModal, setShowFrameModal] = useState(false)
   const [conditionCatalog, setConditionCatalog] = useState<Record<string, { icon: string; description: string }>>({})
   const [openConditionDetail, setOpenConditionDetail] = useState<string | null>(null)
   const [tracks, setTracks] = useState<ClassTrack[]>([])
@@ -246,7 +248,7 @@ export default function AgenteTab({
     onUpdated()
   }
 
-  async function updateCharacterField(field: string, value: number | string) {
+  async function updateCharacterField(field: string, value: number | string | null) {
     await supabase.from('characters').update({ [field]: value }).eq('id', character.id)
     onUpdated()
   }
@@ -378,8 +380,16 @@ function cycleTraining(current: Training): Training {
                 Mudar foto
                 <input type="file" accept="image/*" onChange={handlePhotoChange} hidden />
               </label>
-              <button type="button" className="vtt-avatar-action-btn">Mudar moldura</button>
+              <button type="button" className="vtt-avatar-action-btn" onClick={() => setShowFrameModal(true)}>Mudar moldura</button>
             </div>
+          )}
+
+          {showFrameModal && (
+            <FrameModal
+              currentFrame={character.avatar_frame}
+              onClose={() => setShowFrameModal(false)}
+              onSave={(frame) => { updateCharacterField('avatar_frame', frame); setShowFrameModal(false) }}
+            />
           )}
 
           {editMode ? (

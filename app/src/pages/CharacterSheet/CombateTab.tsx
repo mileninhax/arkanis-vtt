@@ -148,6 +148,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     const attackDiceBonus = activeAttackMods.reduce((sum, m) => sum + m.dice_bonus, 0)
     const attackValueBonus = activeAttackMods.reduce((sum, m) => sum + m.value_bonus, 0)
     const threatBonus = activeAttackMods.reduce((sum, m) => sum + m.threat_margin_bonus, 0)
+    const multiplierBonus = activeAttackMods.reduce((sum, m) => sum + m.multiplier_bonus, 0)
     const damageValueBonus = activeDamageMods.reduce((sum, m) => sum + m.value_bonus, 0) + (attack.general_info?.damage_bonus_from_mods ?? 0)
 
     const score = attrValue(character.attributes, attack.attribute) + attackDiceBonus
@@ -157,11 +158,14 @@ export default function CombateTab({ character }: { character: CharacterRecord }
 
     const effectiveThreatMargin = attack.threat_margin - threatBonus
     const isCrit = kept >= effectiveThreatMargin
+    const critMultiplier = isCrit ? attack.multiplier + multiplierBonus : 1
 
     const damage = attack.damage.map((d) => {
-      const rolled = rollDiceFormula(d.formula, isCrit ? 2 : 1)
-      if (!rolled) return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ' — CRÍTICO' : ''}`, manualFormula: d.formula || '—' }
-      return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ' — CRÍTICO' : ''}`, rolls: rolled.rolls, modifier: rolled.modifier + damageValueBonus, total: rolled.total + damageValueBonus }
+      const rolled = rollDiceFormula(d.formula, 1)
+      if (!rolled) return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ` — CRÍTICO x${critMultiplier}` : ''}`, manualFormula: d.formula || '—' }
+      const total = rolled.total * critMultiplier + damageValueBonus
+      const modifier = rolled.modifier * critMultiplier + damageValueBonus
+      return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ` — CRÍTICO x${critMultiplier}` : ''}`, rolls: rolled.rolls, modifier, total }
     })
 
     const label = `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`

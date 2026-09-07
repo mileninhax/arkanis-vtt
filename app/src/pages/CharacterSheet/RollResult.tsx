@@ -22,6 +22,7 @@ export type RollResultData = {
   kept: number
   bonus: number
   characterName: string
+  diceTray?: string
   damage?: DamageRollDetail[]
   municao?: string | null
   modificadores?: RollContextModifier[]
@@ -46,12 +47,35 @@ export function Die({ sides, value, discarded }: RollCardDie) {
   )
 }
 
+function formulaSegments(dice: RollCardDie[], bonus?: number): { text: string; color: string }[] {
+  const segments: { text: string; color: string }[] = []
+  let currentSides: number | null = null
+  let count = 0
+  const flush = () => {
+    if (currentSides !== null) segments.push({ text: `${count}d${currentSides}`, color: DIE_COLOR[currentSides] ?? '#fff' })
+  }
+  dice.forEach((d) => {
+    if (d.sides === currentSides) {
+      count += 1
+    } else {
+      flush()
+      currentSides = d.sides
+      count = 1
+    }
+  })
+  flush()
+  if (bonus) segments.push({ text: `(${bonus >= 0 ? '+' : ''}${bonus})`, color: '#fff' })
+  return segments
+}
+
 export function RollCard({
   title,
   subtitle,
   total,
   dice,
   extraLines,
+  background,
+  bonus,
   onClose,
 }: {
   title: string
@@ -59,6 +83,8 @@ export function RollCard({
   total: number
   dice: RollCardDie[]
   extraLines?: string[]
+  background?: string
+  bonus?: number
   onClose: () => void
 }) {
   const [revealed, setRevealed] = useState(false)
@@ -77,38 +103,46 @@ export function RollCard({
     <div className="roll-card-wrap">
       <div
         className={`roll-card${revealed ? ' revealed' : ' collapsed'}${flipping ? ' flipping' : ''}`}
-        style={{ backgroundImage: `url(${cardBg})` }}
+        style={{ backgroundImage: `url(${background || cardBg})` }}
         onClick={reveal}
       >
-        {!revealed ? (
-          <div className="roll-card-total roll-card-total-collapsed">{total}</div>
-        ) : (
-          <>
-            <div className="roll-card-header">
-              <span className="roll-card-title">{title}</span>
-              <span className="roll-card-subtitle">{subtitle}</span>
-            </div>
-
-            <div className="roll-card-total">{total}</div>
-
-            <div className="roll-card-divider" />
-
-            <div className="roll-card-dice">
-              {dice.map((d, i) => (
-                <div key={i} className="roll-card-die-slot">
-                  <Die sides={d.sides} value={d.value} discarded={d.discarded} />
-                  {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
-                </div>
-              ))}
-            </div>
-
-            {extraLines && extraLines.length > 0 && (
-              <div className="roll-card-extra">
-                {extraLines.map((l, i) => <p key={i}>{l}</p>)}
+        <div className="roll-card-content-backdrop">
+          {!revealed ? (
+            <div className="roll-card-total roll-card-total-collapsed">{total}</div>
+          ) : (
+            <>
+              <div className="roll-card-header">
+                <span className="roll-card-title">{title}</span>
+                <span className="roll-card-subtitle">{subtitle}</span>
               </div>
-            )}
-          </>
-        )}
+
+              <div className="roll-card-total">{total}</div>
+
+              <div className="roll-card-divider" />
+
+              <div className="roll-card-formula">
+                {formulaSegments(dice, bonus).map((s, i) => (
+                  <span key={i} style={{ color: s.color }}>{s.text}</span>
+                ))}
+              </div>
+
+              <div className="roll-card-dice">
+                {dice.map((d, i) => (
+                  <div key={i} className="roll-card-die-slot">
+                    <Die sides={d.sides} value={d.value} discarded={d.discarded} />
+                    {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
+                  </div>
+                ))}
+              </div>
+
+              {extraLines && extraLines.length > 0 && (
+                <div className="roll-card-extra">
+                  {extraLines.map((l, i) => <p key={i}>{l}</p>)}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>
@@ -121,7 +155,6 @@ export default function RollResult({ result, onClose }: { result: RollResultData
   const total = result.kept + result.bonus
 
   const extraLines: string[] = []
-  if (result.bonus) extraLines.push(`Bônus: ${result.bonus >= 0 ? '+' : ''}${result.bonus}`)
   if (result.municao) extraLines.push(`Munição: ${result.municao}`)
   result.damage?.forEach((d) => {
     extraLines.push(
@@ -141,6 +174,8 @@ export default function RollResult({ result, onClose }: { result: RollResultData
       total={total}
       dice={result.rolls.map((v) => ({ sides: 20, value: v, discarded: v !== result.kept }))}
       extraLines={extraLines}
+      background={result.diceTray && result.diceTray !== 'padrao' ? result.diceTray : undefined}
+      bonus={result.bonus}
       onClose={onClose}
     />
   )

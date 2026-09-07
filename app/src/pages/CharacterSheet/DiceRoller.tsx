@@ -34,7 +34,7 @@ export default function DiceRoller({ character, onClose }: { character: Characte
   const { session } = useAuth()
   const [selected, setSelected] = useState<Record<number, number>>({})
   const [manual, setManual] = useState('')
-  const [result, setResult] = useState<{ label: string; total: number; detail: { sides: number; value: number }[] } | null>(null)
+  const [result, setResult] = useState<{ label: string; total: number; detail: { sides: number; value: number }[]; modifier?: number } | null>(null)
 
   function persist(label: string, total: number, detail: { sides: number; value: number }[]) {
     if (!session) return
@@ -73,7 +73,7 @@ export default function DiceRoller({ character, onClose }: { character: Characte
         total += sign * value
       }
     }
-    setResult({ label: 'Rolagem', total, detail })
+    setResult({ label: 'Rolagem', total, detail, modifier: parsed.modifier })
     persist(`Rolagem: ${manual}`, total, detail)
   }
 
@@ -84,6 +84,8 @@ export default function DiceRoller({ character, onClose }: { character: Characte
         subtitle={result.label}
         total={result.total}
         dice={result.detail.map((d) => ({ sides: d.sides, value: d.value }))}
+        bonus={result.modifier}
+        background={character.dice_tray && character.dice_tray !== 'padrao' ? character.dice_tray : undefined}
         onClose={() => { setResult(null); setSelected({}) }}
       />
     )

@@ -3953,6 +3953,15 @@ code, .counter {
   padding: 0.3em 0;
 }
 
+.roll-card-content-backdrop {
+  background: rgba(10, 9, 15, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 8px;
+  margin: -0.3em -0.5em;
+  padding: 0.3em 0.5em;
+}
+
 .roll-card-header {
   display: flex;
   flex-direction: column;
@@ -3984,6 +3993,17 @@ code, .counter {
   height: 1px;
   background: rgba(255, 255, 255, 0.15);
   margin: 0.7em 0;
+}
+
+.roll-card-formula {
+  font-family: var(--poppins);
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
 }
 
 .roll-card-dice {

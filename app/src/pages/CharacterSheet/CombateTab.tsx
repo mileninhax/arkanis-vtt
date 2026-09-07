@@ -57,7 +57,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [modsOpen, setModsOpen] = useState(false)
   const [attackSearch, setAttackSearch] = useState('')
   const [pendingAttack, setPendingAttack] = useState<{ attackId: string; isCrit: boolean } | null>(null)
-  const [damageRoll, setDamageRoll] = useState<{ title: string; subtitle: string; total: number; dice: RollCardDie[]; extraLines?: string[] } | null>(null)
+  const [damageRoll, setDamageRoll] = useState<{ title: string; subtitle: string; total: number; dice: RollCardDie[]; extraLines?: string[]; bonus?: number } | null>(null)
 
   async function loadAttacks() {
     const { data } = await supabase
@@ -167,6 +167,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       municao: attack.general_info?.municao ?? null,
       modificadores: attack.general_info?.modificadores ?? [],
       characterName: character.name,
+      diceTray: character.dice_tray,
     })
     setPendingAttack({ attackId: attack.id, isCrit })
 
@@ -208,7 +209,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     })
 
     const label = isCrit ? `Dano Crítico: ${attack.name} (x${critMultiplier})` : `Dano: ${attack.name}`
-    setDamageRoll({ title: character.name, subtitle: label, total, dice, extraLines })
+    setDamageRoll({ title: character.name, subtitle: label, total, dice, extraLines, bonus: damageValueBonus })
     setPendingAttack(null)
 
     if (session) {
@@ -232,6 +233,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
           total={damageRoll.total}
           dice={damageRoll.dice}
           extraLines={damageRoll.extraLines}
+          bonus={damageRoll.bonus}
+          background={character.dice_tray && character.dice_tray !== 'padrao' ? character.dice_tray : undefined}
           onClose={() => setDamageRoll(null)}
         />
       )}

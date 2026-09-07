@@ -4070,31 +4070,16 @@ code, .counter {
 
 .roll-card-total-backdrop {
   display: inline-block;
-  background: rgba(10, 9, 15, 0.25);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-radius: 8px;
-  padding: 0.05em 0.4em;
 }
 
 .roll-card-header-backdrop {
   display: inline-flex;
   flex-direction: column;
   align-self: flex-start;
-  background: rgba(10, 9, 15, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 8px;
-  padding: 0.3em 0.5em;
-  margin: -0.3em 0;
 }
 
 .roll-card-dice-backdrop {
-  background: rgba(10, 9, 15, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 8px;
-  padding: 0.5em 0.6em;
+  display: block;
 }
 
 .roll-card-header {

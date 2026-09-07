@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import removeIcon from '../../assets/pericias/remove-icon.svg'
 
 export type Modifier = {
   id: string
@@ -12,15 +13,30 @@ export type Modifier = {
   is_active: boolean
 }
 
+function Counter({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
+  return (
+    <div className="modpanel-counter">
+      <span className="modpanel-counter-label">{label}</span>
+      <div className="modpanel-counter-row">
+        <button type="button" onClick={() => onChange(value - 1)} aria-label={`Diminuir ${label}`}>−</button>
+        <input type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+        <button type="button" onClick={() => onChange(value + 1)} aria-label={`Aumentar ${label}`}>+</button>
+      </div>
+    </div>
+  )
+}
+
 export default function ModifiersPanel({
   characterId,
   scope,
+  title = 'Modificador de Testes',
   showThreatAndMultiplier,
   onChange,
   onDraftChange,
 }: {
   characterId: string
   scope: 'teste' | 'ataque' | 'dano'
+  title?: string
   showThreatAndMultiplier?: boolean
   onChange?: (modifiers: Modifier[]) => void
   onDraftChange?: (draft: { diceBonus: number; valueBonus: number }) => void
@@ -75,48 +91,61 @@ export default function ModifiersPanel({
   }
 
   return (
-    <div>
-      <button type="button" onClick={() => setOpen((o) => !o)}>Modificadores ({open ? 'ocultar' : 'mostrar'})</button>
-      {open && (
-        <div>
-          <ul>
-            {modifiers.map((m) => (
-              <li key={m.id}>
-                <label>
-                  <input type="checkbox" checked={m.is_active} onChange={() => toggleActive(m)} />
-                  {m.name} (dados {m.dice_bonus >= 0 ? '+' : ''}{m.dice_bonus}, valor {m.value_bonus >= 0 ? '+' : ''}{m.value_bonus}
-                  {showThreatAndMultiplier ? `, margem ${m.threat_margin_bonus >= 0 ? '+' : ''}${m.threat_margin_bonus}, mult. ${m.multiplier_bonus >= 0 ? '+' : ''}${m.multiplier_bonus}` : ''})
-                </label>
-                <button type="button" onClick={() => remove(m.id)}>x</button>
-              </li>
-            ))}
-          </ul>
+    <div className="modpanel">
+      <button type="button" className="modpanel-title" onClick={() => setOpen((o) => !o)}>
+        {title}
+      </button>
 
-          <div>
-            <label>Nome do Modificador <input value={name} onChange={(e) => setName(e.target.value)} /></label>
-            <label>
-              Dados Bônus
-              <button type="button" onClick={() => setDiceBonus((v) => v - 1)}>-</button>
-              <input type="number" value={diceBonus} onChange={(e) => setDiceBonus(Number(e.target.value))} />
-              <button type="button" onClick={() => setDiceBonus((v) => v + 1)}>+</button>
-            </label>
-            <label>
-              Valor Bônus
-              <button type="button" onClick={() => setValueBonus((v) => v - 1)}>-</button>
-              <input type="number" value={valueBonus} onChange={(e) => setValueBonus(Number(e.target.value))} />
-              <button type="button" onClick={() => setValueBonus((v) => v + 1)}>+</button>
-            </label>
-            {showThreatAndMultiplier && (
-              <>
-                <label>Margem Crítica Bônus <input type="number" value={threatBonus} onChange={(e) => setThreatBonus(Number(e.target.value))} /></label>
-                <label>Multiplicador Crítico Bônus <input type="number" value={multiplierBonus} onChange={(e) => setMultiplierBonus(Number(e.target.value))} /></label>
-              </>
-            )}
-            {scope === 'dano' && (
-              <label>Tipo de Dano <input value={damageType} onChange={(e) => setDamageType(e.target.value)} /></label>
-            )}
-            <button type="button" onClick={addModifier}>Adicionar</button>
+      {open && (
+        <div className="modpanel-body">
+          <div className="modpanel-counters">
+            <Counter label="Dados Bônus" value={diceBonus} onChange={setDiceBonus} />
+            <Counter label="Valor Bônus" value={valueBonus} onChange={setValueBonus} />
           </div>
+
+          {showThreatAndMultiplier && (
+            <div className="modpanel-counters">
+              <label className="modpanel-field">Margem Crítica Bônus <input type="number" value={threatBonus} onChange={(e) => setThreatBonus(Number(e.target.value))} /></label>
+              <label className="modpanel-field">Multiplicador Crítico Bônus <input type="number" value={multiplierBonus} onChange={(e) => setMultiplierBonus(Number(e.target.value))} /></label>
+            </div>
+          )}
+
+          {scope === 'dano' && (
+            <label className="modpanel-field">Tipo de Dano <input value={damageType} onChange={(e) => setDamageType(e.target.value)} /></label>
+          )}
+
+          <div className="modpanel-add-row">
+            <input
+              className="modpanel-name-input"
+              placeholder="Nome do Modificador"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addModifier()}
+            />
+            <button type="button" className="modpanel-add-btn" onClick={addModifier}>Adicionar</button>
+          </div>
+
+          {modifiers.length > 0 && (
+            <ul className="modpanel-list">
+              {modifiers.map((m) => (
+                <li key={m.id} className="modpanel-pill">
+                  <label className="modpanel-pill-check">
+                    <input type="checkbox" checked={m.is_active} onChange={() => toggleActive(m)} />
+                    <span>
+                      {m.name}
+                      {m.dice_bonus ? ` ${m.dice_bonus >= 0 ? '+' : ''}${m.dice_bonus}d` : ''}
+                      {m.value_bonus ? ` ${m.value_bonus >= 0 ? '+' : ''}${m.value_bonus}` : ''}
+                      {showThreatAndMultiplier && m.threat_margin_bonus ? ` margem ${m.threat_margin_bonus >= 0 ? '+' : ''}${m.threat_margin_bonus}` : ''}
+                      {showThreatAndMultiplier && m.multiplier_bonus ? ` mult. ${m.multiplier_bonus >= 0 ? '+' : ''}${m.multiplier_bonus}` : ''}
+                    </span>
+                  </label>
+                  <button type="button" className="modpanel-pill-remove" onClick={() => remove(m.id)} aria-label={`Remover ${m.name}`}>
+                    <img src={removeIcon} alt="" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

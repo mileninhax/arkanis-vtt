@@ -53,6 +53,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [roll, setRoll] = useState<RollResultData | null>(null)
   const [attackMods, setAttackMods] = useState<Modifier[]>([])
   const [damageMods, setDamageMods] = useState<Modifier[]>([])
+  const [testMods, setTestMods] = useState<Modifier[]>([])
   const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
   const [modsOpen, setModsOpen] = useState(false)
   const [attackSearch, setAttackSearch] = useState('')
@@ -79,6 +80,12 @@ export default function CombateTab({ character }: { character: CharacterRecord }
 
   useEffect(() => {
     supabase.from('skills').select('id, name').order('sort_order').then(({ data }) => setSkills(data ?? []))
+    supabase
+      .from('character_modifiers')
+      .select('id, name, dice_bonus, value_bonus, threat_margin_bonus, multiplier_bonus, damage_type, is_active')
+      .eq('character_id', character.id)
+      .eq('scope', 'teste')
+      .then(({ data }) => setTestMods(data ?? []))
     supabase
       .from('character_skills')
       .select('skill_id, training, extra_bonus')
@@ -145,9 +152,10 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     }
 
     const activeAttackMods = attackMods.filter((m) => m.is_active)
+    const activeTestMods = testMods.filter((m) => m.is_active)
 
-    const attackDiceBonus = activeAttackMods.reduce((sum, m) => sum + m.dice_bonus, 0)
-    const attackValueBonus = activeAttackMods.reduce((sum, m) => sum + m.value_bonus, 0)
+    const attackDiceBonus = activeAttackMods.reduce((sum, m) => sum + m.dice_bonus, 0) + activeTestMods.reduce((sum, m) => sum + m.dice_bonus, 0)
+    const attackValueBonus = activeAttackMods.reduce((sum, m) => sum + m.value_bonus, 0) + activeTestMods.reduce((sum, m) => sum + m.value_bonus, 0)
     const threatBonus = activeAttackMods.reduce((sum, m) => sum + m.threat_margin_bonus, 0)
 
     const score = attrValue(character.attributes, attack.attribute) + attackDiceBonus
@@ -255,10 +263,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         </button>
         {modsOpen && (
           <div style={{ marginTop: '0.6em' }}>
-            <h3>Modificador de Ataque</h3>
-            <ModifiersPanel characterId={character.id} scope="ataque" showThreatAndMultiplier onChange={setAttackMods} />
-            <h3>Modificador de Dano</h3>
-            <ModifiersPanel characterId={character.id} scope="dano" onChange={setDamageMods} />
+            <ModifiersPanel characterId={character.id} scope="ataque" title="Modificador de Ataque" showThreatAndMultiplier onChange={setAttackMods} />
+            <ModifiersPanel characterId={character.id} scope="dano" title="Modificador de Dano" onChange={setDamageMods} />
           </div>
         )}
       </div>

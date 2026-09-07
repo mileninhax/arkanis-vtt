@@ -10,6 +10,7 @@ import RituaisTab from './RituaisTab'
 import InventarioTab from './InventarioTab'
 import CombateTab from './CombateTab'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
+import PericiasTable from './PericiasTable'
 import AttributeDiagram from './AttributeDiagram'
 import StatBar from './StatBar'
 import ConditionsModal from './ConditionsModal'
@@ -84,14 +85,6 @@ type CharacterSkillRow = {
   extra_bonus: number
 }
 
-const ATTR_LABELS: { key: AttributeKey; abbr: string }[] = [
-  { key: 'forca', abbr: 'FOR' },
-  { key: 'agilidade', abbr: 'AGI' },
-  { key: 'intelecto', abbr: 'INT' },
-  { key: 'vigor', abbr: 'VIG' },
-  { key: 'presenca', abbr: 'PRE' },
-]
-
 export default function AgenteTab({
   character,
   onUpdated,
@@ -116,11 +109,9 @@ export default function AgenteTab({
   const [skills, setSkills] = useState<SkillRow[]>([])
   const [charSkills, setCharSkills] = useState<Record<string, CharacterSkillRow>>({})
   const [roll, setRoll] = useState<RollResultData | null>(null)
-  const [skillFilter, setSkillFilter] = useState('')
   const [rightTab, setRightTab] = useState<'Combate' | 'Habilidades' | 'Rituais' | 'Inventário'>('Combate')
   const [testModifiers, setTestModifiers] = useState<Modifier[]>([])
   const [testDraft, setTestDraft] = useState({ diceBonus: 0, valueBonus: 0 })
-  const [onlyTrained, setOnlyTrained] = useState(false)
   const [showConditionsModal, setShowConditionsModal] = useState(false)
   const [showFrameModal, setShowFrameModal] = useState(false)
   const [conditionCatalog, setConditionCatalog] = useState<Record<string, { icon: string; description: string }>>({})
@@ -321,20 +312,6 @@ export default function AgenteTab({
     await supabase.from('character_skills').upsert({ character_id: character.id, skill_id: skillId, training: next.training, attribute_override: next.attribute_override, extra_bonus: next.extra_bonus })
   }
 
-function cycleTraining(current: Training): Training {
-    if (current === 'nenhum') return 'treinado'
-    if (current === 'treinado') return 'veterano'
-    if (current === 'veterano') return 'expert'
-    return 'nenhum'
-  }
-
-  function trainingBadge(training: Training): string {
-    if (training === 'treinado') return '5'
-    if (training === 'veterano') return '10'
-    if (training === 'expert') return '15'
-    return '—'
-  }
-
   const activeTestMods = testModifiers.filter((m) => m.is_active)
   const testDiceBonus = activeTestMods.reduce((sum, m) => sum + m.dice_bonus, 0) + testDraft.diceBonus
   const testValueBonus = activeTestMods.reduce((sum, m) => sum + m.value_bonus, 0) + testDraft.valueBonus
@@ -355,12 +332,6 @@ function cycleTraining(current: Training): Training {
       })
     }
   }
-
-  const visibleSkills = skills.filter((s) => {
-    if (skillFilter && !s.name.toLowerCase().includes(skillFilter.toLowerCase())) return false
-    if (onlyTrained && (charSkills[s.id]?.training ?? 'nenhum') === 'nenhum') return false
-    return true
-  })
 
   const maxPv = character.max_pv_override ?? derived.maxPv
   const maxSanity = character.max_sanity_override ?? derived.maxSanity
@@ -573,49 +544,20 @@ function cycleTraining(current: Training): Training {
       )}
 
       <div className="vtt-col-main">
-        <div className="vtt-card">
-          <h3>Modificador de Testes</h3>
+        <div className="vtt-card modpanel-card">
           <ModifiersPanel characterId={character.id} scope="teste" onChange={setTestModifiers} onDraftChange={setTestDraft} />
         </div>
 
         <div className="vtt-card">
-          <input placeholder="Busque Perícias" value={skillFilter} onChange={(e) => setSkillFilter(e.target.value)} />
-          <label><input type="checkbox" checked={onlyTrained} onChange={(e) => setOnlyTrained(e.target.checked)} /> Apenas Treinadas</label>
-
-          <table>
-            <thead>
-              <tr><th>Perícia</th><th>Treino</th><th>Atrib.</th><th>Extra</th><th>Total</th><th></th></tr>
-            </thead>
-            <tbody>
-              {visibleSkills.map((skill) => {
-                const cs = charSkills[skill.id] ?? { skill_id: skill.id, training: 'nenhum' as const, attribute_override: null, extra_bonus: 0 }
-                const attr = cs.attribute_override ?? skill.default_attribute
-                const total = trainingBonus(cs.training) + cs.extra_bonus + testValueBonus
-                const diceCount = attr ? attrValue(character.attributes, attr) + testDiceBonus : null
-                return (
-                  <tr key={skill.id}>
-                    <td>{skill.name} ({diceCount ?? '?'}d20{testDiceBonus ? ` (${testDiceBonus >= 0 ? '+' : ''}${testDiceBonus} de modificadores)` : ''})</td>
-                    <td>
-                      <button type="button" onClick={() => setSkillField(skill.id, { training: cycleTraining(cs.training) })}>
-                        {trainingBadge(cs.training)}
-                      </button>
-                    </td>
-                    <td>
-                      <select value={attr ?? ''} onChange={(e) => setSkillField(skill.id, { attribute_override: e.target.value || null })}>
-                        <option value="">—</option>
-                        {ATTR_LABELS.map((a) => <option key={a.key} value={a.key}>{a.abbr}</option>)}
-                      </select>
-                    </td>
-                    <td>
-                      <input type="number" value={cs.extra_bonus} onChange={(e) => setSkillField(skill.id, { extra_bonus: Number(e.target.value) })} style={{ width: '3em' }} />
-                    </td>
-                    <td>{total}</td>
-                    <td><button type="button" onClick={() => rollSkill(skill)} disabled={!attr}>Rolar</button></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <PericiasTable
+            skills={skills}
+            charSkills={charSkills}
+            attributes={character.attributes}
+            testDiceBonus={testDiceBonus}
+            testValueBonus={testValueBonus}
+            onSetSkillField={setSkillField}
+            onRoll={rollSkill}
+          />
         </div>
       </div>
 

@@ -42,7 +42,9 @@ export function Die({ sides, value, discarded }: RollCardDie) {
           <polygon points="12,3 21,19 3,19" fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
         </svg>
       )}
-      <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
+      <span className="roll-card-die-value">
+        <span className="roll-card-total-backdrop" style={{ color: valueColor }}>{value}</span>
+      </span>
     </div>
   )
 }
@@ -113,8 +115,10 @@ export function RollCard({
           ) : (
             <>
               <div className="roll-card-header">
-                <span className="roll-card-title">{title}</span>
-                <span className="roll-card-subtitle">{subtitle}</span>
+                <span className="roll-card-total-backdrop roll-card-header-backdrop">
+                  <span className="roll-card-title">{title}</span>
+                  <span className="roll-card-subtitle">{subtitle}</span>
+                </span>
               </div>
 
               <div className="roll-card-total"><span className="roll-card-total-backdrop">{total}</span></div>

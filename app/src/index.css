@@ -4070,11 +4070,17 @@ code, .counter {
 
 .roll-card-total-backdrop {
   display: inline-block;
-  background: rgba(10, 9, 15, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(10, 9, 15, 0.25);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   border-radius: 8px;
   padding: 0.05em 0.4em;
+}
+
+.roll-card-total-backdrop.roll-card-header-backdrop {
+  display: flex;
+  flex-direction: column;
+  padding: 0.3em 0.5em;
 }
 
 .roll-card-header {

@@ -78,24 +78,38 @@ export default function HistoricoRolagens({ character, onClose }: { character: C
 
   useEffect(() => {
     if (!session) return
-    let query = supabase
-      .from('character_rolls')
-      .select('id, character_id, character_name, user_id, label, total, detail, dice, bonus, created_at, characters(avatar_url, dice_tray)')
-      .order('created_at', { ascending: false })
-      .limit(50)
 
-    query = character.campaign_id
-      ? query.or(`user_id.eq.${session.user.id},campaign_id.eq.${character.campaign_id}`)
-      : query.eq('user_id', session.user.id)
+    function fetchRows() {
+      let query = supabase
+        .from('character_rolls')
+        .select('id, character_id, character_name, user_id, label, total, detail, dice, bonus, created_at, characters(avatar_url, dice_tray)')
+        .order('created_at', { ascending: false })
+        .limit(50)
 
-    query.then(async ({ data }) => {
-      setRows((data as unknown as RollRow[]) ?? [])
-      const userIds = [...new Set((data ?? []).map((r) => r.user_id))]
-      if (userIds.length) {
-        const { data: profiles } = await supabase.from('profiles').select('id, display_name').in('id', userIds)
-        setNames(Object.fromEntries((profiles ?? []).map((p) => [p.id, p.display_name ?? 'Sem nome'])))
-      }
-    })
+      query = character.campaign_id
+        ? query.or(`user_id.eq.${session!.user.id},campaign_id.eq.${character.campaign_id}`)
+        : query.eq('user_id', session!.user.id)
+
+      query.then(async ({ data }) => {
+        setRows((data as unknown as RollRow[]) ?? [])
+        const userIds = [...new Set((data ?? []).map((r) => r.user_id))]
+        if (userIds.length) {
+          const { data: profiles } = await supabase.from('profiles').select('id, display_name').in('id', userIds)
+          setNames(Object.fromEntries((profiles ?? []).map((p) => [p.id, p.display_name ?? 'Sem nome'])))
+        }
+      })
+    }
+
+    fetchRows()
+
+    const channel = supabase
+      .channel(`character_rolls-${character.campaign_id ?? session.user.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'character_rolls' }, fetchRows)
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [session, character.campaign_id])
 
   return createPortal(

@@ -3948,18 +3948,18 @@ code, .counter {
   100% { transform: scaleY(1); }
 }
 
-.roll-card-total-collapsed {
+.roll-card-total-collapsed-wrap {
   text-align: center;
   padding: 0.3em 0;
 }
 
-.roll-card-content-backdrop {
-  background: rgba(10, 9, 15, 0.15);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+.roll-card-total-backdrop {
+  display: inline-block;
+  background: rgba(10, 9, 15, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 8px;
-  margin: -0.3em -0.5em;
-  padding: 0.3em 0.5em;
+  padding: 0.05em 0.4em;
 }
 
 .roll-card-header {

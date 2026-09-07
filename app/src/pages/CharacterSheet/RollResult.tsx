@@ -106,9 +106,10 @@ export function RollCard({
         style={{ backgroundImage: `url(${background || cardBg})` }}
         onClick={reveal}
       >
-        <div className="roll-card-content-backdrop">
-          {!revealed ? (
-            <div className="roll-card-total roll-card-total-collapsed">{total}</div>
+        {!revealed ? (
+            <div className="roll-card-total-collapsed-wrap">
+              <span className="roll-card-total-backdrop">{total}</span>
+            </div>
           ) : (
             <>
               <div className="roll-card-header">
@@ -116,7 +117,7 @@ export function RollCard({
                 <span className="roll-card-subtitle">{subtitle}</span>
               </div>
 
-              <div className="roll-card-total">{total}</div>
+              <div className="roll-card-total"><span className="roll-card-total-backdrop">{total}</span></div>
 
               <div className="roll-card-divider" />
 
@@ -142,7 +143,6 @@ export function RollCard({
               )}
             </>
           )}
-        </div>
       </div>
 
       <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>

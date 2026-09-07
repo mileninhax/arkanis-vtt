@@ -42,7 +42,9 @@ export function Die({ sides, value, discarded }: RollCardDie) {
           <polygon points="12,3 21,19 3,19" fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
         </svg>
       )}
-      <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
+      <span className="roll-card-die-value">
+        <span className="roll-card-die-value-chip" style={{ color: valueColor }}>{value}</span>
+      </span>
     </div>
   )
 }
@@ -136,8 +138,9 @@ export function RollCard({
               <div className="roll-card-dice-backdrop">
                 <div className="roll-card-formula">
                   {formulaSegments(dice, bonus).map((s, i, arr) => (
-                    <span key={i} style={{ color: s.color }}>
-                      {s.text}{i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
+                    <span key={i}>
+                      <span className="roll-card-formula-chip" style={{ color: s.color }}>{s.text}</span>
+                      {i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
                     </span>
                   ))}
                 </div>

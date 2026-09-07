@@ -4070,12 +4070,23 @@ code, .counter {
 
 .roll-card-total-backdrop {
   display: inline-block;
+  background: rgba(10, 9, 15, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 8px;
+  padding: 0.05em 0.4em;
 }
 
 .roll-card-header-backdrop {
   display: inline-flex;
   flex-direction: column;
   align-self: flex-start;
+  background: rgba(10, 9, 15, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 8px;
+  padding: 0.3em 0.5em;
+  margin: -0.3em 0;
 }
 
 .roll-card-dice-backdrop {
@@ -4130,6 +4141,15 @@ code, .counter {
   margin: 0 0.1em;
 }
 
+.roll-card-formula-chip {
+  display: inline-block;
+  background: rgba(10, 9, 15, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 6px;
+  padding: 0 0.3em;
+}
+
 .roll-card-dice {
   display: flex;
   flex-wrap: wrap;
@@ -4161,6 +4181,15 @@ code, .counter {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.roll-card-die-value-chip {
+  display: inline-block;
+  background: rgba(10, 9, 15, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 6px;
+  padding: 0 0.25em;
   font-family: var(--poppins);
   font-weight: 800;
   font-size: 0.8em;

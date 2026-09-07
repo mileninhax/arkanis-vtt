@@ -179,6 +179,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         label,
         total: kept + bonus,
         detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}`,
+        dice: rolls.map((v) => ({ sides: 20, value: v, discarded: v !== kept })), bonus,
       })
     }
   }
@@ -216,6 +217,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
         label, total, detail: dice.map((d) => `d${d.sides}: ${d.value}`).join(' · '),
+        dice, bonus: damageValueBonus,
       })
     }
   }

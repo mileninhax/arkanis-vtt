@@ -309,6 +309,7 @@ export default function AgenteTab({
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
         label, total: kept, detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')})`,
+        dice: rolls.map((v) => ({ sides: 20, value: v, discarded: v !== kept })), bonus: 0,
       })
     }
   }
@@ -350,6 +351,7 @@ function cycleTraining(current: Training): Training {
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
         label, total: kept + bonus, detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}`,
+        dice: rolls.map((v) => ({ sides: 20, value: v, discarded: v !== kept })), bonus,
       })
     }
   }

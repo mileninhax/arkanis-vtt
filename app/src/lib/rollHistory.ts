@@ -8,6 +8,8 @@ export async function recordRoll(params: {
   label: string
   total: number
   detail: string
+  dice?: { sides: number; value: number; discarded?: boolean }[]
+  bonus?: number
 }) {
   await supabase.from('character_rolls').insert({
     character_id: params.characterId,
@@ -17,5 +19,7 @@ export async function recordRoll(params: {
     label: params.label,
     total: params.total,
     detail: params.detail,
+    dice: params.dice ?? null,
+    bonus: params.bonus ?? 0,
   })
 }

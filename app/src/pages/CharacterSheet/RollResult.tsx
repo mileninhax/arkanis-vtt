@@ -47,7 +47,16 @@ export function Die({ sides, value, discarded }: RollCardDie) {
   )
 }
 
-function formulaSegments(dice: RollCardDie[], bonus?: number): { text: string; color: string }[] {
+export function totalColorForDice(dice: RollCardDie[]): string {
+  const isD20Test = dice.length > 0 && dice.every((d) => d.sides === 20)
+  if (!isD20Test) return '#fff'
+  const kept = dice.filter((d) => !d.discarded)
+  if (kept.some((d) => d.value === 1)) return '#e0393e'
+  if (kept.some((d) => d.value === d.sides)) return '#3ecf6e'
+  return '#fff'
+}
+
+export function formulaSegments(dice: RollCardDie[], bonus?: number): { text: string; color: string }[] {
   const segments: { text: string; color: string }[] = []
   let currentSides: number | null = null
   let count = 0
@@ -99,15 +108,7 @@ export function RollCard({
     }, 150)
   }
 
-  const isD20Test = dice.length > 0 && dice.every((d) => d.sides === 20)
-  const kept = dice.filter((d) => !d.discarded)
-  const totalColor = isD20Test
-    ? kept.some((d) => d.value === 1)
-      ? '#e0393e'
-      : kept.some((d) => d.value === d.sides)
-        ? '#3ecf6e'
-        : '#fff'
-    : '#fff'
+  const totalColor = totalColorForDice(dice)
 
   return createPortal(
     <div className="roll-card-wrap">

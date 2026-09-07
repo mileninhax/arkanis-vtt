@@ -49,11 +49,12 @@ export default function DiceRoller({ character, onClose }: { character: Characte
   const [manual, setManual] = useState('')
   const [result, setResult] = useState<{ label: string; total: number; detail: { sides: number; value: number }[]; modifier?: number } | null>(null)
 
-  function persist(label: string, total: number, detail: { sides: number; value: number }[]) {
+  function persist(label: string, total: number, detail: { sides: number; value: number }[], bonus = 0) {
     if (!session) return
     recordRoll({
       characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
       label, total, detail: detail.map((d) => `d${d.sides}: ${d.value}`).join(' · '),
+      dice: detail.map((d) => ({ sides: d.sides, value: Math.abs(d.value) })), bonus,
     })
   }
 
@@ -87,7 +88,7 @@ export default function DiceRoller({ character, onClose }: { character: Characte
       }
     }
     setResult({ label: 'Rolagem', total, detail, modifier: parsed.modifier })
-    persist(`Rolagem: ${manual}`, total, detail)
+    persist(`Rolagem: ${manual}`, total, detail, parsed.modifier)
   }
 
   function handleRoll() {

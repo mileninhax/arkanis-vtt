@@ -101,6 +101,7 @@ export default function HistoricoRolagens({ character, onClose }: { character: C
     }
 
     fetchRows()
+    window.addEventListener('vtt-roll-recorded', fetchRows)
 
     const channel = supabase
       .channel(`character_rolls-${character.campaign_id ?? session.user.id}`)
@@ -108,6 +109,7 @@ export default function HistoricoRolagens({ character, onClose }: { character: C
       .subscribe()
 
     return () => {
+      window.removeEventListener('vtt-roll-recorded', fetchRows)
       supabase.removeChannel(channel)
     }
   }, [session, character.campaign_id])

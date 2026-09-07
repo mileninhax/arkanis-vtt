@@ -22,4 +22,5 @@ export async function recordRoll(params: {
     dice: params.dice ?? null,
     bonus: params.bonus ?? 0,
   })
+  window.dispatchEvent(new CustomEvent('vtt-roll-recorded'))
 }

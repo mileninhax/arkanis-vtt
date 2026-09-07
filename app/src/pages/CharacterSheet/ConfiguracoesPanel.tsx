@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
 import DiceTrayModal from './DiceTrayModal'
+import FrameModal from './FrameModal'
 import sangueSimbolo from '../../assets/elementos/sangue-simbolo.png'
 import morteSimbolo from '../../assets/elementos/morte-simbolo.png'
 import conhecimentoSimbolo from '../../assets/elementos/conhecimento-simbolo.png'
@@ -55,6 +56,7 @@ export default function ConfiguracoesPanel({
   const [muted, setMuted] = useState(false)
   const [bgAnimated, setBgAnimated] = useState(true)
   const [showTrayModal, setShowTrayModal] = useState(false)
+  const [showFrameModal, setShowFrameModal] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem('vtt_volume')
@@ -150,6 +152,24 @@ export default function ConfiguracoesPanel({
                 currentTray={character.dice_tray}
                 onClose={() => setShowTrayModal(false)}
                 onSave={(tray) => { updateField({ dice_tray: tray }); setShowTrayModal(false) }}
+              />
+            )}
+
+            <p className="settings-label settings-label-block">Moldura</p>
+            <div className="settings-picker">
+              {character.avatar_frame ? (
+                <div className="settings-picker-preview" style={{ backgroundImage: `url(${character.avatar_frame})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+              ) : (
+                <p className="settings-picker-value">Sem moldura</p>
+              )}
+              <button type="button" className="settings-picker-btn" onClick={() => setShowFrameModal(true)}>Mudar Moldura</button>
+            </div>
+
+            {showFrameModal && (
+              <FrameModal
+                currentFrame={character.avatar_frame}
+                onClose={() => setShowFrameModal(false)}
+                onSave={(frame) => { updateField({ avatar_frame: frame }); setShowFrameModal(false) }}
               />
             )}
           </section>

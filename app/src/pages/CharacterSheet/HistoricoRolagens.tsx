@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/AuthContext'
-import { Die, formulaSegments, totalColorForDice, type RollCardDie } from './RollResult'
+import { RollCard, type RollCardDie } from './RollResult'
 import type { CharacterRecord } from './index'
 
 type RollRow = {
@@ -16,7 +16,7 @@ type RollRow = {
   dice: RollCardDie[] | null
   bonus: number
   created_at: string
-  characters: { avatar_url: string | null } | { avatar_url: string | null }[] | null
+  characters: { avatar_url: string | null; dice_tray: string | null } | { avatar_url: string | null; dice_tray: string | null }[] | null
 }
 
 function formatTimestamp(iso: string) {
@@ -30,28 +30,16 @@ function firstName(name: string) {
   return name.trim().split(/\s+/)[0] ?? name
 }
 
-function avatarOf(r: RollRow): string | null {
+function characterOf(r: RollRow): { avatar_url: string | null; dice_tray: string | null } | null {
   const c = r.characters
   if (!c) return null
-  return Array.isArray(c) ? c[0]?.avatar_url ?? null : c.avatar_url
+  return Array.isArray(c) ? c[0] ?? null : c
 }
 
 function HistoryEntry({ row, playerName }: { row: RollRow; playerName: string }) {
-  const [revealed, setRevealed] = useState(false)
-  const [flipping, setFlipping] = useState(false)
+  const c = characterOf(row)
+  const avatar = c?.avatar_url ?? null
   const dice = row.dice ?? []
-
-  function toggle() {
-    if (!dice.length || flipping) return
-    setFlipping(true)
-    setTimeout(() => {
-      setRevealed((v) => !v)
-      setFlipping(false)
-    }, 150)
-  }
-
-  const totalColor = totalColorForDice(dice)
-  const avatar = avatarOf(row)
 
   return (
     <div className="historico-entry">
@@ -66,34 +54,19 @@ function HistoryEntry({ row, playerName }: { row: RollRow; playerName: string })
         </p>
       </div>
 
-      <button
-        type="button"
-        className={`historico-card${flipping ? ' flipping' : ''}${dice.length ? ' clickable' : ''}`}
-        onClick={toggle}
-      >
-        {!revealed ? (
-          <span className="roll-card-total-backdrop" style={{ color: totalColor }}>{row.total}</span>
-        ) : (
-          <div className="historico-card-detail">
-            <div className="roll-card-formula">
-              {formulaSegments(dice, row.bonus).map((s, i, arr) => (
-                <span key={i}>
-                  <span className="roll-card-formula-chip" style={{ color: s.color }}>{s.text}</span>
-                  {i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
-                </span>
-              ))}
-            </div>
-            <div className="roll-card-dice">
-              {dice.map((d, i) => (
-                <div key={i} className="roll-card-die-slot">
-                  <Die sides={d.sides} value={d.value} discarded={d.discarded} />
-                  {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </button>
+      {dice.length > 0 ? (
+        <RollCard
+          inline
+          title={row.character_name ?? '?'}
+          subtitle={row.label}
+          total={row.total}
+          dice={dice}
+          bonus={row.bonus}
+          background={c?.dice_tray && c.dice_tray !== 'padrao' ? c.dice_tray : undefined}
+        />
+      ) : (
+        <p className="historico-detail-fallback">{row.label}: {row.total} ({row.detail})</p>
+      )}
     </div>
   )
 }
@@ -107,7 +80,7 @@ export default function HistoricoRolagens({ character, onClose }: { character: C
     if (!session) return
     let query = supabase
       .from('character_rolls')
-      .select('id, character_id, character_name, user_id, label, total, detail, dice, bonus, created_at, characters(avatar_url)')
+      .select('id, character_id, character_name, user_id, label, total, detail, dice, bonus, created_at, characters(avatar_url, dice_tray)')
       .order('created_at', { ascending: false })
       .limit(50)
 

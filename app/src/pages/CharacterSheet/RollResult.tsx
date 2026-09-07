@@ -86,6 +86,7 @@ export function RollCard({
   background,
   bonus,
   onClose,
+  inline,
 }: {
   title: string
   subtitle: string
@@ -94,7 +95,8 @@ export function RollCard({
   extraLines?: string[]
   background?: string
   bonus?: number
-  onClose: () => void
+  onClose?: () => void
+  inline?: boolean
 }) {
   const [revealed, setRevealed] = useState(false)
   const [flipping, setFlipping] = useState(false)
@@ -110,8 +112,8 @@ export function RollCard({
 
   const totalColor = totalColorForDice(dice)
 
-  return createPortal(
-    <div className="roll-card-wrap">
+  const content = (
+    <div className={`roll-card-wrap${inline ? ' inline' : ''}`}>
       <div
         className={`roll-card${revealed ? ' revealed' : ' collapsed'}${flipping ? ' flipping' : ''}`}
         style={{ backgroundImage: `url(${background || cardBg})` }}
@@ -163,10 +165,11 @@ export function RollCard({
           )}
       </div>
 
-      <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>
-    </div>,
-    document.body,
+      {!inline && <button type="button" className="roll-card-close" onClick={onClose} aria-label="Fechar">×</button>}
+    </div>
   )
+
+  return inline ? content : createPortal(content, document.body)
 }
 
 export default function RollResult({ result, onClose }: { result: RollResultData; onClose: () => void }) {

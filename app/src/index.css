@@ -4028,6 +4028,13 @@ code, .counter {
   gap: 0.8em;
 }
 
+.roll-card-wrap.inline {
+  position: static;
+  transform: none;
+  z-index: auto;
+  width: 100%;
+}
+
 .roll-card {
   width: min(360px, 90vw);
   max-height: 70vh;
@@ -4366,42 +4373,8 @@ code, .counter {
   color: rgba(255, 255, 255, 0.55);
 }
 
-.historico-card {
-  width: 100%;
-  background: #17151d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 1.1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 3.4em;
-  cursor: default;
-}
-
-.historico-card.clickable {
-  cursor: pointer;
-}
-
-.historico-card.flipping {
-  animation: roll-card-squash 0.3s ease;
-}
-
-.historico-card .roll-card-total-backdrop {
-  font-size: 2.2em;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.historico-card-detail {
-  width: 100%;
-}
-
-.historico-card-detail .roll-card-formula {
-  justify-content: center;
-  margin-bottom: 0.6em;
-}
-
-.historico-card-detail .roll-card-dice {
-  justify-content: center;
+.historico-detail-fallback {
+  margin: 0;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.7);
 }

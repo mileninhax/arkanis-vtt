@@ -99,6 +99,16 @@ export function RollCard({
     }, 150)
   }
 
+  const isD20Test = dice.length > 0 && dice.every((d) => d.sides === 20)
+  const kept = dice.filter((d) => !d.discarded)
+  const totalColor = isD20Test
+    ? kept.some((d) => d.value === 1)
+      ? '#e0393e'
+      : kept.some((d) => d.value === d.sides)
+        ? '#3ecf6e'
+        : '#fff'
+    : '#fff'
+
   return createPortal(
     <div className="roll-card-wrap">
       <div
@@ -108,7 +118,7 @@ export function RollCard({
       >
         {!revealed ? (
             <div className="roll-card-total roll-card-total-collapsed-wrap">
-              <span className="roll-card-total-backdrop">{total}</span>
+              <span className="roll-card-total-backdrop" style={{ color: totalColor }}>{total}</span>
             </div>
           ) : (
             <>
@@ -119,7 +129,7 @@ export function RollCard({
                 </span>
               </div>
 
-              <div className="roll-card-total"><span className="roll-card-total-backdrop">{total}</span></div>
+              <div className="roll-card-total"><span className="roll-card-total-backdrop" style={{ color: totalColor }}>{total}</span></div>
 
               <div className="roll-card-divider" />
 

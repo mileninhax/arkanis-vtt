@@ -4162,6 +4162,11 @@ code, .counter {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(10, 9, 15, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 8px;
+  padding: 0.15em;
 }
 
 .roll-card-die-icon {

@@ -4386,16 +4386,24 @@ code, .counter {
   font-family: var(--poppins);
 }
 
+.vtt-card.modpanel-card {
+  padding-top: 0.2em;
+}
+
 .modpanel-title {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
   background: #f2f2f2;
   color: #060517;
   font-family: var(--heading);
   font-weight: 700;
   font-size: 11px;
+  line-height: 1.2;
   border: none;
   border-radius: 0;
-  padding: 2px 6px;
+  padding: 3px 6px;
+  margin: 0;
   cursor: pointer;
   text-align: center;
 }
@@ -4409,12 +4417,14 @@ code, .counter {
 
 .modpanel-counters {
   display: flex;
-  gap: 0.5em;
+  width: 100%;
 }
 
 .modpanel-counter {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.15em;
   min-width: 0;
 }
@@ -4429,6 +4439,7 @@ code, .counter {
 .modpanel-counter-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2px;
 }
 
@@ -4492,8 +4503,8 @@ code, .counter {
 
 .modpanel-add-row {
   display: flex;
-  align-items: center;
-  gap: 0.8em;
+  align-items: flex-end;
+  gap: 0.6em;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
   padding-bottom: 2px;
 }
@@ -4503,9 +4514,11 @@ code, .counter {
   min-width: 0;
   background: none;
   border: none;
+  margin: 0;
+  padding: 0 0 1px 1px;
   color: #fff;
   font-family: var(--poppins);
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .modpanel-name-input::placeholder {
@@ -4516,12 +4529,12 @@ code, .counter {
   flex-shrink: 0;
   background: #17151d;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  border-radius: 5px;
   color: #fff;
   font-family: var(--poppins);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 0.35em 0.7em;
+  padding: 3px 8px;
   cursor: pointer;
 }
 

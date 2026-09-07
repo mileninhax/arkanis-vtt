@@ -4392,10 +4392,10 @@ code, .counter {
   color: #060517;
   font-family: var(--heading);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 11px;
   border: none;
   border-radius: 0;
-  padding: 4px 6px;
+  padding: 2px 6px;
   cursor: pointer;
   text-align: center;
 }
@@ -4409,18 +4409,19 @@ code, .counter {
 
 .modpanel-counters {
   display: flex;
-  gap: 0.8em;
+  gap: 0.5em;
 }
 
 .modpanel-counter {
   display: flex;
   flex-direction: column;
-  gap: 0.2em;
+  gap: 0.15em;
+  min-width: 0;
 }
 
 .modpanel-counter-label {
   font-family: var(--poppins);
-  font-size: 12px;
+  font-size: 10px;
   color: #fff;
   text-align: center;
 }
@@ -4428,22 +4429,22 @@ code, .counter {
 .modpanel-counter-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .modpanel-counter-row button {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
-  border-radius: 4px;
+  border-radius: 3px;
   border: none;
   background: rgba(16, 18, 24, 0.7);
   color: #fff;
   font-family: var(--raleway);
   font-weight: 700;
-  font-size: 24px;
+  font-size: 16px;
   line-height: 1;
-  padding: 2px;
+  padding: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4451,17 +4452,18 @@ code, .counter {
 }
 
 .modpanel-counter-row input {
-  width: 120px;
-  height: 28px;
+  width: 72px;
+  height: 20px;
+  min-width: 0;
   text-align: center;
   background: rgba(16, 18, 24, 0.4);
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #fff;
   font-family: var(--poppins);
   font-weight: 700;
-  font-size: 13px;
-  padding: 6px;
+  font-size: 11px;
+  padding: 4px;
   -moz-appearance: textfield;
 }
 

@@ -21,8 +21,8 @@ const ELEMENTOS: { key: string | null; label: string; color: string; icon?: stri
   { key: null, label: 'Nenhum', color: '#1a1a1a' },
   { key: 'sangue', label: 'Sangue', color: '#7a1421', icon: sangueSimbolo },
   { key: 'morte', label: 'Morte', color: '#0a0a0a', icon: morteSimbolo },
-  { key: 'energia', label: 'Energia', color: '#b8860b', icon: energiaSimbolo },
-  { key: 'conhecimento', label: 'Conhecimento', color: '#5a3a7a', icon: conhecimentoSimbolo },
+  { key: 'energia', label: 'Energia', color: '#5a3a7a', icon: energiaSimbolo },
+  { key: 'conhecimento', label: 'Conhecimento', color: '#b8860b', icon: conhecimentoSimbolo },
   { key: 'medo', label: 'Medo', color: '#e6e6e6', icon: medoSimbolo },
 ]
 

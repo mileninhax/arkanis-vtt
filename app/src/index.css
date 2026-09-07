@@ -260,6 +260,7 @@ code, .counter {
 
 .vtt-topbar {
   flex-shrink: 0;
+  z-index: 20;
 }
 
 .sheet-root > *:not(.sheet-bg):not(.vtt-topbar) {
@@ -1543,18 +1544,17 @@ code, .counter {
   top: calc(100% + 0.5em);
   left: 0;
   z-index: 30;
-  width: 380px;
+  width: max-content;
   background: #16151c;
   border: 1px solid #2a2a35;
-  border-radius: 12px;
-  padding: 1em;
+  border-radius: 10px;
+  padding: 0.7em 0.8em;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
 .dice-picker-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.4em;
+  display: flex;
+  gap: 0.5em;
 }
 
 .dice-picker-die {
@@ -1562,16 +1562,27 @@ code, .counter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3em;
-  padding: 0.5em 0.2em;
+  gap: 0.25em;
+  padding: 0.3em;
   background: transparent;
   border: none;
   color: var(--text-h);
+  border-radius: 6px;
+}
+
+.dice-picker-die:hover {
+  background: rgba(255, 255, 255, 0.08);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+.dice-picker-die-icon-wrap {
+  position: relative;
+  display: flex;
 }
 
 .dice-picker-die img {
-  width: 2.4em;
-  height: 2.4em;
+  width: 3.4em;
+  height: 3.4em;
   object-fit: contain;
 }
 
@@ -1583,29 +1594,42 @@ code, .counter {
 
 .dice-picker-count {
   position: absolute;
-  top: 0;
-  right: 0.2em;
+  top: -0.3em;
+  right: -0.3em;
+  width: 1.3em;
+  height: 1.3em;
+  border-radius: 999px;
+  background: #000;
+  border: 1px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--poppins);
-  font-size: 0.7em;
+  font-size: 0.65em;
   font-weight: 700;
-  color: var(--accent-strong);
+  color: #fff;
 }
 
 .dice-picker-input-row {
   display: flex;
   align-items: center;
   gap: 0.6em;
-  margin-top: 1em;
-  padding-top: 0.8em;
+  margin-top: 0.7em;
+  padding-top: 0.6em;
   border-top: 1px dashed #2a2a35;
 }
 
 .dice-picker-input {
   flex: 1;
+  width: 8em;
   background: transparent;
   border: none;
+  border-bottom: 1px solid #444;
+  outline: none;
   color: var(--text-h);
   font-family: var(--poppins);
+  font-size: 0.85em;
+  padding: 0.2em 0;
 }
 
 .dice-picker-input::placeholder {
@@ -1615,15 +1639,16 @@ code, .counter {
 .dice-picker-roll-btn {
   font-family: var(--poppins);
   font-weight: 700;
-  padding: 0.5em 1.2em;
-  background: var(--accent);
-  border: none;
-  border-radius: 8px;
+  font-size: 0.85em;
+  padding: 0.35em 1em;
+  background: #000;
+  border: 1px solid #444;
+  border-radius: 6px;
   color: #fff;
 }
 
 .dice-picker-roll-btn:hover {
-  background: var(--accent-strong);
+  background: #1a1a1a;
 }
 
 .vtt-icon-btn-labeled span {

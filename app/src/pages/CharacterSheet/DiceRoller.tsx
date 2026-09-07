@@ -114,8 +114,10 @@ export default function DiceRoller({ character, onClose }: { character: Characte
       <div className="dice-picker-grid">
         {DICE.map(({ sides, icon }) => (
           <button key={sides} type="button" className="dice-picker-die" onClick={() => addDie(sides)}>
-            <img src={icon} alt="" />
-            {selected[sides] > 0 && <span className="dice-picker-count">×{selected[sides]}</span>}
+            <span className="dice-picker-die-icon-wrap">
+              <img src={icon} alt="" />
+              {selected[sides] > 0 && <span className="dice-picker-count">{selected[sides]}</span>}
+            </span>
             <span className="dice-picker-die-label">d{sides}</span>
           </button>
         ))}

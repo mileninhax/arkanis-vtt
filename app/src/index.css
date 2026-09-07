@@ -1542,9 +1542,10 @@ code, .counter {
 .dice-picker {
   position: absolute;
   top: calc(100% + 0.5em);
-  left: 0;
+  right: 0;
   z-index: 30;
   width: max-content;
+  max-width: 90vw;
   background: #16151c;
   border: 1px solid #2a2a35;
   border-radius: 10px;

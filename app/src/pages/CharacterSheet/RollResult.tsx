@@ -113,8 +113,10 @@ export function RollCard({
           ) : (
             <>
               <div className="roll-card-header">
-                <span className="roll-card-title">{title}</span>
-                <span className="roll-card-subtitle">{subtitle}</span>
+                <span className="roll-card-header-backdrop">
+                  <span className="roll-card-title">{title}</span>
+                  <span className="roll-card-subtitle">{subtitle}</span>
+                </span>
               </div>
 
               <div className="roll-card-total"><span className="roll-card-total-backdrop">{total}</span></div>

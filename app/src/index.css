@@ -131,6 +131,7 @@
   --heading: 'Optima Nova LT Pro', system-ui, 'Segoe UI', Roboto, sans-serif;
   --ashigea: 'Ashigea', system-ui, 'Segoe UI', Roboto, sans-serif;
   --poppins: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --raleway: 'Raleway', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 15px/145% var(--sans);
@@ -4387,88 +4388,104 @@ code, .counter {
 
 .modpanel-title {
   width: 100%;
-  background: #f2f0f5;
-  color: #16151d;
+  background: #f2f2f2;
+  color: #060517;
+  font-family: var(--heading);
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-size: 0.85em;
+  font-size: 14px;
   border: none;
-  border-radius: 6px;
-  padding: 0.6em 0.8em;
+  border-radius: 0;
+  padding: 4px 6px;
   cursor: pointer;
   text-align: center;
 }
 
 .modpanel-body {
-  margin-top: 0.8em;
+  margin-top: 0.6em;
   display: flex;
   flex-direction: column;
-  gap: 0.8em;
+  gap: 0.6em;
 }
 
 .modpanel-counters {
   display: flex;
-  gap: 1em;
+  gap: 0.8em;
 }
 
 .modpanel-counter {
-  flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 0.2em;
 }
 
 .modpanel-counter-label {
-  font-size: 0.8em;
-  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--poppins);
+  font-size: 12px;
+  color: #fff;
   text-align: center;
 }
 
 .modpanel-counter-row {
   display: flex;
   align-items: center;
-  gap: 0.4em;
+  gap: 4px;
 }
 
 .modpanel-counter-row button {
-  width: 1.8em;
-  height: 1.8em;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #1c1a24;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: none;
+  background: rgba(16, 18, 24, 0.7);
   color: #fff;
-  font-size: 1em;
+  font-family: var(--raleway);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
 .modpanel-counter-row input {
-  flex: 1 1 auto;
-  min-width: 0;
+  width: 120px;
+  height: 28px;
   text-align: center;
-  background: #1c1a24;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  background: rgba(16, 18, 24, 0.4);
+  border: none;
+  border-radius: 4px;
   color: #fff;
+  font-family: var(--poppins);
   font-weight: 700;
-  font-size: 1.05em;
-  padding: 0.35em 0;
+  font-size: 13px;
+  padding: 6px;
+  -moz-appearance: textfield;
+}
+
+.modpanel-counter-row input::-webkit-inner-spin-button,
+.modpanel-counter-row input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .modpanel-field {
   display: flex;
   flex-direction: column;
   gap: 0.3em;
-  font-size: 0.8em;
-  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--poppins);
+  font-size: 12px;
+  color: #fff;
 }
 
 .modpanel-field input {
-  background: #1c1a24;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  background: rgba(16, 18, 24, 0.4);
+  border: none;
+  border-radius: 4px;
   color: #fff;
-  padding: 0.35em 0.5em;
+  padding: 0.3em 0.5em;
 }
 
 .modpanel-add-row {
@@ -4476,7 +4493,7 @@ code, .counter {
   align-items: center;
   gap: 0.8em;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.6em;
+  padding-bottom: 2px;
 }
 
 .modpanel-name-input {
@@ -4485,7 +4502,8 @@ code, .counter {
   background: none;
   border: none;
   color: #fff;
-  font-size: 0.9em;
+  font-family: var(--poppins);
+  font-size: 13px;
 }
 
 .modpanel-name-input::placeholder {
@@ -4498,9 +4516,10 @@ code, .counter {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   color: #fff;
-  font-size: 0.8em;
+  font-family: var(--poppins);
+  font-size: 12px;
   font-weight: 700;
-  padding: 0.4em 0.8em;
+  padding: 0.35em 0.7em;
   cursor: pointer;
 }
 
@@ -4510,7 +4529,7 @@ code, .counter {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
 }
 
 .modpanel-pill {
@@ -4518,17 +4537,18 @@ code, .counter {
   align-items: center;
   justify-content: space-between;
   gap: 0.6em;
-  background: #1c1a24;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.5em 0.7em;
+  background: rgba(16, 18, 24, 0.4);
+  border: none;
+  border-radius: 6px;
+  padding: 0.4em 0.6em;
 }
 
 .modpanel-pill-check {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  font-size: 0.85em;
+  font-family: var(--poppins);
+  font-size: 12px;
   color: #fff;
   cursor: pointer;
 }

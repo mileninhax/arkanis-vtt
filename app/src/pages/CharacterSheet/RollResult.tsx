@@ -42,9 +42,7 @@ export function Die({ sides, value, discarded }: RollCardDie) {
           <polygon points="12,3 21,19 3,19" fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
         </svg>
       )}
-      <span className="roll-card-die-value">
-        <span className="roll-card-die-value-chip" style={{ color: valueColor }}>{value}</span>
-      </span>
+      <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
     </div>
   )
 }

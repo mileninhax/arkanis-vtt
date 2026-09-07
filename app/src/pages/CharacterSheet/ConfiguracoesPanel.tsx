@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
 import DiceTrayModal from './DiceTrayModal'
+import sangueSimbolo from '../../assets/elementos/sangue-simbolo.png'
+import morteSimbolo from '../../assets/elementos/morte-simbolo.png'
+import conhecimentoSimbolo from '../../assets/elementos/conhecimento-simbolo.png'
+import energiaSimbolo from '../../assets/elementos/energia-simbolo.png'
+import medoSimbolo from '../../assets/elementos/medo-simbolo.png'
 
 const RULES: { key: string; label: string; locked?: boolean }[] = [
   { key: 'nex_experiencia', label: 'NEX & Experiência' },
@@ -12,12 +17,13 @@ const RULES: { key: string; label: string; locked?: boolean }[] = [
   { key: 'contagem_municao', label: 'Contagem de Munição' },
 ]
 
-const ELEMENTOS: { key: string | null; label: string; color: string }[] = [
+const ELEMENTOS: { key: string | null; label: string; color: string; icon?: string }[] = [
   { key: null, label: 'Nenhum', color: '#1a1a1a' },
-  { key: 'sangue', label: 'Sangue', color: '#a01f2e' },
-  { key: 'energia', label: 'Energia', color: '#2452c9' },
-  { key: 'conhecimento', label: 'Conhecimento', color: '#c98a1f' },
-  { key: 'morte', label: 'Morte', color: '#6b3fa0' },
+  { key: 'sangue', label: 'Sangue', color: '#7a1421', icon: sangueSimbolo },
+  { key: 'morte', label: 'Morte', color: '#0a0a0a', icon: morteSimbolo },
+  { key: 'energia', label: 'Energia', color: '#b8860b', icon: energiaSimbolo },
+  { key: 'conhecimento', label: 'Conhecimento', color: '#5a3a7a', icon: conhecimentoSimbolo },
+  { key: 'medo', label: 'Medo', color: '#e6e6e6', icon: medoSimbolo },
 ]
 
 const CONFIG_TABS = ['Aparência', 'Mecânicas', 'Preferências'] as const
@@ -121,7 +127,9 @@ export default function ConfiguracoesPanel({
                   aria-label={e.label}
                   title={e.label}
                 >
-                  {e.key === null && '×'}
+                  {e.key === null ? '×' : (
+                    <img src={e.icon} alt="" className="settings-elemento-icon" style={e.key === 'medo' ? { filter: 'invert(1)' } : undefined} />
+                  )}
                 </button>
               ))}
             </div>

@@ -449,6 +449,9 @@ code, .counter {
 .settings-elemento-swatch {
   width: 2.2em;
   height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   border: 2px solid transparent;
   color: #fff;
@@ -459,6 +462,12 @@ code, .counter {
 .settings-elemento-swatch.active {
   border-color: #fff;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.settings-elemento-icon {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
 }
 
 .settings-row {

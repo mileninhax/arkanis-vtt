@@ -16,6 +16,7 @@ import bgSangue from '../../assets/backgrounds/bg-sangue.webp'
 import bgMorte from '../../assets/backgrounds/bg-morte.webp'
 import bgConhecimento from '../../assets/backgrounds/bg-conhecimento.webp'
 import bgEnergia from '../../assets/backgrounds/bg-energia.webp'
+import bgMedo from '../../assets/backgrounds/bg-medo.webp'
 import d20Icon from '../../assets/icons/d20-paranormal.svg'
 import changeIcon from '../../assets/icons/change-icon.svg'
 import settingsIcon from '../../assets/icons/settings-icon.svg'
@@ -27,6 +28,7 @@ const ELEMENT_BACKGROUNDS: Record<string, string> = {
   morte: bgMorte,
   conhecimento: bgConhecimento,
   energia: bgEnergia,
+  medo: bgMedo,
 }
 
 export type CharacterRecord = {
@@ -87,6 +89,7 @@ const ELEMENTO_NOMES: Record<string, string> = {
   morte: 'Morte',
   conhecimento: 'Conhecimento',
   energia: 'Energia',
+  medo: 'Medo',
 }
 
 export default function CharacterSheet() {

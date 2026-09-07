@@ -4003,7 +4003,11 @@ code, .counter {
   margin-bottom: 0.5em;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3em;
+}
+
+.roll-card-formula-plus {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0.1em;
 }
 
 .roll-card-dice {

@@ -90,11 +90,11 @@ export function RollCard({
   const [revealed, setRevealed] = useState(false)
   const [flipping, setFlipping] = useState(false)
 
-  function reveal() {
-    if (revealed || flipping) return
+  function toggle() {
+    if (flipping) return
     setFlipping(true)
     setTimeout(() => {
-      setRevealed(true)
+      setRevealed((v) => !v)
       setFlipping(false)
     }, 150)
   }
@@ -104,10 +104,10 @@ export function RollCard({
       <div
         className={`roll-card${revealed ? ' revealed' : ' collapsed'}${flipping ? ' flipping' : ''}`}
         style={{ backgroundImage: `url(${background || cardBg})` }}
-        onClick={reveal}
+        onClick={toggle}
       >
         {!revealed ? (
-            <div className="roll-card-total-collapsed-wrap">
+            <div className="roll-card-total roll-card-total-collapsed-wrap">
               <span className="roll-card-total-backdrop">{total}</span>
             </div>
           ) : (
@@ -122,8 +122,10 @@ export function RollCard({
               <div className="roll-card-divider" />
 
               <div className="roll-card-formula">
-                {formulaSegments(dice, bonus).map((s, i) => (
-                  <span key={i} style={{ color: s.color }}>{s.text}</span>
+                {formulaSegments(dice, bonus).map((s, i, arr) => (
+                  <span key={i} style={{ color: s.color }}>
+                    {s.text}{i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
+                  </span>
                 ))}
               </div>
 

@@ -42,9 +42,7 @@ export function Die({ sides, value, discarded }: RollCardDie) {
           <polygon points="12,3 21,19 3,19" fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
         </svg>
       )}
-      <span className="roll-card-die-value">
-        <span className="roll-card-total-backdrop" style={{ color: valueColor }}>{value}</span>
-      </span>
+      <span className="roll-card-die-value" style={{ color: valueColor }}>{value}</span>
     </div>
   )
 }
@@ -115,31 +113,31 @@ export function RollCard({
           ) : (
             <>
               <div className="roll-card-header">
-                <span className="roll-card-total-backdrop roll-card-header-backdrop">
-                  <span className="roll-card-title">{title}</span>
-                  <span className="roll-card-subtitle">{subtitle}</span>
-                </span>
+                <span className="roll-card-title">{title}</span>
+                <span className="roll-card-subtitle">{subtitle}</span>
               </div>
 
               <div className="roll-card-total"><span className="roll-card-total-backdrop">{total}</span></div>
 
               <div className="roll-card-divider" />
 
-              <div className="roll-card-formula">
-                {formulaSegments(dice, bonus).map((s, i, arr) => (
-                  <span key={i} style={{ color: s.color }}>
-                    {s.text}{i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
-                  </span>
-                ))}
-              </div>
+              <div className="roll-card-dice-backdrop">
+                <div className="roll-card-formula">
+                  {formulaSegments(dice, bonus).map((s, i, arr) => (
+                    <span key={i} style={{ color: s.color }}>
+                      {s.text}{i < arr.length - 1 && <span className="roll-card-formula-plus">+</span>}
+                    </span>
+                  ))}
+                </div>
 
-              <div className="roll-card-dice">
-                {dice.map((d, i) => (
-                  <div key={i} className="roll-card-die-slot">
-                    <Die sides={d.sides} value={d.value} discarded={d.discarded} />
-                    {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
-                  </div>
-                ))}
+                <div className="roll-card-dice">
+                  {dice.map((d, i) => (
+                    <div key={i} className="roll-card-die-slot">
+                      <Die sides={d.sides} value={d.value} discarded={d.discarded} />
+                      {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {extraLines && extraLines.length > 0 && (

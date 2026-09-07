@@ -3913,12 +3913,32 @@ code, .counter {
   padding: 1.2em 1.4em;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   animation: roll-card-flip-in 0.4s ease-out;
+  cursor: pointer;
+}
+
+.roll-card.revealed {
+  cursor: default;
+}
+
+.roll-card.flipping {
+  animation: roll-card-squash 0.3s ease;
 }
 
 @keyframes roll-card-flip-in {
   0% { transform: scaleX(0.05); opacity: 0; }
   70% { transform: scaleX(1.08); opacity: 1; }
   100% { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes roll-card-squash {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(0.05); }
+  100% { transform: scaleY(1); }
+}
+
+.roll-card-total-collapsed {
+  text-align: center;
+  padding: 0.3em 0;
 }
 
 .roll-card-header {

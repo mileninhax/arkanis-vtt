@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import cardBg from '../../assets/dice-roll/card-bg.png'
 import d6Icon from '../../assets/dice-roll/d6-icon.png'
@@ -60,31 +61,53 @@ export function RollCard({
   extraLines?: string[]
   onClose: () => void
 }) {
+  const [revealed, setRevealed] = useState(false)
+  const [flipping, setFlipping] = useState(false)
+
+  function reveal() {
+    if (revealed || flipping) return
+    setFlipping(true)
+    setTimeout(() => {
+      setRevealed(true)
+      setFlipping(false)
+    }, 150)
+  }
+
   return createPortal(
     <div className="roll-card-wrap">
-      <div className="roll-card" style={{ backgroundImage: `url(${cardBg})` }}>
-        <div className="roll-card-header">
-          <span className="roll-card-title">{title}</span>
-          <span className="roll-card-subtitle">{subtitle}</span>
-        </div>
-
-        <div className="roll-card-total">{total}</div>
-
-        <div className="roll-card-divider" />
-
-        <div className="roll-card-dice">
-          {dice.map((d, i) => (
-            <div key={i} className="roll-card-die-slot">
-              <Die sides={d.sides} value={d.value} discarded={d.discarded} />
-              {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
+      <div
+        className={`roll-card${revealed ? ' revealed' : ' collapsed'}${flipping ? ' flipping' : ''}`}
+        style={{ backgroundImage: `url(${cardBg})` }}
+        onClick={reveal}
+      >
+        {!revealed ? (
+          <div className="roll-card-total roll-card-total-collapsed">{total}</div>
+        ) : (
+          <>
+            <div className="roll-card-header">
+              <span className="roll-card-title">{title}</span>
+              <span className="roll-card-subtitle">{subtitle}</span>
             </div>
-          ))}
-        </div>
 
-        {extraLines && extraLines.length > 0 && (
-          <div className="roll-card-extra">
-            {extraLines.map((l, i) => <p key={i}>{l}</p>)}
-          </div>
+            <div className="roll-card-total">{total}</div>
+
+            <div className="roll-card-divider" />
+
+            <div className="roll-card-dice">
+              {dice.map((d, i) => (
+                <div key={i} className="roll-card-die-slot">
+                  <Die sides={d.sides} value={d.value} discarded={d.discarded} />
+                  {i < dice.length - 1 && <span className="roll-card-die-plus">+</span>}
+                </div>
+              ))}
+            </div>
+
+            {extraLines && extraLines.length > 0 && (
+              <div className="roll-card-extra">
+                {extraLines.map((l, i) => <p key={i}>{l}</p>)}
+              </div>
+            )}
+          </>
         )}
       </div>
 

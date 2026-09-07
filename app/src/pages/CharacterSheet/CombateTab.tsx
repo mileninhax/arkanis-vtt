@@ -4,7 +4,7 @@ import { useAuth } from '../../lib/AuthContext'
 import { recordRoll } from '../../lib/rollHistory'
 import { attrValue, rollAttributeTest, rollDiceFormula, trainingBonus, type AttributeKey, type Training } from '../../lib/rules'
 import type { CharacterRecord } from './index'
-import RollResult, { type RollResultData } from './RollResult'
+import RollResult, { RollCard, type RollResultData, type RollCardDie } from './RollResult'
 import ModifiersPanel, { type Modifier } from './ModifiersPanel'
 
 type Attack = {
@@ -56,6 +56,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
   const [modsOpen, setModsOpen] = useState(false)
   const [attackSearch, setAttackSearch] = useState('')
+  const [pendingAttack, setPendingAttack] = useState<{ attackId: string; isCrit: boolean } | null>(null)
+  const [damageRoll, setDamageRoll] = useState<{ title: string; subtitle: string; total: number; dice: RollCardDie[]; extraLines?: string[] } | null>(null)
 
   async function loadAttacks() {
     const { data } = await supabase
@@ -135,7 +137,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     await loadInventoryAmmo()
   }
 
-  function rollAttack(attack: Attack) {
+  function rollAttackTest(attack: Attack) {
     const ammoInv = ammoForAttack(attack)
     if (ammoInv && (ammoInv.ammo_current ?? 0) <= 0) {
       window.alert(`Sem ${ammoInv.ammo_label ?? 'munição'} — recarregue no Inventário antes de atacar.`)
@@ -143,13 +145,10 @@ export default function CombateTab({ character }: { character: CharacterRecord }
     }
 
     const activeAttackMods = attackMods.filter((m) => m.is_active)
-    const activeDamageMods = damageMods.filter((m) => m.is_active)
 
     const attackDiceBonus = activeAttackMods.reduce((sum, m) => sum + m.dice_bonus, 0)
     const attackValueBonus = activeAttackMods.reduce((sum, m) => sum + m.value_bonus, 0)
     const threatBonus = activeAttackMods.reduce((sum, m) => sum + m.threat_margin_bonus, 0)
-    const multiplierBonus = activeAttackMods.reduce((sum, m) => sum + m.multiplier_bonus, 0)
-    const damageValueBonus = activeDamageMods.reduce((sum, m) => sum + m.value_bonus, 0) + (attack.general_info?.damage_bonus_from_mods ?? 0)
 
     const score = attrValue(character.attributes, attack.attribute) + attackDiceBonus
     const { rolls, kept } = rollAttributeTest(score)
@@ -158,15 +157,6 @@ export default function CombateTab({ character }: { character: CharacterRecord }
 
     const effectiveThreatMargin = attack.threat_margin - threatBonus
     const isCrit = kept >= effectiveThreatMargin
-    const critMultiplier = isCrit ? attack.multiplier + multiplierBonus : 1
-
-    const damage = attack.damage.map((d) => {
-      const rolled = rollDiceFormula(d.formula, 1)
-      if (!rolled) return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ` — CRÍTICO x${critMultiplier}` : ''}`, manualFormula: d.formula || '—' }
-      const total = rolled.total * critMultiplier + damageValueBonus
-      const modifier = rolled.modifier * critMultiplier + damageValueBonus
-      return { label: `Dano${d.tipo ? ` (${d.tipo})` : ''}${isCrit ? ` — CRÍTICO x${critMultiplier}` : ''}`, rolls: rolled.rolls, modifier, total }
-    })
 
     const label = `Ataque: ${attack.name}${isCrit ? ' (crítico!)' : ''}`
     setRoll({
@@ -174,21 +164,57 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       rolls,
       kept,
       bonus,
-      damage,
       municao: attack.general_info?.municao ?? null,
       modificadores: attack.general_info?.modificadores ?? [],
       characterName: character.name,
     })
+    setPendingAttack({ attackId: attack.id, isCrit })
 
     if (ammoInv) consumeAmmo(ammoInv)
 
     if (session) {
-      const damageText = damage.map((d) => d.manualFormula !== undefined ? `${d.label}: manual (${d.manualFormula})` : `${d.label}: ${d.total}`).join(' · ')
       recordRoll({
         characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
         label,
         total: kept + bonus,
-        detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}${damageText ? ` — ${damageText}` : ''}`,
+        detail: `d20 mantido: ${kept} (rolados: ${rolls.join(', ')}) + bônus ${bonus}`,
+      })
+    }
+  }
+
+  function rollDamage(attack: Attack, isCrit: boolean) {
+    const activeAttackMods = attackMods.filter((m) => m.is_active)
+    const activeDamageMods = damageMods.filter((m) => m.is_active)
+
+    const multiplierBonus = activeAttackMods.reduce((sum, m) => sum + m.multiplier_bonus, 0)
+    const damageValueBonus = activeDamageMods.reduce((sum, m) => sum + m.value_bonus, 0) + (attack.general_info?.damage_bonus_from_mods ?? 0)
+    const critMultiplier = isCrit ? attack.multiplier + multiplierBonus : 1
+
+    const dice: RollCardDie[] = []
+    const extraLines: string[] = []
+    let total = damageValueBonus
+
+    attack.damage.forEach((d) => {
+      const sidesMatch = d.formula.match(/d(\d+)/i)
+      const sides = sidesMatch ? Number(sidesMatch[1]) : 6
+      const rolled = rollDiceFormula(d.formula, 1)
+      if (!rolled) {
+        extraLines.push(`Dano${d.tipo ? ` (${d.tipo})` : ''}: role manualmente (${d.formula})`)
+        return
+      }
+      rolled.rolls.forEach((v) => dice.push({ sides, value: v }))
+      total += rolled.total * critMultiplier
+      if (d.tipo) extraLines.push(`Tipo: ${d.tipo}`)
+    })
+
+    const label = isCrit ? `Dano Crítico: ${attack.name} (x${critMultiplier})` : `Dano: ${attack.name}`
+    setDamageRoll({ title: character.name, subtitle: label, total, dice, extraLines })
+    setPendingAttack(null)
+
+    if (session) {
+      recordRoll({
+        characterId: character.id, userId: session.user.id, campaignId: character.campaign_id, characterName: character.name,
+        label, total, detail: dice.map((d) => `d${d.sides}: ${d.value}`).join(' · '),
       })
     }
   }
@@ -199,6 +225,16 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   return (
     <div>
       {roll && <RollResult result={roll} onClose={() => setRoll(null)} />}
+      {damageRoll && (
+        <RollCard
+          title={damageRoll.title}
+          subtitle={damageRoll.subtitle}
+          total={damageRoll.total}
+          dice={damageRoll.dice}
+          extraLines={damageRoll.extraLines}
+          onClose={() => setDamageRoll(null)}
+        />
+      )}
 
       <div className="vtt-card" style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
         <div className="vtt-attack-thumb" style={{ width: 56, height: 56, borderRadius: '50%' }}>🛡</div>
@@ -271,7 +307,12 @@ export default function CombateTab({ character }: { character: CharacterRecord }
               <div><span className="label">Dano</span>{a.damage.map((d) => `${d.formula}${d.tipo ? ` ${d.tipo}` : ''}`).join(', ') || '—'}</div>
               <div><span className="label">Crítico</span>{a.threat_margin}/x{a.multiplier}</div>
             </div>
-            <button type="button" onClick={() => rollAttack(a)}>Rolar</button>
+            <button type="button" onClick={() => rollAttackTest(a)}>Ataque</button>
+            {pendingAttack?.attackId === a.id && (
+              pendingAttack.isCrit
+                ? <button type="button" onClick={() => rollDamage(a, true)}>Crítico</button>
+                : <button type="button" onClick={() => rollDamage(a, false)}>Dano</button>
+            )}
             <button type="button" onClick={() => removeAttack(a.id)}>Remover</button>
           </div>
         )

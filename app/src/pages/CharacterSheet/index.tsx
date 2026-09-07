@@ -163,10 +163,13 @@ export default function CharacterSheet() {
           ))}
         </nav>
         <div style={{ display: 'flex', gap: '0.5em', alignItems: 'center' }}>
-          <button type="button" className="vtt-icon-btn vtt-icon-btn-labeled" onClick={() => setShowDice((v) => !v)}>
-            <img src={d20Icon} alt="" />
-            <span>Dados</span>
-          </button>
+          <div style={{ position: 'relative' }}>
+            <button type="button" className="vtt-icon-btn vtt-icon-btn-labeled" onClick={() => setShowDice((v) => !v)}>
+              <img src={d20Icon} alt="" />
+              <span>Dados</span>
+            </button>
+            {showDice && <DiceRoller character={character} onClose={() => setShowDice(false)} />}
+          </div>
           <button type="button" className="vtt-icon-btn vtt-icon-btn-labeled" onClick={() => setEditMode((v) => !v)}>
             <img src={changeIcon} alt="" />
             <span>{editMode ? 'Modo de Jogo' : 'Modo de Edição'}</span>
@@ -180,7 +183,6 @@ export default function CharacterSheet() {
         </div>
       </header>
 
-      {showDice && <DiceRoller character={character} onClose={() => setShowDice(false)} />}
       {showConfig && (
         <ConfiguracoesPanel
           character={character}

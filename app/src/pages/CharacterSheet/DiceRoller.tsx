@@ -3,8 +3,21 @@ import { useAuth } from '../../lib/AuthContext'
 import { recordRoll } from '../../lib/rollHistory'
 import { RollCard } from './RollResult'
 import type { CharacterRecord } from './index'
+import d4Icon from '../../assets/dice-picker/d4.svg'
+import d6Icon from '../../assets/dice-picker/d6.svg'
+import d8Icon from '../../assets/dice-picker/d8.svg'
+import d10Icon from '../../assets/dice-picker/d10.svg'
+import d12Icon from '../../assets/dice-picker/d12.svg'
+import d20Icon from '../../assets/dice-picker/d20.svg'
 
-const DICE = [4, 6, 8, 10, 12, 20]
+const DICE: { sides: number; icon: string }[] = [
+  { sides: 4, icon: d4Icon },
+  { sides: 6, icon: d6Icon },
+  { sides: 8, icon: d8Icon },
+  { sides: 10, icon: d10Icon },
+  { sides: 12, icon: d12Icon },
+  { sides: 20, icon: d20Icon },
+]
 
 type Term = { sides: number; count: number }
 
@@ -77,6 +90,11 @@ export default function DiceRoller({ character, onClose }: { character: Characte
     persist(`Rolagem: ${manual}`, total, detail)
   }
 
+  function handleRoll() {
+    if (manual.trim()) rollManual()
+    else if (Object.keys(selected).length > 0) rollSelected()
+  }
+
   if (result) {
     return (
       <RollCard
@@ -86,29 +104,32 @@ export default function DiceRoller({ character, onClose }: { character: Characte
         dice={result.detail.map((d) => ({ sides: d.sides, value: d.value }))}
         bonus={result.modifier}
         background={character.dice_tray && character.dice_tray !== 'padrao' ? character.dice_tray : undefined}
-        onClose={() => { setResult(null); setSelected({}) }}
+        onClose={() => { setResult(null); setSelected({}); onClose() }}
       />
     )
   }
 
   return (
-    <div role="dialog">
-      <button type="button" onClick={onClose}>Fechar Dados</button>
+    <div className="dice-picker">
+      <div className="dice-picker-grid">
+        {DICE.map(({ sides, icon }) => (
+          <button key={sides} type="button" className="dice-picker-die" onClick={() => addDie(sides)}>
+            <img src={icon} alt="" />
+            {selected[sides] > 0 && <span className="dice-picker-count">×{selected[sides]}</span>}
+            <span className="dice-picker-die-label">d{sides}</span>
+          </button>
+        ))}
+      </div>
 
-      <div>
-        <div>
-          {DICE.map((sides) => (
-            <button key={sides} type="button" onClick={() => addDie(sides)}>
-              d{sides} {selected[sides] ? `x${selected[sides]}` : ''}
-            </button>
-          ))}
-        </div>
-        <button type="button" onClick={rollSelected} disabled={Object.keys(selected).length === 0}>Rolar</button>
-
-        <div>
-          <input placeholder="ex.: 2d4+3" value={manual} onChange={(e) => setManual(e.target.value)} />
-          <button type="button" onClick={rollManual}>Rolar fórmula</button>
-        </div>
+      <div className="dice-picker-input-row">
+        <input
+          className="dice-picker-input"
+          placeholder="Rolar Dados"
+          value={manual}
+          onChange={(e) => setManual(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleRoll()}
+        />
+        <button type="button" className="dice-picker-roll-btn" onClick={handleRoll}>Rolar</button>
       </div>
     </div>
   )

@@ -1538,6 +1538,94 @@ code, .counter {
   height: 1.4em;
 }
 
+.dice-picker {
+  position: absolute;
+  top: calc(100% + 0.5em);
+  left: 0;
+  z-index: 30;
+  width: 380px;
+  background: #16151c;
+  border: 1px solid #2a2a35;
+  border-radius: 12px;
+  padding: 1em;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.dice-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.4em;
+}
+
+.dice-picker-die {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.5em 0.2em;
+  background: transparent;
+  border: none;
+  color: var(--text-h);
+}
+
+.dice-picker-die img {
+  width: 2.4em;
+  height: 2.4em;
+  object-fit: contain;
+}
+
+.dice-picker-die-label {
+  font-family: var(--poppins);
+  font-size: 0.75em;
+  color: var(--text-dim);
+}
+
+.dice-picker-count {
+  position: absolute;
+  top: 0;
+  right: 0.2em;
+  font-family: var(--poppins);
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.dice-picker-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: 1em;
+  padding-top: 0.8em;
+  border-top: 1px dashed #2a2a35;
+}
+
+.dice-picker-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-h);
+  font-family: var(--poppins);
+}
+
+.dice-picker-input::placeholder {
+  color: var(--text-dim);
+}
+
+.dice-picker-roll-btn {
+  font-family: var(--poppins);
+  font-weight: 700;
+  padding: 0.5em 1.2em;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.dice-picker-roll-btn:hover {
+  background: var(--accent-strong);
+}
+
 .vtt-icon-btn-labeled span {
   font-family: var(--heading);
   font-size: 1em;

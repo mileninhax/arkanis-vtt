@@ -260,6 +260,7 @@ code, .counter {
 
 .vtt-topbar {
   flex-shrink: 0;
+  position: relative;
   z-index: 20;
 }
 
@@ -279,7 +280,7 @@ code, .counter {
   background-blend-mode: normal;
 }
 
-.sheet-root > *:not(.sheet-bg) {
+.sheet-root > *:not(.sheet-bg):not(.vtt-topbar) {
   position: relative;
   z-index: 1;
 }

@@ -76,6 +76,7 @@ type SkillRow = {
   id: string
   name: string
   default_attribute: string | null
+  description: string | null
 }
 
 type CharacterSkillRow = {
@@ -216,7 +217,7 @@ export default function AgenteTab({
   }, [character.chosen_track_id, character.nex_percent, trackTiers])
 
   useEffect(() => {
-    supabase.from('skills').select('id, name, default_attribute').order('sort_order').then(({ data }) => setSkills(data ?? []))
+    supabase.from('skills').select('id, name, default_attribute, description').order('sort_order').then(({ data }) => setSkills(data ?? []))
     supabase
       .from('character_skills')
       .select('skill_id, training, attribute_override, extra_bonus')

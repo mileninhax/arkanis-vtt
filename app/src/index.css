@@ -4788,6 +4788,21 @@ code, .counter {
   opacity: 0.6;
 }
 
+.pericias-row-roll-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pericias-row-roll-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
 .pericias-row-icon {
   width: 28px;
   height: 28px;
@@ -4915,4 +4930,72 @@ code, .counter {
 .pericias-picker button:hover,
 .pericias-picker button.selected {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.skill-desc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+
+.skill-desc-modal {
+  position: relative;
+  width: min(560px, 92vw);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: #16151d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 1.6em 1.8em;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.skill-desc-close {
+  position: absolute;
+  top: 1em;
+  right: 1.2em;
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: var(--poppins);
+  font-weight: 700;
+  font-size: 0.8em;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.skill-desc-title {
+  font-family: 'Westsac', var(--heading);
+  font-size: 40px;
+  font-weight: 400;
+  color: #fff;
+  margin: 0 1.6em 0.4em 0;
+}
+
+.skill-desc-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-bottom: 1em;
+}
+
+.skill-desc-body {
+  overflow-y: auto;
+  font-family: var(--raleway);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.skill-desc-body p {
+  margin: 0 0 1em;
+}
+
+.skill-desc-body p:last-child {
+  margin-bottom: 0;
 }

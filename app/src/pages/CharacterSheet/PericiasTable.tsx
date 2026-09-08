@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { attrValue, type Attributes, type AttributeKey, type Training } from '../../lib/rules'
 import d20Icon from '../../assets/icons/d20-paranormal.svg'
 import untrainedIcon from '../../assets/pericias/untrained.svg'
@@ -9,7 +10,7 @@ import ellipsisIcon from '../../assets/pericias/ellipsis.svg'
 import ellipsisGreenIcon from '../../assets/pericias/ellipsis-green.svg'
 import ellipsisRedIcon from '../../assets/pericias/ellipsis-red.svg'
 
-type SkillRow = { id: string; name: string; default_attribute: string | null }
+type SkillRow = { id: string; name: string; default_attribute: string | null; description: string | null }
 type CharacterSkillRow = { skill_id: string; training: Training; attribute_override: string | null; extra_bonus: number }
 
 const ATTR_LABELS: { key: AttributeKey; abbr: string }[] = [
@@ -38,6 +39,37 @@ function trainingBonus(training: Training): number {
 
 type SortField = 'pericia' | 'treino' | 'atributo' | 'extra' | 'total'
 
+function formatDescription(text: string) {
+  return text.split(/\n{2,}/).map((paragraph, i) => {
+    const parts = paragraph.split(/(\*\*[^*]+\*\*)/g)
+    return (
+      <p key={i}>
+        {parts.map((part, j) =>
+          part.startsWith('**') && part.endsWith('**')
+            ? <strong key={j}>{part.slice(2, -2)}</strong>
+            : part
+        )}
+      </p>
+    )
+  })
+}
+
+function SkillDescriptionModal({ skill, onClose }: { skill: SkillRow; onClose: () => void }) {
+  return createPortal(
+    <div className="skill-desc-backdrop" onClick={onClose}>
+      <div className="skill-desc-modal" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="skill-desc-close" onClick={onClose}>FECHAR ×</button>
+        <h2 className="skill-desc-title">{skill.name}</h2>
+        <div className="skill-desc-divider" />
+        <div className="skill-desc-body">
+          {skill.description ? formatDescription(skill.description) : <p>Descrição ainda não cadastrada.</p>}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
 export default function PericiasTable({
   skills,
   charSkills,
@@ -60,6 +92,7 @@ export default function PericiasTable({
   const [sortField, setSortField] = useState<SortField>('pericia')
   const [treinoPickerFor, setTreinoPickerFor] = useState<string | null>(null)
   const [atributoPickerFor, setAtributoPickerFor] = useState<string | null>(null)
+  const [descriptionFor, setDescriptionFor] = useState<SkillRow | null>(null)
 
   function csOf(skillId: string): CharacterSkillRow {
     return charSkills[skillId] ?? { skill_id: skillId, training: 'nenhum', attribute_override: null, extra_bonus: 0 }
@@ -115,9 +148,11 @@ export default function PericiasTable({
 
           return (
             <div key={skill.id} className="pericias-row">
-              <img className="pericias-row-icon" src={d20Icon} alt="" />
+              <button type="button" className="pericias-row-roll-btn" onClick={() => onRoll(skill)} disabled={!attr} aria-label={`Rolar ${skill.name}`}>
+                <img className="pericias-row-icon" src={d20Icon} alt="" />
+              </button>
 
-              <button type="button" className="pericias-row-name-btn" onClick={() => onRoll(skill)} disabled={!attr}>
+              <button type="button" className="pericias-row-name-btn" onClick={() => setDescriptionFor(skill)}>
                 <span className="pericias-row-name">
                   {skill.name}
                   <span className="pericias-row-formula">
@@ -174,6 +209,8 @@ export default function PericiasTable({
           )
         })}
       </div>
+
+      {descriptionFor && <SkillDescriptionModal skill={descriptionFor} onClose={() => setDescriptionFor(null)} />}
     </div>
   )
 }

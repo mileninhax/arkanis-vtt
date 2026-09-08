@@ -4785,9 +4785,10 @@ code, .counter {
   display: flex;
   align-items: center;
   gap: 0.15em;
-  font-size: 0.7em;
+  font-family: var(--poppins);
+  font-size: 10px;
   font-weight: 700;
-  color: #e0393e;
+  color: #aeadc3;
 }
 
 .pericias-pip {

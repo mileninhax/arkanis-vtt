@@ -4775,7 +4775,7 @@ code, .counter {
   flex-direction: column;
   gap: 0;
   line-height: 1.15;
-  font-family: var(--poppins);
+  font-family: var(--raleway);
   font-size: 14px;
   color: #fff;
   min-width: 0;

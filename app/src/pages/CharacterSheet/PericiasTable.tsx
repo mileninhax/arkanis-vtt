@@ -121,7 +121,7 @@ export default function PericiasTable({
                 <span className="pericias-row-name">
                   {skill.name}
                   <span className="pericias-row-formula">
-                    {diceCount}d20
+                    <span style={{ color: testDiceBonus > 0 ? '#3ecf6e' : testDiceBonus < 0 ? '#e0393e' : undefined }}>{diceCount}d20</span>
                     {Array.from({ length: diceCount }).map((_, i) => (
                       <img key={i} src={i < diceCount - bonusPips ? ellipsisIcon : bonusPipIcon} alt="" className="pericias-pip" />
                     ))}

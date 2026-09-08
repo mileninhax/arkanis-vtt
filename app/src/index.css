@@ -4599,7 +4599,7 @@ code, .counter {
 .pericias-toggle-row {
   display: flex;
   border-radius: 0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: none;
 }
 
 .pericias-toggle {
@@ -4632,8 +4632,8 @@ code, .counter {
   display: flex;
   align-items: center;
   gap: 0.4em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 2px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5em;
 }
 
 .pericias-search input {

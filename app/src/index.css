@@ -4695,6 +4695,8 @@ code, .counter {
   line-height: 14px;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: visible;
   cursor: pointer;
   padding: 0 2px;
   margin: 0;
@@ -4704,7 +4706,7 @@ code, .counter {
 
 .pericias-col-pericia {
   grid-column: 1 / 3;
-  justify-self: start;
+  justify-self: center;
   border-radius: 0;
   padding: 0 0.6em;
 }

@@ -97,9 +97,11 @@ export default function PericiasTable({
       </div>
 
       <div className="pericias-columns">
+        <span />
         <button type="button" className={`pericias-col-btn pericias-col-pericia${sortField === 'pericia' ? ' active' : ''}`} onClick={() => setSortField('pericia')}>Perícia</button>
         <button type="button" className={`pericias-col-btn${sortField === 'treino' ? ' active' : ''}`} onClick={() => setSortField('treino')}>Treino</button>
         <button type="button" className={`pericias-col-btn${sortField === 'atributo' ? ' active' : ''}`} onClick={() => setSortField('atributo')}>Atrib.</button>
+        <span />
         <button type="button" className={`pericias-col-btn${sortField === 'extra' ? ' active' : ''}`} onClick={() => setSortField('extra')}>Extra</button>
         <button type="button" className={`pericias-col-btn${sortField === 'total' ? ' active' : ''}`} onClick={() => setSortField('total')}>Total</button>
       </div>
@@ -112,8 +114,9 @@ export default function PericiasTable({
 
           return (
             <div key={skill.id} className="pericias-row">
-              <button type="button" className="pericias-row-main" onClick={() => onRoll(skill)} disabled={!attr}>
-                <img className="pericias-row-icon" src={untrainedIcon} alt="" />
+              <img className="pericias-row-icon" src={untrainedIcon} alt="" />
+
+              <button type="button" className="pericias-row-name-btn" onClick={() => onRoll(skill)} disabled={!attr}>
                 <span className="pericias-row-name">
                   {skill.name}
                   <span className="pericias-row-formula">
@@ -152,6 +155,8 @@ export default function PericiasTable({
                   </div>
                 )}
               </div>
+
+              <div className="pericias-divider" />
 
               <div className="pericias-cell pericias-cell-extra">
                 <input

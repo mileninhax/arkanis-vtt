@@ -4677,11 +4677,11 @@ code, .counter {
 
 .pericias-columns {
   display: grid;
-  grid-template-columns: 1fr 2.8em 2.8em 2.6em 2.6em;
-  gap: 0.4em;
+  grid-template-columns: 22px 1fr 30px 32px 1px 52px 32px;
+  gap: 12px;
   align-items: center;
   height: 14px;
-  padding: 0 24px 0 12px;
+  padding: 0 12px;
 }
 
 .pericias-col-btn {
@@ -4724,15 +4724,21 @@ code, .counter {
 .pericias-row {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr 2.8em 2.8em 2.6em 2.6em;
-  gap: 0.4em;
+  grid-template-columns: 22px 1fr 30px 32px 1px 52px 32px;
+  gap: 12px;
   align-items: center;
   background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0;
-  padding: 8px 12px;
+  padding: 12px;
+}
+
+.pericias-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .pericias-row:focus-within,
@@ -4740,27 +4746,26 @@ code, .counter {
   border-color: var(--accent);
 }
 
-.pericias-row-main {
+.pericias-row-name-btn {
   display: flex;
   align-items: center;
-  gap: 0.6em;
   background: none;
   border: none;
   color: #fff;
   text-align: left;
   cursor: pointer;
   min-width: 0;
+  padding: 0;
 }
 
-.pericias-row-main:disabled {
+.pericias-row-name-btn:disabled {
   cursor: default;
   opacity: 0.6;
 }
 
 .pericias-row-icon {
-  width: 1.4em;
-  height: 1.4em;
-  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
 }
 
 .pericias-row-name {
@@ -4818,7 +4823,7 @@ code, .counter {
 }
 
 .pericias-cell-extra input {
-  width: 2.4em;
+  width: 100%;
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.6);

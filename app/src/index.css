@@ -4796,13 +4796,12 @@ code, .counter {
 
 .pericias-treino-btn,
 .pericias-atributo-btn {
-  background: #1c1a24;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  background: none;
+  border: none;
   color: #fff;
   cursor: pointer;
-  padding: 0.2em;
-  font-size: 0.75em;
+  padding: 0;
+  font-size: 0.8em;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -4810,20 +4809,18 @@ code, .counter {
 }
 
 .pericias-treino-btn img {
-  width: 1.4em;
-  height: 1.4em;
+  width: 2.2em;
+  height: 2.2em;
 }
 
 .pericias-atributo-btn {
   width: 100%;
-  padding: 0.3em;
 }
 
 .pericias-cell-extra input {
   width: 2.4em;
-  background: #1c1a24;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  background: none;
+  border: none;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
   padding: 0.25em 0;

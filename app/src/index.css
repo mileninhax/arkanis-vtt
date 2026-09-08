@@ -4954,6 +4954,19 @@ code, .counter {
   border-radius: 4px;
   padding: 1.6em 1.8em;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.skill-desc-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('./assets/pericias/veins-texture.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .skill-desc-close {

@@ -71,6 +71,22 @@
 }
 
 @font-face {
+  font-family: 'Raleway';
+  src: url('./assets/fonts/Raleway-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url('./assets/fonts/Raleway-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Dico Typewriter';
   src: url('./assets/fonts/Dico-Typewriter.otf') format('opentype');
   font-weight: 400;
@@ -132,6 +148,7 @@
   --ashigea: 'Ashigea', system-ui, 'Segoe UI', Roboto, sans-serif;
   --poppins: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
   --raleway: 'Raleway', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --barlow: 'Barlow', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 15px/145% var(--sans);
@@ -4660,27 +4677,35 @@ code, .counter {
 
 .pericias-columns {
   display: grid;
-  grid-template-columns: 1fr 2.2em 2.6em 2.6em 2.6em;
+  grid-template-columns: 1fr 2.8em 2.8em 2.6em 2.6em;
   gap: 0.4em;
   align-items: center;
+  height: 14px;
+  padding: 0 24px 0 12px;
 }
 
 .pericias-col-btn {
+  box-sizing: border-box;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.72em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--barlow);
+  font-size: 11px;
   font-weight: 700;
+  line-height: 14px;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   cursor: pointer;
-  padding: 0.2em 0.4em;
-  border-radius: 999px;
+  padding: 0 2px;
+  margin: 0;
+  border-radius: 0;
   justify-self: center;
 }
 
 .pericias-col-pericia {
   justify-self: start;
+  border-radius: 999px;
+  padding: 0 0.6em;
 }
 
 .pericias-col-btn.active {
@@ -4698,13 +4723,13 @@ code, .counter {
 
 .pericias-row {
   display: grid;
-  grid-template-columns: 1fr 2.2em 2.6em 2.6em 2.6em;
+  grid-template-columns: 1fr 2.8em 2.8em 2.6em 2.6em;
   gap: 0.4em;
   align-items: center;
   background: #17151d;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  padding: 0.5em 0.7em;
+  padding: 0.5em 24px 0.5em 12px;
 }
 
 .pericias-row:focus-within,

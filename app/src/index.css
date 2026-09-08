@@ -4681,7 +4681,7 @@ code, .counter {
   gap: 12px;
   align-items: center;
   height: 14px;
-  padding: 0 12px;
+  padding: 0 20px 0 12px;
 }
 
 .pericias-col-btn {
@@ -4722,6 +4722,22 @@ code, .counter {
   gap: 0.5em;
   max-height: 60vh;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.pericias-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pericias-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pericias-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 .pericias-row {

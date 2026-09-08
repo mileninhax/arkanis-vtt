@@ -110,7 +110,8 @@ export default function PericiasTable({
         {rows.map(({ skill, cs, attr, total }) => {
           const effectiveScore = attr ? attrValue(attributes, attr) + testDiceBonus : 0
           const diceCount = effectiveScore > 0 ? effectiveScore : 2
-          const pipIcon = testDiceBonus < 0 ? ellipsisRedIcon : testDiceBonus > 0 ? ellipsisGreenIcon : ellipsisIcon
+          const bonusPips = Math.min(Math.abs(testDiceBonus), diceCount)
+          const bonusPipIcon = testDiceBonus < 0 ? ellipsisRedIcon : ellipsisGreenIcon
 
           return (
             <div key={skill.id} className="pericias-row">
@@ -121,7 +122,9 @@ export default function PericiasTable({
                   {skill.name}
                   <span className="pericias-row-formula">
                     {diceCount}d20
-                    {Array.from({ length: diceCount }).map((_, i) => <img key={i} src={pipIcon} alt="" className="pericias-pip" />)}
+                    {Array.from({ length: diceCount }).map((_, i) => (
+                      <img key={i} src={i < diceCount - bonusPips ? ellipsisIcon : bonusPipIcon} alt="" className="pericias-pip" />
+                    ))}
                   </span>
                 </span>
               </button>

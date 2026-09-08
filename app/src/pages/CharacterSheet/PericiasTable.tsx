@@ -59,6 +59,7 @@ export default function PericiasTable({
   const [onlyTrained, setOnlyTrained] = useState(false)
   const [sortField, setSortField] = useState<SortField>('pericia')
   const [treinoPickerFor, setTreinoPickerFor] = useState<string | null>(null)
+  const [atributoPickerFor, setAtributoPickerFor] = useState<string | null>(null)
 
   function csOf(skillId: string): CharacterSkillRow {
     return charSkills[skillId] ?? { skill_id: skillId, training: 'nenhum', attribute_override: null, extra_bonus: 0 }
@@ -140,17 +141,19 @@ export default function PericiasTable({
                 )}
               </div>
 
-              <div className="pericias-cell pericias-cell-atributo">
-                <select
-                  className="pericias-atributo-select"
-                  value={attr ?? ''}
-                  onChange={(e) => onSetSkillField(skill.id, { attribute_override: e.target.value })}
-                >
-                  {!attr && <option value="">—</option>}
-                  {ATTR_LABELS.map((a) => (
-                    <option key={a.key} value={a.key}>{a.abbr}</option>
-                  ))}
-                </select>
+              <div className="pericias-cell pericias-cell-atributo" style={{ position: 'relative' }}>
+                <button type="button" className="pericias-atributo-btn" onClick={() => setAtributoPickerFor((v) => v === skill.id ? null : skill.id)}>
+                  {attr ? ATTR_LABELS.find((a) => a.key === attr)?.abbr ?? '—' : '—'}
+                </button>
+                {atributoPickerFor === skill.id && (
+                  <div className="pericias-picker pericias-picker-atributo">
+                    {ATTR_LABELS.map((a) => (
+                      <button key={a.key} type="button" className={a.key === attr ? 'selected' : ''} onClick={() => { onSetSkillField(skill.id, { attribute_override: a.key }); setAtributoPickerFor(null) }}>
+                        {a.abbr}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="pericias-divider" />

@@ -88,8 +88,8 @@ export default function PericiasTable({
   return (
     <div className="pericias-panel">
       <div className="pericias-toggle-row">
-        <button type="button" className={`pericias-toggle${!onlyTrained ? ' active' : ''}`} onClick={() => setOnlyTrained(false)}>Todas as Perícias</button>
-        <button type="button" className={`pericias-toggle${onlyTrained ? ' active' : ''}`} onClick={() => setOnlyTrained(true)}>Apenas Treinadas</button>
+        <button type="button" className={`pericias-toggle${!onlyTrained ? ' active' : ''}`} onClick={() => setOnlyTrained(false)}>TODAS AS PERÍCIAS</button>
+        <button type="button" className={`pericias-toggle${onlyTrained ? ' active' : ''}`} onClick={() => setOnlyTrained(true)}>APENAS TREINADAS</button>
       </div>
 
       <div className="pericias-search">

@@ -4603,16 +4603,19 @@ code, .counter {
 }
 
 .pericias-toggle {
+  box-sizing: border-box;
   flex: 1 1 0;
   background: #17151d;
   color: rgba(255, 255, 255, 0.6);
   border: none;
-  padding: 0.4em 0.3em;
-  font-family: 'Optima', var(--poppins);
+  border-radius: 0;
+  margin: 0;
+  padding: 3px 6px;
+  font-family: var(--heading);
   font-weight: 700;
   font-size: 11px;
+  line-height: 1.2;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 

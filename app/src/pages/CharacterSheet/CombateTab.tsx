@@ -263,8 +263,8 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         </button>
         {modsOpen && (
           <div style={{ marginTop: '0.6em' }}>
-            <ModifiersPanel characterId={character.id} scope="ataque" title="Modificador de Ataque" showThreatAndMultiplier onChange={setAttackMods} />
-            <ModifiersPanel characterId={character.id} scope="dano" title="Modificador de Dano" onChange={setDamageMods} />
+            <ModifiersPanel characterId={character.id} scope="ataque" title="MODIFICADOR DE ATAQUE" showThreatAndMultiplier onChange={setAttackMods} />
+            <ModifiersPanel characterId={character.id} scope="dano" title="MODIFICADOR DE DANO" onChange={setDamageMods} />
           </div>
         )}
       </div>

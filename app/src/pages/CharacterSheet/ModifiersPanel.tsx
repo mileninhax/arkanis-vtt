@@ -29,7 +29,7 @@ function Counter({ label, value, onChange }: { label: string; value: number; onC
 export default function ModifiersPanel({
   characterId,
   scope,
-  title = 'Modificador de Testes',
+  title = 'MODIFICADOR DE TESTES',
   showThreatAndMultiplier,
   onChange,
   onDraftChange,

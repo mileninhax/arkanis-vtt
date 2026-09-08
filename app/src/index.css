@@ -4802,8 +4802,7 @@ code, .counter {
   justify-content: center;
 }
 
-.pericias-treino-btn,
-.pericias-atributo-btn {
+.pericias-treino-btn {
   background: none;
   border: none;
   color: #fff;
@@ -4821,8 +4820,21 @@ code, .counter {
   height: 2.8em;
 }
 
-.pericias-atributo-btn {
+.pericias-atributo-select {
   width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--poppins);
+  font-size: 0.8em;
+  font-weight: 700;
+  text-align: center;
+  text-align-last: center;
+}
+
+.pericias-atributo-select option {
+  color: #16151d;
 }
 
 .pericias-cell-extra input {
@@ -4862,10 +4874,6 @@ code, .counter {
 }
 
 .pericias-picker-treino {
-  flex-direction: column;
-}
-
-.pericias-picker-atributo {
   flex-direction: column;
 }
 

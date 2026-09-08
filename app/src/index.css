@@ -4865,7 +4865,7 @@ code, .counter {
   border: none;
   color: #fff;
   cursor: pointer;
-  padding: 0.3em 0.6em;
+  padding: 0.4em 0.7em;
   border-radius: 6px;
   font-size: 0.8em;
   font-weight: 700;
@@ -4875,8 +4875,8 @@ code, .counter {
 }
 
 .pericias-picker button img {
-  width: 1.4em;
-  height: 1.4em;
+  width: 2.6em;
+  height: 2.6em;
 }
 
 .pericias-picker button:hover,

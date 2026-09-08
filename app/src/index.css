@@ -4829,9 +4829,17 @@ code, .counter {
   width: 100%;
   background: none;
   border: none;
+  outline: none;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
   padding: 0.25em 0;
+  -moz-appearance: textfield;
+}
+
+.pericias-cell-extra input::-webkit-inner-spin-button,
+.pericias-cell-extra input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .pericias-cell-total {

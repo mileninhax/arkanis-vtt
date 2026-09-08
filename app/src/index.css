@@ -4591,10 +4591,14 @@ code, .counter {
   gap: 0.8em;
 }
 
+.vtt-card.pericias-card {
+  border-top: none;
+  padding-top: 0;
+}
+
 .pericias-toggle-row {
   display: flex;
-  border-radius: 8px;
-  overflow: hidden;
+  border-radius: 0;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -4603,12 +4607,17 @@ code, .counter {
   background: #17151d;
   color: rgba(255, 255, 255, 0.6);
   border: none;
-  padding: 0.6em;
+  padding: 0.4em 0.3em;
+  font-family: 'Optima', var(--poppins);
   font-weight: 700;
-  font-size: 0.78em;
-  letter-spacing: 0.03em;
+  font-size: 11px;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.pericias-toggle + .pericias-toggle {
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .pericias-toggle.active {
@@ -4619,18 +4628,14 @@ code, .counter {
 .pericias-search {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5em;
-}
-
-.pericias-search-icon {
-  opacity: 0.5;
-  font-size: 0.85em;
+  gap: 0.4em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 2px;
 }
 
 .pericias-search input {
   flex: 1 1 auto;
+  min-width: 0;
   background: none;
   border: none;
   color: #fff;

@@ -93,7 +93,6 @@ export default function PericiasTable({
       </div>
 
       <div className="pericias-search">
-        <span className="pericias-search-icon" aria-hidden>🔍</span>
         <input placeholder="Busque Perícias" value={skillFilter} onChange={(e) => setSkillFilter(e.target.value)} />
       </div>
 

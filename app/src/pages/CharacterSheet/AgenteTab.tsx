@@ -548,7 +548,7 @@ export default function AgenteTab({
           <ModifiersPanel characterId={character.id} scope="teste" onChange={setTestModifiers} onDraftChange={setTestDraft} />
         </div>
 
-        <div className="vtt-card">
+        <div className="vtt-card pericias-card">
           <PericiasTable
             skills={skills}
             charSkills={charSkills}

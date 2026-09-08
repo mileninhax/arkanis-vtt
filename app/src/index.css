@@ -4630,15 +4630,17 @@ code, .counter {
 
 .pericias-search {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.4em;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5em;
+  padding: 0.6em 0 0.2em;
 }
 
 .pericias-search input {
   flex: 1 1 auto;
   min-width: 0;
+  margin: 0;
+  padding: 0;
   background: none;
   border: none;
   color: #fff;

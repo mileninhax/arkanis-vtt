@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { attrValue, type Attributes, type AttributeKey, type Training } from '../../lib/rules'
+import d20Icon from '../../assets/icons/d20-paranormal.svg'
 import untrainedIcon from '../../assets/pericias/untrained.svg'
 import trainedIcon from '../../assets/pericias/trained.svg'
 import veteranIcon from '../../assets/pericias/veteran.svg'
@@ -97,7 +98,6 @@ export default function PericiasTable({
       </div>
 
       <div className="pericias-columns">
-        <span />
         <button type="button" className={`pericias-col-btn pericias-col-pericia${sortField === 'pericia' ? ' active' : ''}`} onClick={() => setSortField('pericia')}>Perícia</button>
         <button type="button" className={`pericias-col-btn${sortField === 'treino' ? ' active' : ''}`} onClick={() => setSortField('treino')}>Treino</button>
         <button type="button" className={`pericias-col-btn${sortField === 'atributo' ? ' active' : ''}`} onClick={() => setSortField('atributo')}>Atrib.</button>
@@ -114,7 +114,7 @@ export default function PericiasTable({
 
           return (
             <div key={skill.id} className="pericias-row">
-              <img className="pericias-row-icon" src={untrainedIcon} alt="" />
+              <img className="pericias-row-icon" src={d20Icon} alt="" />
 
               <button type="button" className="pericias-row-name-btn" onClick={() => onRoll(skill)} disabled={!attr}>
                 <span className="pericias-row-name">

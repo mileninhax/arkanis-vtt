@@ -4727,13 +4727,12 @@ code, .counter {
   grid-template-columns: 1fr 2.8em 2.8em 2.6em 2.6em;
   gap: 0.4em;
   align-items: center;
-  min-height: 58.8px;
   background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0;
-  padding: 12px;
+  padding: 8px 12px;
 }
 
 .pericias-row:focus-within,
@@ -4759,15 +4758,16 @@ code, .counter {
 }
 
 .pericias-row-icon {
-  width: 1.6em;
-  height: 1.6em;
+  width: 1.4em;
+  height: 1.4em;
   flex-shrink: 0;
 }
 
 .pericias-row-name {
   display: flex;
   flex-direction: column;
-  gap: 0.1em;
+  gap: 0;
+  line-height: 1.15;
   font-family: var(--poppins);
   font-size: 16px;
   color: #fff;

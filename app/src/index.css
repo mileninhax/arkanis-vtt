@@ -4643,8 +4643,15 @@ code, .counter {
   padding: 0;
   background: none;
   border: none;
+  outline: none;
+  box-shadow: none;
   color: #fff;
   font-size: 0.9em;
+}
+
+.pericias-search input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .pericias-search input::placeholder {

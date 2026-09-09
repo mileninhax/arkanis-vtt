@@ -40,7 +40,7 @@ function trainingBonus(training: Training): number {
 type SortField = 'pericia' | 'treino' | 'atributo' | 'extra' | 'total'
 
 function formatDescription(text: string) {
-  return text.split(/\n{2,}/).map((paragraph, i) => {
+  return text.split(/(?:\r?\n){2,}/).map((paragraph, i) => {
     const parts = paragraph.split(/(\*\*[^*]+\*\*)/g)
     return (
       <p key={i}>

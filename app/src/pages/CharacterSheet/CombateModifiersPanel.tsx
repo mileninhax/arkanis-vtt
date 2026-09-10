@@ -81,13 +81,13 @@ export default function CombateModifiersPanel({
   const list = tab === 'ataque' ? attackMods : damageMods
 
   return (
-    <div className="modpanel">
-      <button type="button" className="modpanel-title" onClick={() => setOpen((o) => !o)}>
+    <div className="combat-modpanel-frame">
+      <button type="button" className="combat-modpanel-title" onClick={() => setOpen((o) => !o)}>
         MODIFICADORES DE COMBATE
       </button>
 
       {open && (
-        <div className="modpanel-body">
+        <div className="modpanel-body combat-modpanel-body">
           <div className="combatmod-tabs">
             <button type="button" className={`combatmod-tab${tab === 'ataque' ? ' active' : ''}`} onClick={() => setTab('ataque')}>MODIFICADOR DE ATAQUE</button>
             <button type="button" className={`combatmod-tab${tab === 'dano' ? ' active' : ''}`} onClick={() => setTab('dano')}>MODIFICADOR DE DANO</button>

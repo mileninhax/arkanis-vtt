@@ -5283,6 +5283,7 @@ code, .counter {
 
 .combatmod-tabs {
   display: flex;
+  justify-content: center;
   gap: 1.2em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   padding-bottom: 0.4em;
@@ -5292,9 +5293,8 @@ code, .counter {
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.4);
-  font-family: var(--poppins);
-  font-weight: 700;
-  font-size: 11px;
+  font-family: 'Keyes', var(--heading);
+  font-size: 13px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   cursor: pointer;
@@ -5304,4 +5304,56 @@ code, .counter {
 .combatmod-tab.active {
   color: #fff;
   border-bottom: 2px solid #fff;
+}
+
+.combat-modpanel-frame {
+  position: relative;
+  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  padding: 1.5px;
+  margin-bottom: 0.6em;
+  --shine-color: #f2f2f2;
+}
+
+.combat-modpanel-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
+}
+
+.combat-modpanel-title {
+  display: block;
+  width: 100%;
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: 'Keyes', var(--heading);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.combat-modpanel-body {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  margin-top: 0;
+  padding: 0.8em 1em;
+}
+
+.combat-modpanel-body .modpanel-add-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
 }

@@ -5042,18 +5042,25 @@ code, .counter {
 
 /* Combate */
 
-.combat-defense-card {
+.combat-defense-frame {
   position: relative;
   background: #1c1a1c url('./assets/combate/metal-texture.png');
   background-size: cover;
   background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.8em 1em;
+  padding: 4px;
   margin-bottom: 0.6em;
   --shine-color: #f2f2f2;
 }
 
-.combat-defense-card::after {
+.combat-defense-card {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8em 1em;
+}
+
+.combat-defense-frame::after {
   content: '';
   position: absolute;
   inset: 0;

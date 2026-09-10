@@ -263,7 +263,8 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
         />
       )}
 
-      <div className="combat-defense-card">
+      <div className="combat-defense-frame">
+       <div className="combat-defense-card">
         <div className="combat-defense-top">
           <div className="combat-defense-badge">
             <img src={defenseRing} alt="" className="combat-defense-ring" />
@@ -324,6 +325,7 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
             <p><strong>Resistência:</strong> Nenhuma</p>
           </div>
         )}
+       </div>
       </div>
 
       <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection}>↺ Atualizar</button>

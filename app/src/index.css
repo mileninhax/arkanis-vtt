@@ -104,8 +104,8 @@
 
 @font-face {
   font-family: 'Keyes';
-  src: url('./assets/fonts/combate-font.woff2') format('woff2');
-  font-weight: 400 700;
+  src: url('./assets/fonts/Keyes.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -5111,7 +5111,7 @@ code, .counter {
 }
 
 .combat-defense-label {
-  font-family: 'Keyes', var(--heading);
+  font-family: 'Westsac', var(--heading);
   font-size: 1.3em;
   color: #fff;
 }

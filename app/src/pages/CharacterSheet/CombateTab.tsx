@@ -246,6 +246,10 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
 
   const agilidade = character.attributes.agilidade
   const defenseTotal = equippedDefense + character.defense_other_bonus + agilidade + 10
+  const fortitudeSkill = skills.find((s) => s.name === 'Fortitude')
+  const reflexosSkill = skills.find((s) => s.name === 'Reflexos')
+  const bloqueio = fortitudeSkill ? (charSkillBonus[fortitudeSkill.id] ?? 0) : 0
+  const esquiva = 10 + (reflexosSkill ? (charSkillBonus[reflexosSkill.id] ?? 0) : 0)
 
   return (
     <div>
@@ -274,12 +278,7 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
           <div className="combat-defense-main">
             <span className="combat-defense-label">Defesa</span>
             <div className="combat-defense-formula">
-              <input
-                className="combat-dotted-input"
-                type="number"
-                value={equippedDefense}
-                readOnly
-              />
+              <span className="combat-plain-value">{equippedDefense}</span>
               <span className="combat-defense-sub">Equip</span>
               <span className="combat-defense-plus">+</span>
               <input
@@ -295,21 +294,11 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
 
           <div className="combat-defense-side">
             <div className="combat-defense-side-item">
-              <input
-                className="combat-dotted-input"
-                type="number"
-                value={character.bloqueio_bonus}
-                onChange={(e) => updateDefenseField({ bloqueio_bonus: Number(e.target.value) })}
-              />
+              <span className="combat-plain-value">{bloqueio}</span>
               <span className="combat-defense-sub">Bloqueio</span>
             </div>
             <div className="combat-defense-side-item">
-              <input
-                className="combat-dotted-input"
-                type="number"
-                value={character.esquiva_bonus}
-                onChange={(e) => updateDefenseField({ esquiva_bonus: Number(e.target.value) })}
-              />
+              <span className="combat-plain-value">{esquiva}</span>
               <span className="combat-defense-sub">Esquiva</span>
             </div>
           </div>

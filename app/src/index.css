@@ -5047,7 +5047,7 @@ code, .counter {
   background: #1c1a1c url('./assets/combate/metal-texture.png');
   background-size: cover;
   background-position: center;
-  padding: 4px;
+  padding: 1.5px;
   margin-bottom: 0.6em;
   --shine-color: #f2f2f2;
 }
@@ -5119,11 +5119,12 @@ code, .counter {
 .combat-defense-formula {
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.3em;
   font-family: var(--poppins);
   font-size: 0.75em;
   color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
 }
 
 .combat-defense-plus {
@@ -5132,6 +5133,7 @@ code, .counter {
 
 .combat-defense-fixed {
   white-space: nowrap;
+  font-size: 1em;
 }
 
 .combat-defense-sub {
@@ -5139,11 +5141,20 @@ code, .counter {
   font-size: 0.9em;
 }
 
+.combat-plain-value {
+  min-width: 1.2em;
+  display: inline-block;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--poppins);
+  font-weight: 700;
+}
+
 .combat-dotted-input {
   width: 1.6em;
   background: none;
   border: none;
-  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+  border-bottom: 1.5px dotted #fff;
   color: rgba(255, 255, 255, 0.85);
   font-family: var(--poppins);
   font-weight: 700;
@@ -5173,7 +5184,7 @@ code, .counter {
   font-size: 0.75em;
 }
 
-.combat-defense-side-item .combat-dotted-input {
+.combat-defense-side-item .combat-plain-value {
   font-size: 1.2em;
 }
 

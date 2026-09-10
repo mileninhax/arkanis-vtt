@@ -5043,12 +5043,24 @@ code, .counter {
 /* Combate */
 
 .combat-defense-card {
+  position: relative;
   background: #1c1a1c url('./assets/combate/metal-texture.png');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.8em 1em;
   margin-bottom: 0.6em;
+  --shine-color: #f2f2f2;
+}
+
+.combat-defense-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
 }
 
 .combat-defense-top {

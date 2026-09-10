@@ -4624,6 +4624,10 @@ code, .counter {
   cursor: pointer;
 }
 
+.modpanel-pill-check input[type='checkbox'] {
+  accent-color: #000;
+}
+
 .modpanel-pill-remove {
   background: none;
   border: none;
@@ -5362,4 +5366,9 @@ code, .counter {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0;
+}
+
+.combat-modpanel-body .modpanel-name-input,
+.combat-modpanel-body .modpanel-pill-check {
+  font-family: 'Keyes', var(--heading);
 }

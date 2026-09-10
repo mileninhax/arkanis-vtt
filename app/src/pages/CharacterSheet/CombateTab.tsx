@@ -360,8 +360,8 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
       {attacks.length === 0 && (
         <div className="vtt-warning-box">Você não possui ataques. Adicione a partir do seu inventário ou crie um abaixo.</div>
       )}
-      {attacks.length > 0 && attacks.every((a) => !ammoForAttack(a)) && character.optional_rules.contagem_municao && (
-        <div className="vtt-warning-box">Você não possui munição rastreada. Adicione a partir do seu inventário.</div>
+      {character.optional_rules.contagem_municao && inventoryAmmo.every((i) => i.ammo_total === null) && (
+        <div className="combat-ammo-empty">Você não possui munição. Adicione a partir do seu inventário.</div>
       )}
 
       <div style={{ display: 'flex', gap: '0.5em', marginBottom: '0.8em' }}>

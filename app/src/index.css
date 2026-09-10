@@ -5372,3 +5372,16 @@ code, .counter {
 .combat-modpanel-body .modpanel-pill-check {
   font-family: 'Keyes', var(--heading);
 }
+
+.combat-ammo-empty {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.7em 1em;
+  margin-bottom: 0.6em;
+  color: #fff;
+  font-family: var(--poppins);
+  font-size: 0.85em;
+}

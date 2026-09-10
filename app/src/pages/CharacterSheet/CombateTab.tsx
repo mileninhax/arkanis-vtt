@@ -357,9 +357,6 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
 
       <CombateModifiersPanel characterId={character.id} onAttackChange={setAttackMods} onDamageChange={setDamageMods} />
 
-      {attacks.length === 0 && (
-        <div className="vtt-warning-box">Você não possui ataques. Adicione a partir do seu inventário ou crie um abaixo.</div>
-      )}
       {character.optional_rules.contagem_municao && inventoryAmmo.every((i) => i.ammo_total === null) && (
         <div className="combat-ammo-empty">Você não possui munição. Adicione a partir do seu inventário.</div>
       )}

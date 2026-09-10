@@ -103,6 +103,14 @@
 }
 
 @font-face {
+  font-family: 'Combate Display';
+  src: url('./assets/fonts/combate-font.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Optima Nova LT Pro';
   src: url('./assets/fonts/OptimaNovaLTPro-Regular.otf') format('opentype');
   font-weight: 400;
@@ -1520,25 +1528,36 @@ code, .counter {
 
 .vtt-subtabs {
   display: flex;
-  gap: 0.9em;
-  flex-wrap: wrap;
+  border: none;
   margin-bottom: 0.8em;
 }
 
 .vtt-subtabs button {
-  background: transparent;
+  box-sizing: border-box;
+  flex: 1 1 0;
+  background: #17151d;
   border: none;
-  padding: 0;
-  color: var(--text-dim);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--heading);
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  font-size: 0.85em;
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.vtt-subtabs button:first-child {
+  border-left: none;
 }
 
 .vtt-subtabs button:disabled {
-  color: var(--text-h);
+  background: #f2f2f2;
+  color: #060517;
   opacity: 1;
+  cursor: default;
 }
 
 .vtt-icon-btn {
@@ -5019,4 +5038,201 @@ code, .counter {
 
 .skill-desc-body p:last-child {
   margin-bottom: 0;
+}
+
+/* Combate */
+
+.combat-defense-card {
+  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8em 1em;
+  margin-bottom: 0.6em;
+}
+
+.combat-defense-top {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.combat-defense-badge {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.combat-defense-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.combat-defense-value {
+  position: relative;
+  font-family: 'Combate Display', var(--heading);
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #fff;
+}
+
+.combat-defense-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.combat-defense-label {
+  font-family: 'Combate Display', var(--heading);
+  font-size: 1.3em;
+  color: #fff;
+}
+
+.combat-defense-formula {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  font-family: var(--poppins);
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.combat-defense-plus {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.combat-defense-fixed {
+  white-space: nowrap;
+}
+
+.combat-defense-sub {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.9em;
+}
+
+.combat-dotted-input {
+  width: 1.6em;
+  background: none;
+  border: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--poppins);
+  font-weight: 700;
+  text-align: center;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+
+.combat-dotted-input::-webkit-inner-spin-button,
+.combat-dotted-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.combat-defense-side {
+  display: flex;
+  gap: 1em;
+  flex-shrink: 0;
+}
+
+.combat-defense-side-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  font-family: var(--poppins);
+  font-size: 0.75em;
+}
+
+.combat-defense-side-item .combat-dotted-input {
+  font-size: 1.2em;
+}
+
+.combat-defense-chevron {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 0.8em;
+  padding: 0;
+}
+
+.combat-defense-details {
+  margin-top: 0.6em;
+  padding-top: 0.6em;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--poppins);
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.combat-defense-details p {
+  margin: 0 0 0.3em;
+}
+
+.combat-defense-details p:last-child {
+  margin-bottom: 0;
+}
+
+.combat-refresh-btn {
+  width: 100%;
+  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: var(--poppins);
+  font-weight: 700;
+  font-size: 0.85em;
+  padding: 0.5em;
+  cursor: pointer;
+  margin-bottom: 0.6em;
+}
+
+.combat-stats-row {
+  display: flex;
+  justify-content: space-between;
+  background: #17151d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6em 1em;
+  margin-bottom: 0.6em;
+  font-family: var(--poppins);
+  font-size: 0.85em;
+  color: #fff;
+}
+
+.combatmod-tabs {
+  display: flex;
+  gap: 1.2em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 0.4em;
+}
+
+.combatmod-tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--poppins);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0 0 0.3em;
+}
+
+.combatmod-tab.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
 }

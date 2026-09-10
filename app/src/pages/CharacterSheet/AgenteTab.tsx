@@ -572,7 +572,7 @@ export default function AgenteTab({
         {rightTab === 'Habilidades' && <HabilidadesTab character={character} />}
         {rightTab === 'Rituais' && <RituaisTab character={character} />}
         {rightTab === 'Inventário' && <InventarioTab character={character} />}
-        {rightTab === 'Combate' && <CombateTab character={character} />}
+        {rightTab === 'Combate' && <CombateTab character={character} onUpdated={onUpdated} />}
       </div>
     </div>
   )

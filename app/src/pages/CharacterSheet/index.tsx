@@ -61,6 +61,9 @@ export type CharacterRecord = {
   conditions: string[]
   sheet_banner: string
   dice_tray: string
+  defense_other_bonus: number
+  bloqueio_bonus: number
+  esquiva_bonus: number
   editable_by_others: boolean
   hidden_from_others: boolean
   chosen_track_id: string | null

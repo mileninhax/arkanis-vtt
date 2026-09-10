@@ -5,7 +5,9 @@ import { recordRoll } from '../../lib/rollHistory'
 import { attrValue, rollAttributeTest, rollDiceFormula, trainingBonus, type AttributeKey, type Training } from '../../lib/rules'
 import type { CharacterRecord } from './index'
 import RollResult, { RollCard, type RollResultData, type RollCardDie } from './RollResult'
-import ModifiersPanel, { type Modifier } from './ModifiersPanel'
+import { type Modifier } from './ModifiersPanel'
+import CombateModifiersPanel from './CombateModifiersPanel'
+import defenseRing from '../../assets/combate/border-defense-desktop.png'
 
 type Attack = {
   id: string
@@ -42,12 +44,13 @@ const ATTRS: AttributeKey[] = ['forca', 'agilidade', 'intelecto', 'vigor', 'pres
 
 const emptyForm = { name: '', skillId: '', attribute: 'forca' as AttributeKey, d20Bonus: 0, threatMargin: 20, multiplier: 2, damage: '', damageType: '' }
 
-export default function CombateTab({ character }: { character: CharacterRecord }) {
+export default function CombateTab({ character, onUpdated }: { character: CharacterRecord; onUpdated: () => void }) {
   const { session } = useAuth()
   const [attacks, setAttacks] = useState<Attack[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
   const [charSkillBonus, setCharSkillBonus] = useState<Record<string, number>>({})
   const [equippedDefense, setEquippedDefense] = useState(0)
+  const [equippedProtectionName, setEquippedProtectionName] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [roll, setRoll] = useState<RollResultData | null>(null)
@@ -55,7 +58,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   const [damageMods, setDamageMods] = useState<Modifier[]>([])
   const [testMods, setTestMods] = useState<Modifier[]>([])
   const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
-  const [modsOpen, setModsOpen] = useState(false)
+  const [defenseDetailsOpen, setDefenseDetailsOpen] = useState(false)
   const [attackSearch, setAttackSearch] = useState('')
   const [pendingAttack, setPendingAttack] = useState<{ attackId: string; isCrit: boolean } | null>(null)
   const [damageRoll, setDamageRoll] = useState<{ title: string; subtitle: string; total: number; dice: RollCardDie[]; extraLines?: string[]; bonus?: number } | null>(null)
@@ -74,6 +77,21 @@ export default function CombateTab({ character }: { character: CharacterRecord }
       .select('id, linked_ammo_id, ammo_current, ammo_total, ammo_label')
       .eq('character_id', character.id)
     setInventoryAmmo((data ?? []) as InventoryAmmoInfo[])
+  }
+
+  function loadEquippedProtection() {
+    supabase
+      .from('character_inventory')
+      .select('is_equipped, equipment_items(type, stats, name), custom_item')
+      .eq('character_id', character.id)
+      .eq('is_equipped', true)
+      .then(({ data }) => {
+        const protection = (data ?? []).find((i: any) => (i.equipment_items?.type ?? i.custom_item?.type) === 'protecao')
+        const stats = (protection as any)?.equipment_items?.stats ?? (protection as any)?.custom_item?.stats ?? {}
+        const name = (protection as any)?.equipment_items?.name ?? (protection as any)?.custom_item?.name ?? null
+        setEquippedDefense(Number(stats.defesa ?? 0))
+        setEquippedProtectionName(name)
+      })
   }
 
   useEffect(() => { loadAttacks(); loadInventoryAmmo() }, [character.id])
@@ -95,17 +113,13 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         for (const row of data ?? []) map[row.skill_id] = trainingBonus(row.training as Training) + row.extra_bonus
         setCharSkillBonus(map)
       })
-    supabase
-      .from('character_inventory')
-      .select('is_equipped, equipment_items(type, stats), custom_item')
-      .eq('character_id', character.id)
-      .eq('is_equipped', true)
-      .then(({ data }) => {
-        const protection = (data ?? []).find((i: any) => (i.equipment_items?.type ?? i.custom_item?.type) === 'protecao')
-        const stats = (protection as any)?.equipment_items?.stats ?? (protection as any)?.custom_item?.stats ?? {}
-        setEquippedDefense(Number(stats.defesa ?? 0))
-      })
+    loadEquippedProtection()
   }, [character.id])
+
+  async function updateDefenseField(patch: Partial<Pick<CharacterRecord, 'defense_other_bonus' | 'bloqueio_bonus' | 'esquiva_bonus'>>) {
+    await supabase.from('characters').update(patch).eq('id', character.id)
+    onUpdated()
+  }
 
   async function addAttack() {
     if (!form.name) return
@@ -231,7 +245,7 @@ export default function CombateTab({ character }: { character: CharacterRecord }
   }
 
   const agilidade = character.attributes.agilidade
-  const defenseTotal = equippedDefense + agilidade + 10
+  const defenseTotal = equippedDefense + character.defense_other_bonus + agilidade + 10
 
   return (
     <div>
@@ -249,25 +263,77 @@ export default function CombateTab({ character }: { character: CharacterRecord }
         />
       )}
 
-      <div className="vtt-card" style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
-        <div className="vtt-attack-thumb" style={{ width: 56, height: 56, borderRadius: '50%' }}>🛡</div>
-        <div>
-          <h3 style={{ marginBottom: 0 }}>Defesa: {defenseTotal}</h3>
-          <p style={{ fontSize: '0.85em', color: 'var(--text-dim)' }}>Equip {equippedDefense} + Agilidade {agilidade} + 10</p>
-        </div>
-      </div>
+      <div className="combat-defense-card">
+        <div className="combat-defense-top">
+          <div className="combat-defense-badge">
+            <img src={defenseRing} alt="" className="combat-defense-ring" />
+            <span className="combat-defense-value">{defenseTotal}</span>
+          </div>
 
-      <div className="vtt-card">
-        <button type="button" onClick={() => setModsOpen((v) => !v)} style={{ width: '100%', textAlign: 'left' }}>
-          Modificadores de Combate {modsOpen ? '▾' : '▸'}
-        </button>
-        {modsOpen && (
-          <div style={{ marginTop: '0.6em' }}>
-            <ModifiersPanel characterId={character.id} scope="ataque" title="MODIFICADOR DE ATAQUE" showThreatAndMultiplier onChange={setAttackMods} />
-            <ModifiersPanel characterId={character.id} scope="dano" title="MODIFICADOR DE DANO" onChange={setDamageMods} />
+          <div className="combat-defense-main">
+            <span className="combat-defense-label">Defesa</span>
+            <div className="combat-defense-formula">
+              <input
+                className="combat-dotted-input"
+                type="number"
+                value={equippedDefense}
+                readOnly
+              />
+              <span className="combat-defense-sub">Equip</span>
+              <span className="combat-defense-plus">+</span>
+              <input
+                className="combat-dotted-input"
+                type="number"
+                value={character.defense_other_bonus}
+                onChange={(e) => updateDefenseField({ defense_other_bonus: Number(e.target.value) })}
+              />
+              <span className="combat-defense-sub">Outros</span>
+              <span className="combat-defense-fixed">+AGI({agilidade})+10</span>
+            </div>
+          </div>
+
+          <div className="combat-defense-side">
+            <div className="combat-defense-side-item">
+              <input
+                className="combat-dotted-input"
+                type="number"
+                value={character.bloqueio_bonus}
+                onChange={(e) => updateDefenseField({ bloqueio_bonus: Number(e.target.value) })}
+              />
+              <span className="combat-defense-sub">Bloqueio</span>
+            </div>
+            <div className="combat-defense-side-item">
+              <input
+                className="combat-dotted-input"
+                type="number"
+                value={character.esquiva_bonus}
+                onChange={(e) => updateDefenseField({ esquiva_bonus: Number(e.target.value) })}
+              />
+              <span className="combat-defense-sub">Esquiva</span>
+            </div>
+          </div>
+
+          <button type="button" className="combat-defense-chevron" onClick={() => setDefenseDetailsOpen((v) => !v)} aria-label="Detalhes de defesa">
+            {defenseDetailsOpen ? '▲' : '▾'}
+          </button>
+        </div>
+
+        {defenseDetailsOpen && (
+          <div className="combat-defense-details">
+            <p><strong>Proteção:</strong> {equippedProtectionName ?? 'Nenhuma equipada'}</p>
+            <p><strong>Resistência:</strong> Nenhuma</p>
           </div>
         )}
       </div>
+
+      <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection}>↺ Atualizar</button>
+
+      <div className="combat-stats-row">
+        <span><strong>PE / Turno:</strong> 1/1</span>
+        <span><strong>Deslocamento:</strong> 9m (6q)</span>
+      </div>
+
+      <CombateModifiersPanel characterId={character.id} onAttackChange={setAttackMods} onDamageChange={setDamageMods} />
 
       {attacks.length === 0 && (
         <div className="vtt-warning-box">Você não possui ataques. Adicione a partir do seu inventário ou crie um abaixo.</div>

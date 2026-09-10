@@ -44,7 +44,7 @@ const ATTRS: AttributeKey[] = ['forca', 'agilidade', 'intelecto', 'vigor', 'pres
 
 const emptyForm = { name: '', skillId: '', attribute: 'forca' as AttributeKey, d20Bonus: 0, threatMargin: 20, multiplier: 2, damage: '', damageType: '' }
 
-export default function CombateTab({ character, onUpdated }: { character: CharacterRecord; onUpdated: () => void }) {
+export default function CombateTab({ character, onUpdated, editMode }: { character: CharacterRecord; onUpdated: () => void; editMode: boolean }) {
   const { session } = useAuth()
   const [attacks, setAttacks] = useState<Attack[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
@@ -248,8 +248,16 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
   const defenseTotal = equippedDefense + character.defense_other_bonus + agilidade + 10
   const fortitudeSkill = skills.find((s) => s.name === 'Fortitude')
   const reflexosSkill = skills.find((s) => s.name === 'Reflexos')
-  const bloqueio = fortitudeSkill ? (charSkillBonus[fortitudeSkill.id] ?? 0) : 0
-  const esquiva = 10 + (reflexosSkill ? (charSkillBonus[reflexosSkill.id] ?? 0) : 0)
+  const bloqueioAuto = fortitudeSkill ? (charSkillBonus[fortitudeSkill.id] ?? 0) : 0
+  const esquivaAuto = 10 + (reflexosSkill ? (charSkillBonus[reflexosSkill.id] ?? 0) : 0)
+
+  useEffect(() => {
+    if (fortitudeSkill && character.bloqueio_bonus !== bloqueioAuto) updateDefenseField({ bloqueio_bonus: bloqueioAuto })
+  }, [bloqueioAuto])
+
+  useEffect(() => {
+    if (reflexosSkill && character.esquiva_bonus !== esquivaAuto) updateDefenseField({ esquiva_bonus: esquivaAuto })
+  }, [esquivaAuto])
 
   return (
     <div>
@@ -294,11 +302,29 @@ export default function CombateTab({ character, onUpdated }: { character: Charac
 
           <div className="combat-defense-side">
             <div className="combat-defense-side-item">
-              <span className="combat-plain-value">{bloqueio}</span>
+              {editMode ? (
+                <input
+                  className="combat-dotted-input"
+                  type="number"
+                  value={character.bloqueio_bonus}
+                  onChange={(e) => updateDefenseField({ bloqueio_bonus: Number(e.target.value) })}
+                />
+              ) : (
+                <span className="combat-plain-value">{character.bloqueio_bonus}</span>
+              )}
               <span className="combat-defense-sub">Bloqueio</span>
             </div>
             <div className="combat-defense-side-item">
-              <span className="combat-plain-value">{esquiva}</span>
+              {editMode ? (
+                <input
+                  className="combat-dotted-input"
+                  type="number"
+                  value={character.esquiva_bonus}
+                  onChange={(e) => updateDefenseField({ esquiva_bonus: Number(e.target.value) })}
+                />
+              ) : (
+                <span className="combat-plain-value">{character.esquiva_bonus}</span>
+              )}
               <span className="combat-defense-sub">Esquiva</span>
             </div>
           </div>

@@ -5192,9 +5192,11 @@ code, .counter {
   line-height: 1.2;
 }
 
-.combat-defense-side-item .combat-plain-value {
+.combat-defense-side-item .combat-plain-value,
+.combat-defense-side-item .combat-dotted-input {
   font-size: 13px;
   line-height: 1.2;
+  width: 1.6em;
 }
 
 .combat-defense-chevron {

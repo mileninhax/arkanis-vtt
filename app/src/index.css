@@ -5237,7 +5237,7 @@ code, .counter {
   flex-shrink: 0;
   width: 2.2em;
   aspect-ratio: 1 / 1;
-  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);

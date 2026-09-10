@@ -343,11 +343,13 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
        </div>
       </div>
 
-      <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection}>↺ Atualizar</button>
+      <div className="combat-stats-line">
+        <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection} aria-label="Atualizar">↺</button>
 
-      <div className="combat-stats-row">
-        <span><strong>PE / Turno:</strong> 1/1</span>
-        <span><strong>Deslocamento:</strong> 9m (6q)</span>
+        <div className="combat-stats-row">
+          <span><strong>PE / Turno:</strong> 1/1</span>
+          <span><strong>Deslocamento:</strong> 9m (6q)</span>
+        </div>
       </div>
 
       <CombateModifiersPanel characterId={character.id} onAttackChange={setAttackMods} onDamageChange={setDamageMods} />

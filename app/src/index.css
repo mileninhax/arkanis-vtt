@@ -5226,30 +5226,39 @@ code, .counter {
   margin-bottom: 0;
 }
 
+.combat-stats-line {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 0.6em;
+}
+
 .combat-refresh-btn {
-  width: 100%;
+  flex-shrink: 0;
+  width: 2.6em;
   background: #1c1a1c url('./assets/combate/metal-texture.png');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: none;
   color: #fff;
-  font-family: var(--poppins);
-  font-weight: 700;
-  font-size: 0.85em;
-  padding: 0.5em;
+  font-size: 1.2em;
+  line-height: 1;
   cursor: pointer;
-  margin-bottom: 0.6em;
 }
 
 .combat-stats-row {
+  flex: 1 1 auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  background: #17151d;
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.6em 1em;
-  margin-bottom: 0.6em;
-  font-family: var(--poppins);
-  font-size: 0.85em;
+  font-family: 'Combate Display', var(--heading);
+  font-size: 0.95em;
   color: #fff;
 }
 

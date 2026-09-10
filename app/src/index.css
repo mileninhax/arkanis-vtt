@@ -5378,7 +5378,7 @@ code, .counter {
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.7em 1em;
   margin-bottom: 0.6em;
   color: #fff;

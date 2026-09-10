@@ -8,6 +8,7 @@ import RollResult, { RollCard, type RollResultData, type RollCardDie } from './R
 import { type Modifier } from './ModifiersPanel'
 import CombateModifiersPanel from './CombateModifiersPanel'
 import defenseRing from '../../assets/combate/border-defense-desktop.png'
+import resetIcon from '../../assets/combate/seta-reset.svg'
 
 type Attack = {
   id: string
@@ -344,7 +345,9 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
       </div>
 
       <div className="combat-stats-line">
-        <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection} aria-label="Atualizar">↺</button>
+        <button type="button" className="combat-refresh-btn" onClick={loadEquippedProtection} aria-label="Atualizar">
+          <img src={resetIcon} alt="" />
+        </button>
 
         <div className="combat-stats-row">
           <span><strong>PE / Turno:</strong> 1/1</span>

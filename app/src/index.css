@@ -5237,14 +5237,21 @@ code, .counter {
   flex-shrink: 0;
   width: 2.2em;
   aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  font-size: 1em;
-  line-height: 1;
   cursor: pointer;
+}
+
+.combat-refresh-btn img {
+  width: 1.1em;
+  height: 1.1em;
+  object-fit: contain;
 }
 
 .combat-stats-row {

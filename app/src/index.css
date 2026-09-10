@@ -5374,6 +5374,7 @@ code, .counter {
 }
 
 .combat-ammo-empty {
+  position: relative;
   background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
@@ -5384,6 +5385,17 @@ code, .counter {
   color: #fff;
   font-family: var(--poppins);
   font-size: 0.85em;
+  --shine-color: #f2f2f2;
+}
+
+.combat-ammo-empty::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
 }
 
 .combat-search-row {
@@ -5426,9 +5438,12 @@ code, .counter {
 }
 
 .combat-add-btn {
+  position: relative;
   flex-shrink: 0;
-  background: #0e0d12;
-  border: none;
+  background: #0e0d12 url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0;
   color: #fff;
   font-family: 'Keyes', var(--heading);
@@ -5436,4 +5451,15 @@ code, .counter {
   font-size: 13px;
   padding: 0.6em 1.2em;
   cursor: pointer;
+  --shine-color: #f2f2f2;
+}
+
+.combat-add-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
 }

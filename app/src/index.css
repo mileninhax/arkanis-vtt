@@ -5235,14 +5235,14 @@ code, .counter {
 
 .combat-refresh-btn {
   flex-shrink: 0;
-  width: 2.6em;
+  width: 1.6em;
   background: #1c1a1c url('./assets/combate/metal-texture.png');
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-right: none;
   color: #fff;
-  font-size: 1.2em;
+  font-size: 0.75em;
   line-height: 1;
   cursor: pointer;
 }
@@ -5256,9 +5256,9 @@ code, .counter {
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.6em 1em;
+  padding: 0.25em 0.8em;
   font-family: 'Combate Display', var(--heading);
-  font-size: 0.95em;
+  font-size: 11px;
   color: #fff;
 }
 

@@ -364,9 +364,9 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
         <div className="combat-ammo-empty">Você não possui munição. Adicione a partir do seu inventário.</div>
       )}
 
-      <div style={{ display: 'flex', gap: '0.5em', marginBottom: '0.8em' }}>
-        <input placeholder="Buscar Ataques" value={attackSearch} onChange={(e) => setAttackSearch(e.target.value)} style={{ flex: 1 }} />
-        <button type="button" onClick={() => setAdding((a) => !a)}>Adicionar Ataque</button>
+      <div className="combat-search-row">
+        <input className="combat-search-input" placeholder="Buscar Ataques" value={attackSearch} onChange={(e) => setAttackSearch(e.target.value)} />
+        <button type="button" className="combat-add-btn" onClick={() => setAdding((a) => !a)}>Adicionar Ataque</button>
       </div>
 
       {adding && (

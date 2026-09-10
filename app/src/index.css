@@ -5385,3 +5385,39 @@ code, .counter {
   font-family: var(--poppins);
   font-size: 0.85em;
 }
+
+.combat-search-row {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 0.8em;
+}
+
+.combat-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  padding: 0.6em 0.8em;
+  color: #fff;
+  font-family: var(--poppins);
+  font-size: 0.85em;
+}
+
+.combat-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.combat-add-btn {
+  flex-shrink: 0;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0;
+  color: #fff;
+  font-family: 'Keyes', var(--heading);
+  font-size: 13px;
+  padding: 0.6em 1.2em;
+  cursor: pointer;
+}

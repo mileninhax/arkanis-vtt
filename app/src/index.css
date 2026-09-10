@@ -4733,7 +4733,7 @@ code, .counter {
 .pericias-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 4px;
   max-height: 60vh;
   overflow-y: auto;
   scrollbar-gutter: stable;
@@ -4765,7 +4765,7 @@ code, .counter {
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0;
-  padding: 12px;
+  padding: 6px 12px;
 }
 
 .pericias-divider {
@@ -4821,9 +4821,9 @@ code, .counter {
   display: flex;
   flex-direction: column;
   gap: 0;
-  line-height: 1.15;
+  line-height: 1.05;
   font-family: var(--raleway);
-  font-size: 14px;
+  font-size: 12px;
   color: #fff;
   min-width: 0;
 }

@@ -5392,15 +5392,23 @@ code, .counter {
   margin-bottom: 0.8em;
 }
 
+.combat-search-field {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.4em;
+}
+
 .combat-search-input {
   flex: 1 1 auto;
   min-width: 0;
-  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0;
-  padding: 0.6em 0.8em;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
   color: #fff;
   font-family: var(--poppins);
   font-size: 0.85em;
@@ -5410,13 +5418,21 @@ code, .counter {
   color: rgba(255, 255, 255, 0.4);
 }
 
+.combat-search-icon {
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
 .combat-add-btn {
   flex-shrink: 0;
   background: #0e0d12;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: none;
   border-radius: 0;
   color: #fff;
   font-family: 'Keyes', var(--heading);
+  font-weight: 700;
   font-size: 13px;
   padding: 0.6em 1.2em;
   cursor: pointer;

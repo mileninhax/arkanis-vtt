@@ -6190,3 +6190,170 @@ code, .counter {
   transition: border .15s ease-in-out;
   pointer-events: none;
 }
+
+/* Habilidades */
+
+.ability-frame {
+  position: relative;
+  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  padding: 1.5px;
+  margin-bottom: 0.6em;
+  --shine-color: #f2f2f2;
+}
+
+.ability-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
+}
+
+.ability-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: 'Keyes', var(--heading);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ability-chevron {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9em;
+  margin-left: 0.6em;
+}
+
+.ability-body {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  padding: 0.8em 1em;
+}
+
+.ability-description {
+  margin: 0 0 0.8em;
+  font-family: var(--poppins);
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: pre-line;
+}
+
+.ability-actions {
+  display: flex;
+  gap: 0.6em;
+}
+
+.ability-action-btn {
+  background: #fff;
+  border: none;
+  border-radius: 999px;
+  color: #060517;
+  font-family: 'Keyes', var(--heading);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.4em 1.1em;
+  cursor: pointer;
+}
+
+.ability-picker-sources {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: 0.7em 0.9em 0;
+}
+
+.ability-picker-source {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: 'Westsac', var(--heading);
+  font-size: 0.8em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ability-picker-source img {
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.ability-picker-source:hover {
+  color: var(--text-h);
+}
+
+.ability-picker-custom-btn {
+  position: relative;
+  z-index: 1;
+  margin: 0 0.9em 0.9em;
+  background: #1c1c1c;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.78em;
+  padding: 0.55em 0.8em;
+  cursor: pointer;
+}
+
+.ability-picker-custom-btn:hover {
+  color: var(--text-h);
+  border-color: #fff;
+}
+
+.ability-picker-select {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.6em 0.7em;
+  font-family: inherit;
+  color: var(--text-h);
+}
+
+.ability-picker-element-row {
+  display: flex;
+  gap: 1em;
+}
+
+.ability-picker-element-row > div {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.ability-picker-shell .conditions-modal-custom-label {
+  font-family: 'Westsac', var(--heading);
+}
+
+.ability-edit-label {
+  font-family: 'Westsac', var(--heading);
+}
+
+.ability-edit-toolbar {
+  justify-content: flex-end;
+}

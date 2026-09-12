@@ -1,41 +1,24 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { CharacterRecord } from './index'
+import AbilityPickerModal, { type AbilityPickResult } from './AbilityPickerModal'
+import AbilityEditModal, { type AbilityEditDraft } from './AbilityEditModal'
 
 type AbilityEntry = {
   id: string
   name: string
   description: string
-}
-
-type Category = 'Combatente' | 'Especialista' | 'Ocultista' | 'Sobrevivente' | 'Mundano' | 'Poderes Paranormais' | 'Poderes Gerais' | 'Origens'
-
-const CLASS_SLUGS: Record<string, string> = {
-  Combatente: 'combatente',
-  Especialista: 'especialista',
-  Ocultista: 'ocultista',
-  Sobrevivente: 'sobrevivente',
-  Mundano: 'mundano',
-}
-
-type CustomAbilityDraft = {
-  name: string
+  editable: boolean
   hasElement: boolean
-  element: string
-  description: string
-  proficiencyGranted: string
+  element: string | null
 }
-
-const emptyCustom: CustomAbilityDraft = { name: '', hasElement: false, element: '', description: '', proficiencyGranted: '' }
 
 export default function HabilidadesTab({ character }: { character: CharacterRecord }) {
   const [current, setCurrent] = useState<AbilityEntry[]>([])
-  const [adding, setAdding] = useState(false)
-  const [category, setCategory] = useState<Category>('Combatente')
-  const [options, setOptions] = useState<AbilityEntry[]>([])
+  const [expandedId, setExpandedId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
-  const [creatingCustom, setCreatingCustom] = useState(false)
-  const [customDraft, setCustomDraft] = useState<CustomAbilityDraft>(emptyCustom)
+  const [picking, setPicking] = useState(false)
+  const [editing, setEditing] = useState<AbilityEntry | null>(null)
   const [tempBonuses, setTempBonuses] = useState<{ id: string; source: string; attribute_group: string; dice: string; remaining: number }[]>([])
 
   useEffect(() => {
@@ -49,93 +32,55 @@ export default function HabilidadesTab({ character }: { character: CharacterReco
       .eq('character_id', character.id)
 
     const entries: AbilityEntry[] = (data ?? []).map((row: any) => {
-      if (row.custom_ability) return { id: row.id, name: row.custom_ability.name, description: row.custom_ability.description }
-      if (row.class_powers) return { id: row.id, name: row.class_powers.name, description: row.class_powers.description }
-      if (row.paranormal_powers) return { id: row.id, name: row.paranormal_powers.name, description: row.paranormal_powers.description }
-      if (row.general_powers) return { id: row.id, name: row.general_powers.name, description: row.general_powers.description }
-      if (row.origins) return { id: row.id, name: row.origins.power_name, description: row.origins.power_description }
-      if (row.class_track_tiers) return { id: row.id, name: row.class_track_tiers.name, description: row.class_track_tiers.description }
-      return { id: row.id, name: '(desconhecida)', description: '' }
+      if (row.custom_ability) {
+        return { id: row.id, name: row.custom_ability.name, description: row.custom_ability.description, editable: true, hasElement: !!row.custom_ability.hasElement, element: row.custom_ability.element ?? null }
+      }
+      if (row.class_powers) return { id: row.id, name: row.class_powers.name, description: row.class_powers.description, editable: false, hasElement: false, element: null }
+      if (row.paranormal_powers) return { id: row.id, name: row.paranormal_powers.name, description: row.paranormal_powers.description, editable: false, hasElement: false, element: null }
+      if (row.general_powers) return { id: row.id, name: row.general_powers.name, description: row.general_powers.description, editable: false, hasElement: false, element: null }
+      if (row.origins) return { id: row.id, name: row.origins.power_name, description: row.origins.power_description, editable: false, hasElement: false, element: null }
+      if (row.class_track_tiers) return { id: row.id, name: row.class_track_tiers.name, description: row.class_track_tiers.description, editable: false, hasElement: false, element: null }
+      return { id: row.id, name: '(desconhecida)', description: '', editable: false, hasElement: false, element: null }
     })
     setCurrent(entries)
   }
 
   useEffect(() => { loadCurrent() }, [character.id])
 
-  useEffect(() => {
-    if (!adding) return
-    if (category === 'Poderes Gerais') {
-      supabase.from('general_powers').select('id, name, description').order('name').then(({ data }) => setOptions(data ?? []))
-      return
-    }
-    if (category === 'Poderes Paranormais') {
-      supabase.from('paranormal_powers').select('id, name, description').order('name').then(({ data }) => setOptions(data ?? []))
-      return
-    }
-    if (category === 'Origens') {
-      supabase.from('origins').select('id, power_name, power_description').order('sort_order').then(({ data }) =>
-        setOptions((data ?? []).map((o) => ({ id: o.id, name: o.power_name, description: o.power_description }))))
-      return
-    }
-    const slug = CLASS_SLUGS[category]
-    supabase
-      .from('classes')
-      .select('id')
-      .eq('slug', slug)
-      .single()
-      .then(({ data: cls }) => {
-        if (!cls) return setOptions([])
-        return supabase
-          .from('class_powers')
-          .select('id, name, description')
-          .eq('class_id', cls.id)
-          .eq('is_base_ability', false)
-          .order('sort_order')
-          .then(({ data }) => setOptions(data ?? []))
-      })
-  }, [adding, category])
-
-  async function addAbility(option: AbilityEntry, sourceCategory: Category) {
-    const patch: Record<string, string> = {}
-    if (sourceCategory === 'Poderes Paranormais') patch.paranormal_power_id = option.id
-    else if (sourceCategory === 'Poderes Gerais') patch.general_power_id = option.id
-    else if (sourceCategory === 'Origens') patch.origin_power_of = option.id
-    else patch.class_power_id = option.id
-
-    await supabase.from('character_abilities').insert({ character_id: character.id, ...patch })
-    await loadCurrent()
-  }
-
-  async function saveCustom() {
-    if (!customDraft.name || !customDraft.description) return
-    await supabase.from('character_abilities').insert({
-      character_id: character.id,
-      custom_ability: {
-        name: customDraft.name,
-        hasElement: customDraft.hasElement,
-        element: customDraft.hasElement ? customDraft.element : null,
-        description: customDraft.description,
-        proficiencyGranted: customDraft.proficiencyGranted || null,
-      },
-    })
-    setCustomDraft(emptyCustom)
-    setCreatingCustom(false)
-    setAdding(false)
-    await loadCurrent()
-  }
-
   async function removeAbility(id: string) {
     await supabase.from('character_abilities').delete().eq('id', id)
     await loadCurrent()
   }
 
-  const filteredOptions = options.filter((o) => o.name.toLowerCase().includes(search.toLowerCase()))
+  async function saveEdit(entry: AbilityEntry, draft: AbilityEditDraft) {
+    await supabase.from('character_abilities').update({
+      custom_ability: { name: draft.name, hasElement: draft.hasElement, element: draft.hasElement ? draft.element : null, description: draft.description },
+    }).eq('id', entry.id)
+    setEditing(null)
+    await loadCurrent()
+  }
+
+  async function addFromPicker(result: AbilityPickResult) {
+    const patch: Record<string, unknown> = {}
+    if (result.kind === 'custom') {
+      patch.custom_ability = { name: result.name, hasElement: result.hasElement, element: result.element, description: result.description }
+    } else if (result.kind === 'paranormal_power') patch.paranormal_power_id = result.id
+    else if (result.kind === 'general_power') patch.general_power_id = result.id
+    else if (result.kind === 'origin') patch.origin_power_of = result.id
+    else patch.class_power_id = result.id
+
+    await supabase.from('character_abilities').insert({ character_id: character.id, ...patch })
+    setPicking(false)
+    await loadCurrent()
+  }
+
+  const filtered = current.filter((a) => a.name.toLowerCase().includes(search.toLowerCase()))
 
   return (
     <div>
       {tempBonuses.length > 0 && (
-        <div>
-          <p><strong>Lembrete — bônus de interlúdio disponíveis:</strong></p>
+        <div className="combat-ammo-empty">
+          <strong>Lembrete — bônus de interlúdio disponíveis:</strong>
           <ul>
             {tempBonuses.map((b) => (
               <li key={b.id}>{b.source}: {b.remaining}x {b.dice} em testes de {b.attribute_group === 'fisico' ? 'Agilidade/Força/Vigor' : b.attribute_group === 'mental' ? 'Intelecto/Presença' : 'qualquer teste'} (use em Interlúdio)</li>
@@ -144,68 +89,45 @@ export default function HabilidadesTab({ character }: { character: CharacterReco
         </div>
       )}
 
-      <input placeholder="Buscar Habilidades" value={search} onChange={(e) => setSearch(e.target.value)} />
-      <button type="button" onClick={() => setAdding((a) => !a)}>Adicionar Habilidade</button>
+      <div className="combat-search-row">
+        <div className="combat-search-field">
+          <input className="combat-search-input" placeholder="Buscar Habilidades" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <svg className="combat-search-icon" viewBox="0 0 24 24" aria-hidden>
+            <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+            <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </div>
+        <button type="button" className="combat-add-btn" onClick={() => setPicking(true)}>Adicionar Habilidade</button>
+      </div>
 
-      <ul>
-        {current.map((a) => (
-          <li key={a.id}>
-            <strong>{a.name}</strong>: {a.description}
-            <button type="button" onClick={() => removeAbility(a.id)}>Remover</button>
-          </li>
-        ))}
-      </ul>
-
-      {adding && (
-        <div>
-          <nav>
-            {(['Combatente', 'Especialista', 'Ocultista', 'Sobrevivente', 'Mundano', 'Poderes Paranormais', 'Poderes Gerais', 'Origens'] as Category[]).map((c) => (
-              <button key={c} type="button" onClick={() => { setCategory(c); setCreatingCustom(false) }} disabled={category === c && !creatingCustom}>{c}</button>
-            ))}
-          </nav>
-
-          <button type="button" onClick={() => setCreatingCustom(true)}>Criar Nova Habilidade</button>
-
-          {creatingCustom ? (
-            <div>
-              <label>Nome <input value={customDraft.name} onChange={(e) => setCustomDraft((d) => ({ ...d, name: e.target.value }))} /></label>
-              <fieldset>
-                <legend>Paranormal</legend>
-                <label>Possui elemento?
-                  <select value={customDraft.hasElement ? 'sim' : 'nao'} onChange={(e) => setCustomDraft((d) => ({ ...d, hasElement: e.target.value === 'sim' }))}>
-                    <option value="nao">Não</option>
-                    <option value="sim">Sim</option>
-                  </select>
-                </label>
-                {customDraft.hasElement && (
-                  <label>Elemento
-                    <select value={customDraft.element} onChange={(e) => setCustomDraft((d) => ({ ...d, element: e.target.value }))}>
-                      <option value="">—</option>
-                      <option value="sangue">Sangue</option>
-                      <option value="morte">Morte</option>
-                      <option value="conhecimento">Conhecimento</option>
-                      <option value="energia">Energia</option>
-                    </select>
-                  </label>
-                )}
-              </fieldset>
-              <label>Descrição <textarea value={customDraft.description} onChange={(e) => setCustomDraft((d) => ({ ...d, description: e.target.value }))} /></label>
-              <label>Proficiência concedida <input value={customDraft.proficiencyGranted} onChange={(e) => setCustomDraft((d) => ({ ...d, proficiencyGranted: e.target.value }))} /></label>
-              <button type="button" onClick={saveCustom}>Adicionar Habilidade</button>
+      {filtered.map((a) => (
+        <div className="ability-frame" key={a.id}>
+          <button type="button" className="ability-header" onClick={() => setExpandedId((v) => (v === a.id ? null : a.id))}>
+            <span>{a.name}</span>
+            <span className="ability-chevron">{expandedId === a.id ? '▲' : '▾'}</span>
+          </button>
+          {expandedId === a.id && (
+            <div className="ability-body">
+              <p className="ability-description">{a.description}</p>
+              <div className="ability-actions">
+                <button type="button" className="ability-action-btn" onClick={() => removeAbility(a.id)}>Remover</button>
+                {a.editable && <button type="button" className="ability-action-btn" onClick={() => setEditing(a)}>Editar</button>}
+              </div>
             </div>
-          ) : filteredOptions.length === 0 ? (
-            <p>Sem conteúdo cadastrado ainda nessa categoria.</p>
-          ) : (
-            <ul>
-              {filteredOptions.map((o) => (
-                <li key={o.id}>
-                  <strong>{o.name}</strong>: {o.description}
-                  <button type="button" onClick={() => addAbility(o, category)}>Adicionar Habilidade</button>
-                </li>
-              ))}
-            </ul>
           )}
         </div>
+      ))}
+
+      {editing && (
+        <AbilityEditModal
+          initial={{ name: editing.name, hasElement: editing.hasElement, element: editing.element ?? '', description: editing.description }}
+          onClose={() => setEditing(null)}
+          onSave={(draft) => saveEdit(editing, draft)}
+        />
+      )}
+
+      {picking && (
+        <AbilityPickerModal characterId={character.id} onClose={() => setPicking(false)} onAdd={addFromPicker} />
       )}
     </div>
   )

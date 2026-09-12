@@ -8,6 +8,8 @@ type Category = 'Combatente' | 'Especialista' | 'Ocultista' | 'Sobrevivente' | '
 
 const CATEGORIES: Category[] = ['Combatente', 'Especialista', 'Ocultista', 'Sobrevivente', 'Mundano', 'Poderes Paranormais', 'Poderes Gerais', 'Origens']
 
+const CATEGORIES_WITH_SOURCE: Category[] = ['Poderes Paranormais', 'Poderes Gerais', 'Origens']
+
 const CLASS_SLUGS: Record<string, string> = {
   Combatente: 'combatente',
   Especialista: 'especialista',
@@ -51,6 +53,13 @@ export default function AbilityPickerModal({
   const [customHasElement, setCustomHasElement] = useState(false)
   const [customElement, setCustomElement] = useState('')
   const [customDescription, setCustomDescription] = useState('')
+
+  const showBookFilters = CATEGORIES_WITH_SOURCE.includes(category)
+
+  function selectCategory(c: Category) {
+    setCategory(c)
+    if (!CATEGORIES_WITH_SOURCE.includes(c) && sourceFilter !== 'homebrew') setSourceFilter('todos')
+  }
 
   useEffect(() => {
     setSelectedId(null)
@@ -134,7 +143,7 @@ export default function AbilityPickerModal({
               key={c}
               type="button"
               className={`conditions-modal-nav-btn${category === c ? ' active' : ''}`}
-              onClick={() => setCategory(c)}
+              onClick={() => selectCategory(c)}
             >
               <span>{c}</span>
             </button>
@@ -143,12 +152,21 @@ export default function AbilityPickerModal({
 
         <div className="conditions-modal ability-picker-list-panel conditions-modal-list-panel">
           <div className="conditions-modal-texture" />
-          <div className="conditions-modal-search">
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar Habilidades" />
+          <div className="conditions-modal-search combat-search-field">
+            <input
+              className="combat-search-input"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar Habilidades"
+            />
+            <svg className="combat-search-icon" viewBox="0 0 24 24" aria-hidden>
+              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+              <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
           </div>
 
           <div className="ability-picker-sources">
-            {SOURCE_OPTIONS.map((s) => (
+            {SOURCE_OPTIONS.filter((s) => showBookFilters || s.key === 'todos' || s.key === 'homebrew').map((s) => (
               <button key={s.key} type="button" className="ability-picker-source" onClick={() => setSourceFilter(s.key)}>
                 <img src={sourceFilter === s.key ? radioChecked : radioEmpty} alt="" />
                 <span>{s.label}</span>

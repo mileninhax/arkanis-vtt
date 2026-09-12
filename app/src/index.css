@@ -6277,8 +6277,10 @@ code, .counter {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
-  gap: 0.35em;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 0.9em;
+  row-gap: 0.35em;
   padding: 0.7em 0.9em 0;
 }
 
@@ -6357,3 +6359,26 @@ code, .counter {
 .ability-edit-toolbar {
   justify-content: flex-end;
 }
+
+.ability-picker-shell .conditions-modal {
+  width: min(880px, 90vw);
+  height: min(640px, 88vh);
+}
+
+.ability-picker-shell .conditions-modal-list-panel {
+  width: 340px;
+}
+
+.ability-picker-shell .conditions-modal-nav-btn {
+  border-color: #6a6a6a;
+  color: #fff;
+}
+
+.ability-picker-shell .conditions-modal-nav-btn:hover {
+  border-color: #9a9a9a;
+}
+
+.ability-picker-shell .conditions-modal-nav-btn.active {
+  border-color: #fff;
+}
+

@@ -5398,6 +5398,232 @@ code, .counter {
   pointer-events: none;
 }
 
+.combat-ammo-frame {
+  position: relative;
+  background: #1c1a1c url('./assets/combate/metal-texture.png');
+  background-size: cover;
+  background-position: center;
+  padding: 1.5px;
+  margin-bottom: 0.6em;
+  --shine-color: #f2f2f2;
+}
+
+.combat-ammo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(from var(--shine-color) r g b / .3);
+  transition: border .15s ease-in-out;
+  pointer-events: none;
+}
+
+.combat-ammo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  width: 100%;
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.combat-ammo-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.combat-ammo-icon-wrap {
+  position: relative;
+  width: 2em;
+  height: 2em;
+  flex-shrink: 0;
+}
+
+.combat-ammo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.combat-ammo-badge {
+  position: absolute;
+  bottom: -0.3em;
+  right: -0.4em;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: #fff;
+  font-family: 'Keyes', var(--heading);
+  font-size: 9px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+
+.combat-ammo-chevron {
+  flex-shrink: 0;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.combat-ammo-body {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  padding: 0.6em 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.combat-ammo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.6em 0;
+}
+
+.combat-ammo-row + .combat-ammo-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.combat-ammo-row-thumb {
+  width: 2.2em;
+  height: 2.2em;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.combat-ammo-row-name {
+  font-family: 'Keyes', var(--heading);
+  font-size: 13px;
+  color: #fff;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.combat-ammo-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-shrink: 0;
+}
+
+.combat-ammo-qty-label {
+  font-family: var(--poppins);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.02em;
+}
+
+.combat-ammo-qty button {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  border: none;
+  background: rgba(16, 18, 24, 0.7);
+  color: #fff;
+  font-family: var(--raleway);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.combat-ammo-qty button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.combat-ammo-qty-value {
+  min-width: 3.2em;
+  text-align: center;
+  font-family: var(--poppins);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.combat-ammo-delete {
+  flex-shrink: 0;
+  width: 2em;
+  height: 2em;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background: url('./assets/combate/lixeira.png') center / contain no-repeat;
+}
+
+.combat-ammo-delete:hover {
+  background-image: url('./assets/combate/lixeira-aberta.png');
+}
+
+.combat-ammo-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.combat-ammo-confirm {
+  background: #17151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.4em 1.6em;
+  max-width: 320px;
+  color: #fff;
+  font-family: var(--poppins);
+  font-size: 13px;
+  text-align: center;
+}
+
+.combat-ammo-confirm p {
+  margin: 0 0 1em;
+}
+
+.combat-ammo-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.8em;
+}
+
+.combat-ammo-confirm-actions button {
+  font-family: 'Keyes', var(--heading);
+  font-size: 12px;
+  padding: 0.5em 1.2em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  background: rgba(16, 18, 24, 0.6);
+  color: #fff;
+  cursor: pointer;
+}
+
+.combat-ammo-confirm-yes:hover {
+  background: rgba(200, 40, 40, 0.5);
+}
+
+.combat-ammo-confirm-no:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .combat-search-row {
   display: flex;
   gap: 0.5em;

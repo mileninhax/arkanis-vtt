@@ -9,6 +9,7 @@ import { type Modifier } from './ModifiersPanel'
 import CombateModifiersPanel from './CombateModifiersPanel'
 import defenseRing from '../../assets/combate/border-defense-desktop.png'
 import resetIcon from '../../assets/combate/seta-reset.svg'
+import mysteryIcon from '../../assets/combate/op-icon-misterio-custom.png'
 
 type Attack = {
   id: string
@@ -37,6 +38,8 @@ type InventoryAmmoInfo = {
   ammo_current: number | null
   ammo_total: number | null
   ammo_label: string | null
+  quantity: number
+  name: string
 }
 
 type Skill = { id: string; name: string }
@@ -60,6 +63,8 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
   const [testMods, setTestMods] = useState<Modifier[]>([])
   const [inventoryAmmo, setInventoryAmmo] = useState<InventoryAmmoInfo[]>([])
   const [defenseDetailsOpen, setDefenseDetailsOpen] = useState(false)
+  const [ammoOpen, setAmmoOpen] = useState(false)
+  const [confirmDeleteAmmo, setConfirmDeleteAmmo] = useState<InventoryAmmoInfo | null>(null)
   const [attackSearch, setAttackSearch] = useState('')
   const [pendingAttack, setPendingAttack] = useState<{ attackId: string; isCrit: boolean } | null>(null)
   const [damageRoll, setDamageRoll] = useState<{ title: string; subtitle: string; total: number; dice: RollCardDie[]; extraLines?: string[]; bonus?: number } | null>(null)
@@ -75,9 +80,19 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
   async function loadInventoryAmmo() {
     const { data } = await supabase
       .from('character_inventory')
-      .select('id, linked_ammo_id, ammo_current, ammo_total, ammo_label')
+      .select('id, linked_ammo_id, ammo_current, ammo_total, ammo_label, quantity, custom_item, equipment_items(name)')
       .eq('character_id', character.id)
-    setInventoryAmmo((data ?? []) as InventoryAmmoInfo[])
+    setInventoryAmmo(
+      (data ?? []).map((row: any) => ({
+        id: row.id,
+        linked_ammo_id: row.linked_ammo_id,
+        ammo_current: row.ammo_current,
+        ammo_total: row.ammo_total,
+        ammo_label: row.ammo_label,
+        quantity: row.quantity,
+        name: row.equipment_items?.name ?? row.custom_item?.name ?? 'Item',
+      })),
+    )
   }
 
   function loadEquippedProtection() {
@@ -157,6 +172,20 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
     const next = Math.max(0, (ammoInv.ammo_current ?? 0) - 1)
     await supabase.from('character_inventory').update({ ammo_current: next }).eq('id', ammoInv.id)
     await loadInventoryAmmo()
+  }
+
+  async function adjustAmmoCurrent(ammoInv: InventoryAmmoInfo, delta: number) {
+    const next = Math.min(ammoInv.ammo_total ?? 0, Math.max(0, (ammoInv.ammo_current ?? 0) + delta))
+    await supabase.from('character_inventory').update({ ammo_current: next }).eq('id', ammoInv.id)
+    await loadInventoryAmmo()
+  }
+
+  async function deleteAmmoItem(ammoInv: InventoryAmmoInfo) {
+    await supabase.from('character_inventory').update({ linked_ammo_id: null }).eq('linked_ammo_id', ammoInv.id)
+    await supabase.from('character_inventory').delete().eq('id', ammoInv.id)
+    setConfirmDeleteAmmo(null)
+    await loadInventoryAmmo()
+    await loadAttacks()
   }
 
   function rollAttackTest(attack: Attack) {
@@ -357,8 +386,58 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
 
       <CombateModifiersPanel characterId={character.id} onAttackChange={setAttackMods} onDamageChange={setDamageMods} />
 
-      {character.optional_rules.contagem_municao && inventoryAmmo.every((i) => i.ammo_total === null) && (
-        <div className="combat-ammo-empty">Você não possui munição. Adicione a partir do seu inventário.</div>
+      {character.optional_rules.contagem_municao && (
+        (() => {
+          const ammoItems = inventoryAmmo.filter((i) => i.ammo_total !== null)
+          if (ammoItems.length === 0) {
+            return <div className="combat-ammo-empty">Você não possui munição. Adicione a partir do seu inventário.</div>
+          }
+          return (
+            <div className="combat-ammo-frame">
+              <button type="button" className="combat-ammo-header" onClick={() => setAmmoOpen((v) => !v)}>
+                <div className="combat-ammo-icons">
+                  {ammoItems.map((a) => (
+                    <span key={a.id} className="combat-ammo-icon-wrap">
+                      <img src={mysteryIcon} alt="" className="combat-ammo-icon" />
+                      <span className="combat-ammo-badge">×{a.quantity}</span>
+                    </span>
+                  ))}
+                </div>
+                <span className="combat-ammo-chevron">{ammoOpen ? '▲' : '▾'}</span>
+              </button>
+
+              {ammoOpen && (
+                <div className="combat-ammo-body">
+                  {ammoItems.map((a) => (
+                    <div key={a.id} className="combat-ammo-row">
+                      <img src={mysteryIcon} alt="" className="combat-ammo-row-thumb" />
+                      <span className="combat-ammo-row-name">{a.name}</span>
+                      <div className="combat-ammo-qty">
+                        <span className="combat-ammo-qty-label">QUANTIDADE:</span>
+                        <button type="button" onClick={() => adjustAmmoCurrent(a, -1)} disabled={(a.ammo_current ?? 0) <= 0}>−</button>
+                        <span className="combat-ammo-qty-value">{a.ammo_current}/{a.ammo_total}</span>
+                        <button type="button" onClick={() => adjustAmmoCurrent(a, 1)} disabled={(a.ammo_current ?? 0) >= (a.ammo_total ?? 0)}>+</button>
+                      </div>
+                      <button type="button" className="combat-ammo-delete" onClick={() => setConfirmDeleteAmmo(a)} aria-label="Excluir munição" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })()
+      )}
+
+      {confirmDeleteAmmo && (
+        <div className="combat-ammo-confirm-backdrop" onClick={() => setConfirmDeleteAmmo(null)}>
+          <div className="combat-ammo-confirm" onClick={(e) => e.stopPropagation()}>
+            <p>Você quer excluir <strong>{confirmDeleteAmmo.name}</strong>?</p>
+            <div className="combat-ammo-confirm-actions">
+              <button type="button" className="combat-ammo-confirm-yes" onClick={() => deleteAmmoItem(confirmDeleteAmmo)}>Confirmar</button>
+              <button type="button" className="combat-ammo-confirm-no" onClick={() => setConfirmDeleteAmmo(null)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
       )}
 
       <div className="combat-search-row">

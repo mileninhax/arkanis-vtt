@@ -5681,19 +5681,82 @@ code, .counter {
 }
 
 .attack-modal-backdrop {
+  position: fixed;
+  inset: 0;
   z-index: 90;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5em;
+}
+
+.attack-modal-wrap {
+  position: relative;
+  width: min(420px, 94vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.attack-modal-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+.attack-modal-tabs {
+  display: flex;
+  gap: 0.5em;
+}
+
+.attack-modal-tabs button {
+  background: rgba(20, 18, 26, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Keyes', var(--heading);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  padding: 0.5em 0.9em;
+  cursor: pointer;
+}
+
+.attack-modal-tabs button.active {
+  background: #fff;
+  border-color: #fff;
+  color: #060517;
+}
+
+.attack-modal-close {
+  flex-shrink: 0;
+  width: 2.1em;
+  height: 2.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 18, 26, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .attack-modal {
   position: relative;
-  width: min(480px, 94vw);
-  max-height: 88vh;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  background: #16151d;
+  background: #0c0b10;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
-  padding: 1.4em 1.6em 1.6em;
+  padding: 1em 1.2em 1.2em;
   overflow: hidden;
 }
 
@@ -5701,34 +5764,26 @@ code, .counter {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   border-radius: inherit;
   background-image: url('./assets/pericias/veins-texture.webp');
   background-size: cover;
   background-repeat: no-repeat;
-  opacity: 0.15;
+  filter: invert(1) brightness(0.55);
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
   pointer-events: none;
 }
 
-.attack-modal-close {
-  position: absolute;
-  top: 1.2em;
-  right: 1.4em;
-}
-
-.attack-modal-tabs {
-  margin: 1.6em 0 0.8em;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
 .attack-modal-body {
+  position: relative;
+  z-index: 1;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.7em;
+  gap: 0.55em;
   padding-right: 0.4em;
 }
 
@@ -5738,12 +5793,12 @@ code, .counter {
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   padding-bottom: 4px;
-  margin-top: 0.6em;
+  margin-top: 0.5em;
 }
 
 .attack-section-title span {
   font-family: 'Keyes', var(--heading);
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.02em;
   color: #fff;
 }
@@ -5762,8 +5817,8 @@ code, .counter {
 
 .attack-field-label {
   font-family: var(--raleway);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .attack-field-row {
@@ -5773,12 +5828,12 @@ code, .counter {
 
 .attack-input,
 .attack-textarea {
-  background: rgba(16, 18, 24, 0.55);
+  background: rgba(16, 18, 24, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   color: #fff;
   font-family: var(--poppins);
-  font-size: 12px;
+  font-size: 14px;
   padding: 0.5em 0.6em;
   box-sizing: border-box;
   width: 100%;
@@ -5805,12 +5860,12 @@ code, .counter {
   align-items: center;
   justify-content: space-between;
   gap: 0.4em;
-  background: rgba(16, 18, 24, 0.55);
+  background: rgba(16, 18, 24, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   color: #fff;
   font-family: var(--poppins);
-  font-size: 12px;
+  font-size: 14px;
   padding: 0.5em 0.6em;
   cursor: pointer;
 }
@@ -5842,7 +5897,7 @@ code, .counter {
   border: none;
   color: rgba(255, 255, 255, 0.85);
   font-family: var(--poppins);
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
   padding: 0.4em 0.5em;
   border-radius: 3px;
@@ -5860,14 +5915,14 @@ code, .counter {
 
 .attack-add-row-btn {
   flex-shrink: 0;
-  background: #fff;
-  border: none;
-  border-radius: 999px;
-  color: #060517;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  color: #fff;
   font-family: 'Keyes', var(--heading);
   font-size: 11px;
   font-weight: 700;
-  padding: 0.3em 0.9em;
+  padding: 0.35em 0.9em;
   cursor: pointer;
 }
 
@@ -5895,23 +5950,24 @@ code, .counter {
   background: rgba(16, 18, 24, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  padding: 1em;
-  min-height: 140px;
+  padding: 0.8em;
+  min-height: 110px;
 }
 
 .attack-image-preview {
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
 }
 
 .attack-image-alter {
   position: absolute;
-  right: 0.8em;
-  bottom: 0.8em;
-  background: #fff;
-  border-radius: 999px;
-  color: #060517;
+  right: 0.7em;
+  bottom: 0.7em;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  color: #fff;
   font-family: 'Keyes', var(--heading);
   font-size: 11px;
   font-weight: 700;
@@ -5941,29 +5997,35 @@ code, .counter {
 
 .attack-mod-pill-head strong {
   font-family: var(--poppins);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.02em;
   color: #fff;
 }
 
 .attack-mod-pill-head button {
   flex-shrink: 0;
-  background: #fff;
-  border: none;
-  border-radius: 999px;
-  color: #060517;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  color: #fff;
   font-family: 'Keyes', var(--heading);
   font-size: 10px;
   font-weight: 700;
-  padding: 0.3em 0.8em;
+  padding: 0.35em 0.8em;
   cursor: pointer;
 }
 
 .attack-mod-pill p {
   margin: 0.4em 0 0;
   font-family: var(--poppins);
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
+}
+
+.attack-modmodal-empty {
+  font-family: var(--poppins);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .attack-submit-btn {
@@ -5985,14 +6047,14 @@ code, .counter {
   padding-top: 0.6em;
   display: flex;
   flex-direction: column;
-  gap: 0.7em;
+  gap: 0.55em;
 }
 
 .attack-alt-remove {
   align-self: flex-start;
-  background: rgba(16, 18, 24, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 999px;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
   color: #fff;
   font-family: 'Keyes', var(--heading);
   font-size: 11px;
@@ -6024,7 +6086,7 @@ code, .counter {
   padding: 1.2em 1.4em;
   display: flex;
   flex-direction: column;
-  gap: 0.7em;
+  gap: 0.6em;
 }
 
 .attack-modmodal-tabs {
@@ -6036,10 +6098,10 @@ code, .counter {
   flex: 1 1 0;
   background: rgba(16, 18, 24, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 5px;
+  border-radius: 14px;
   color: rgba(255, 255, 255, 0.7);
   font-family: 'Keyes', var(--heading);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.02em;
   padding: 0.5em;
   cursor: pointer;
@@ -6050,43 +6112,12 @@ code, .counter {
   color: #060517;
 }
 
-.attack-modmodal-search {
+.attack-modmodal-list {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 0.5em;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
-  padding-bottom: 0.4em;
-  font-family: var(--poppins);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.attack-modmodal-search svg {
-  width: 1.1em;
-  height: 1.1em;
-  color: rgba(255, 255, 255, 0.4);
-  flex-shrink: 0;
-}
-
-.attack-modmodal-disclaimer {
-  margin: 0;
-  font-family: var(--poppins);
-  font-size: 11px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.attack-modmodal-shop {
-  align-self: center;
-  background: #6d3fd6;
-  border-radius: 999px;
-  color: #fff;
-  font-family: var(--poppins);
-  font-weight: 700;
-  font-size: 12px;
-  padding: 0.5em 1.4em;
-  text-decoration: none;
+  max-height: 260px;
+  overflow-y: auto;
 }
 
 .attack-modmodal-actions {
@@ -6098,7 +6129,7 @@ code, .counter {
 
 .attack-modmodal-back,
 .attack-modmodal-create {
-  border-radius: 999px;
+  border-radius: 0;
   font-family: 'Keyes', var(--heading);
   font-size: 12px;
   padding: 0.5em 1.2em;
@@ -6112,10 +6143,11 @@ code, .counter {
 }
 
 .attack-modmodal-create {
-  background: #fff;
-  border: none;
-  color: #060517;
+  background: #0e0d12;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
+
 
 .combat-add-btn::after {
   content: '';

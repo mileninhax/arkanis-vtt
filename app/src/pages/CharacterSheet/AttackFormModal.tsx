@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/AuthContext'
@@ -178,14 +178,30 @@ function AttackFields({ draft, onChange, skills }: { draft: AttackDraft; onChang
   )
 }
 
+type CatalogEntry = { id: string; name: string; effect: string; elemento?: string | null }
+
 function ModifiersModal({ onClose, onAdd }: { onClose: () => void; onAdd: (m: ModEntry) => void }) {
-  const [subview, setSubview] = useState<'search' | 'create'>('search')
   const [tab, setTab] = useState<'modificacao' | 'maldicao'>('modificacao')
+  const [creating, setCreating] = useState(false)
+  const [catalog, setCatalog] = useState<CatalogEntry[]>([])
   const [name, setName] = useState('')
   const [elemento, setElemento] = useState('')
   const [effect, setEffect] = useState('')
 
-  function submit() {
+  useEffect(() => {
+    if (tab === 'modificacao') {
+      supabase.from('weapon_mods').select('id, name, effect').in('applies_to', ['corpo_a_corpo_disparo', 'armas_fogo']).order('name').then(({ data }) => setCatalog(data ?? []))
+    } else {
+      supabase.from('cursed_afflictions').select('id, name, effect, elemento').eq('applies_to', 'arma').order('name').then(({ data }) => setCatalog(data ?? []))
+    }
+  }, [tab])
+
+  function addFromCatalog(c: CatalogEntry) {
+    onAdd({ kind: tab, name: c.name, effect: c.effect, elemento: c.elemento ?? null })
+    onClose()
+  }
+
+  function submitCustom() {
     if (!name || !effect) return
     onAdd({ kind: tab, name, effect, elemento: tab === 'maldicao' ? (elemento || null) : null })
     onClose()
@@ -194,33 +210,11 @@ function ModifiersModal({ onClose, onAdd }: { onClose: () => void; onAdd: (m: Mo
   return (
     <div className="attack-modmodal">
       <div className="attack-modmodal-tabs">
-        <button type="button" className={tab === 'modificacao' ? 'active' : ''} onClick={() => setTab('modificacao')}>Modificações</button>
-        <button type="button" className={tab === 'maldicao' ? 'active' : ''} onClick={() => setTab('maldicao')}>Maldições</button>
+        <button type="button" className={tab === 'modificacao' ? 'active' : ''} onClick={() => { setTab('modificacao'); setCreating(false) }}>Modificações</button>
+        <button type="button" className={tab === 'maldicao' ? 'active' : ''} onClick={() => { setTab('maldicao'); setCreating(false) }}>Maldições</button>
       </div>
 
-      {subview === 'search' ? (
-        <>
-          <div className="attack-modmodal-search">
-            <span>Buscar Modificações</span>
-            <svg viewBox="0 0 24 24" aria-hidden>
-              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
-              <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </div>
-          <p className="attack-modmodal-disclaimer">
-            Para ter acesso à lista de Melhorias de Ordem Paranormal RPG e Ordem Paranormal RPG: Sobrevivendo ao Horror, é necessário possuir o livro em sua biblioteca ou na campanha em que esta ficha esteja.
-          </p>
-          <p className="attack-modmodal-disclaimer">
-            Caso você já tenha adquirido o livro com a editora anteriormente, os resgates foram encerrados em Janeiro, como havia sido combinado. Mas mantemos uma relação próxima à Jambô e estamos atualmente em conjunto procurando novas soluções e possibilidades para nossa parceria. Nossa intenção é trazer maior acesso com facilidade para todos: editora, RPGpédia e você!
-          </p>
-          <p className="attack-modmodal-disclaimer">Alternativamente, você pode adicionar Melhorias manualmente através do botão abaixo.</p>
-          <a className="attack-modmodal-shop" href="#" onClick={(e) => e.preventDefault()}>🛒 Ir à Loja</a>
-          <div className="attack-modmodal-actions">
-            <button type="button" className="attack-modmodal-back" onClick={onClose}>Voltar</button>
-            <button type="button" className="attack-modmodal-create" onClick={() => setSubview('create')}>Criar nova {tab === 'modificacao' ? 'Modificação' : 'Maldição'}</button>
-          </div>
-        </>
-      ) : (
+      {creating ? (
         <>
           <div className="attack-section-title"><span>MELHORIAS | {tab === 'modificacao' ? 'MODIFICAÇÃO' : 'MALDIÇÃO'}</span></div>
           <div className="attack-field">
@@ -236,8 +230,30 @@ function ModifiersModal({ onClose, onAdd }: { onClose: () => void; onAdd: (m: Mo
           <div className="attack-section-title"><span>DESCRIÇÃO</span></div>
           <textarea className="attack-textarea" placeholder="Descrição aqui" value={effect} onChange={(e) => setEffect(e.target.value)} />
           <div className="attack-modmodal-actions">
-            <button type="button" className="attack-modmodal-back" onClick={() => setSubview('search')}>Voltar</button>
-            <button type="button" className="attack-modmodal-create" onClick={submit}>Adicionar</button>
+            <button type="button" className="attack-modmodal-back" onClick={() => setCreating(false)}>Voltar</button>
+            <button type="button" className="attack-modmodal-create" onClick={submitCustom}>Adicionar</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="attack-modmodal-list">
+            {catalog.length === 0 ? (
+              <p className="attack-modmodal-empty">Nenhuma {tab === 'modificacao' ? 'modificação' : 'maldição'} cadastrada ainda pra esse tipo de arma.</p>
+            ) : (
+              catalog.map((c) => (
+                <div className="attack-mod-pill" key={c.id}>
+                  <div className="attack-mod-pill-head">
+                    <strong>{c.name}{c.elemento ? ` (${c.elemento})` : ''}</strong>
+                    <button type="button" onClick={() => addFromCatalog(c)}>Adicionar</button>
+                  </div>
+                  <p>{c.effect}</p>
+                </div>
+              ))
+            )}
+          </div>
+          <div className="attack-modmodal-actions">
+            <button type="button" className="attack-modmodal-back" onClick={onClose}>Voltar</button>
+            <button type="button" className="attack-modmodal-create" onClick={() => setCreating(true)}>Criar Nova {tab === 'modificacao' ? 'Modificação' : 'Maldição'}</button>
           </div>
         </>
       )}
@@ -326,15 +342,17 @@ export default function AttackFormModal({
   }
 
   return createPortal(
-    <div className="skill-desc-backdrop attack-modal-backdrop" onClick={onClose}>
-      <div className="attack-modal" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="skill-desc-close attack-modal-close" onClick={onClose}>FECHAR ×</button>
+    <div className="attack-modal-backdrop" onClick={onClose}>
+      <div className="attack-modal-wrap" onClick={(e) => e.stopPropagation()}>
+        <div className="attack-modal-toolbar">
+          <div className="attack-modal-tabs">
+            <button type="button" className={tab === 'ataque' ? 'active' : ''} onClick={() => setTab('ataque')}>Ataque</button>
+            <button type="button" className={tab === 'alternativos' ? 'active' : ''} onClick={() => setTab('alternativos')}>Ataques Alternativos</button>
+          </div>
+          <button type="button" className="attack-modal-close" onClick={onClose}>×</button>
+        </div>
 
-        <nav className="vtt-subtabs attack-modal-tabs">
-          <button type="button" onClick={() => setTab('ataque')} disabled={tab === 'ataque'}>Ataque</button>
-          <button type="button" onClick={() => setTab('alternativos')} disabled={tab === 'alternativos'}>Ataques Alternativos</button>
-        </nav>
-
+        <div className="attack-modal">
         <div className="attack-modal-body">
           {tab === 'ataque' ? (
             <>
@@ -386,6 +404,7 @@ export default function AttackFormModal({
               <button type="button" className="attack-submit-btn" onClick={submit}>Adicionar Ataque</button>
             </>
           )}
+        </div>
         </div>
 
         {showModModal && (

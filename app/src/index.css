@@ -2936,14 +2936,7 @@ code, .counter {
   color: white;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  -moz-appearance: textfield;
   pointer-events: auto;
-}
-
-.stat-bar-value-input::-webkit-outer-spin-button,
-.stat-bar-value-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .stat-bar-note {
@@ -3064,13 +3057,6 @@ code, .counter {
   border: none;
   outline: none;
   border-radius: 0;
-  -moz-appearance: textfield;
-}
-
-.attr-value-input::-webkit-outer-spin-button,
-.attr-value-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .attr-nex-badge {
@@ -3475,13 +3461,6 @@ code, .counter {
   font-size: 3.6em;
   color: #000;
   padding: 0;
-  -moz-appearance: textfield;
-}
-
-.attr-radar-input::-webkit-outer-spin-button,
-.attr-radar-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .attr-about-list {
@@ -4535,13 +4514,6 @@ code, .counter {
   font-weight: 700;
   font-size: 11px;
   padding: 4px;
-  -moz-appearance: textfield;
-}
-
-.modpanel-counter-row input::-webkit-inner-spin-button,
-.modpanel-counter-row input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .modpanel-field {
@@ -4919,13 +4891,6 @@ code, .counter {
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
   padding: 0.25em 0;
-  -moz-appearance: textfield;
-}
-
-.pericias-cell-extra input::-webkit-inner-spin-button,
-.pericias-cell-extra input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .pericias-cell-total {
@@ -5187,13 +5152,6 @@ code, .counter {
   font-weight: 700;
   text-align: center;
   padding: 0;
-  -moz-appearance: textfield;
-}
-
-.combat-dotted-input::-webkit-inner-spin-button,
-.combat-dotted-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .combat-defense-side {

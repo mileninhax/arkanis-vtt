@@ -5781,10 +5781,26 @@ code, .counter {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   display: flex;
   flex-direction: column;
   gap: 0.55em;
   padding-right: 0.4em;
+}
+
+.attack-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.attack-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.attack-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 .attack-section-title {
@@ -5884,12 +5900,28 @@ code, .counter {
   right: 0;
   max-height: 160px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   background: #100f16;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   padding: 4px;
+}
+
+.attack-select-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.attack-select-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.attack-select-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 .attack-select-list button {
@@ -6078,6 +6110,9 @@ code, .counter {
   width: min(420px, 90vw);
   max-height: 80vh;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   background: #16151d url('./assets/pericias/dark-plaster-texture.webp');
   background-size: cover;
   background-position: center;
@@ -6087,6 +6122,19 @@ code, .counter {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
+}
+
+.attack-modmodal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.attack-modmodal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.attack-modmodal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 .attack-modmodal-tabs {
@@ -6118,6 +6166,22 @@ code, .counter {
   gap: 0.5em;
   max-height: 260px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.attack-modmodal-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.attack-modmodal-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.attack-modmodal-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
 .attack-modmodal-actions {

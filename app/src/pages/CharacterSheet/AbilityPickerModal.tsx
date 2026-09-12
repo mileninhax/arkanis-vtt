@@ -86,11 +86,11 @@ export default function AbilityPickerModal({
       if (!cls) return setItems([])
       supabase
         .from('class_powers')
-        .select('id, name, description')
+        .select('id, name, description, sources(slug)')
         .eq('class_id', cls.id)
         .eq('is_base_ability', false)
         .order('sort_order')
-        .then(({ data }) => setItems((data ?? []).map((r: any) => ({ id: r.id, name: r.name, description: r.description }))))
+        .then(({ data }) => setItems((data ?? []).map((r: any) => ({ id: r.id, name: r.name, description: r.description, sourceSlug: r.sources?.slug ?? null }))))
     })
   }, [category, sourceFilter, characterId])
 

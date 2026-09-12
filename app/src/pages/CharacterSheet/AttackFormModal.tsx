@@ -180,6 +180,16 @@ function AttackFields({ draft, onChange, skills }: { draft: AttackDraft; onChang
 
 type CatalogEntry = { id: string; name: string; effect: string; elemento?: string | null }
 
+function dedupeCatalog(entries: CatalogEntry[]): CatalogEntry[] {
+  const seen = new Set<string>()
+  return entries.filter((e) => {
+    const key = `${e.name}|${e.effect}|${e.elemento ?? ''}`
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
 function ModifiersModal({ onClose, onAdd }: { onClose: () => void; onAdd: (m: ModEntry) => void }) {
   const [tab, setTab] = useState<'modificacao' | 'maldicao'>('modificacao')
   const [creating, setCreating] = useState(false)
@@ -190,9 +200,9 @@ function ModifiersModal({ onClose, onAdd }: { onClose: () => void; onAdd: (m: Mo
 
   useEffect(() => {
     if (tab === 'modificacao') {
-      supabase.from('weapon_mods').select('id, name, effect').in('applies_to', ['corpo_a_corpo_disparo', 'armas_fogo']).order('name').then(({ data }) => setCatalog(data ?? []))
+      supabase.from('weapon_mods').select('id, name, effect').in('applies_to', ['corpo_a_corpo_disparo', 'armas_fogo']).order('name').then(({ data }) => setCatalog(dedupeCatalog(data ?? [])))
     } else {
-      supabase.from('cursed_afflictions').select('id, name, effect, elemento').eq('applies_to', 'arma').order('name').then(({ data }) => setCatalog(data ?? []))
+      supabase.from('cursed_afflictions').select('id, name, effect, elemento').eq('applies_to', 'arma').order('name').then(({ data }) => setCatalog(dedupeCatalog(data ?? [])))
     }
   }, [tab])
 

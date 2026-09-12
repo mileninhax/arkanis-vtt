@@ -8,8 +8,6 @@ type Category = 'Combatente' | 'Especialista' | 'Ocultista' | 'Sobrevivente' | '
 
 const CATEGORIES: Category[] = ['Combatente', 'Especialista', 'Ocultista', 'Sobrevivente', 'Mundano', 'Poderes Paranormais', 'Poderes Gerais', 'Origens']
 
-const CATEGORIES_WITH_SOURCE: Category[] = ['Poderes Paranormais', 'Poderes Gerais', 'Origens']
-
 const CLASS_SLUGS: Record<string, string> = {
   Combatente: 'combatente',
   Especialista: 'especialista',
@@ -53,13 +51,6 @@ export default function AbilityPickerModal({
   const [customHasElement, setCustomHasElement] = useState(false)
   const [customElement, setCustomElement] = useState('')
   const [customDescription, setCustomDescription] = useState('')
-
-  const showBookFilters = CATEGORIES_WITH_SOURCE.includes(category)
-
-  function selectCategory(c: Category) {
-    setCategory(c)
-    if (!CATEGORIES_WITH_SOURCE.includes(c) && sourceFilter !== 'homebrew') setSourceFilter('todos')
-  }
 
   useEffect(() => {
     setSelectedId(null)
@@ -143,7 +134,7 @@ export default function AbilityPickerModal({
               key={c}
               type="button"
               className={`conditions-modal-nav-btn${category === c ? ' active' : ''}`}
-              onClick={() => selectCategory(c)}
+              onClick={() => setCategory(c)}
             >
               <span>{c}</span>
             </button>
@@ -166,7 +157,7 @@ export default function AbilityPickerModal({
           </div>
 
           <div className="ability-picker-sources">
-            {SOURCE_OPTIONS.filter((s) => showBookFilters || s.key === 'todos' || s.key === 'homebrew').map((s) => (
+            {SOURCE_OPTIONS.map((s) => (
               <button key={s.key} type="button" className="ability-picker-source" onClick={() => setSourceFilter(s.key)}>
                 <img src={sourceFilter === s.key ? radioChecked : radioEmpty} alt="" />
                 <span>{s.label}</span>

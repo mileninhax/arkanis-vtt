@@ -6361,12 +6361,28 @@ code, .counter {
 }
 
 .ability-picker-shell .conditions-modal {
-  width: min(880px, 90vw);
-  height: min(640px, 88vh);
+  height: min(600px, 86vh);
 }
 
 .ability-picker-shell .conditions-modal-list-panel {
-  width: 340px;
+  width: 320px;
+}
+
+.ability-picker-shell .conditions-modal-detail-panel {
+  width: 420px;
+}
+
+.ability-picker-shell .combat-search-field {
+  padding-bottom: 0.6em;
+}
+
+.ability-picker-shell .combat-search-input {
+  font-size: 1em;
+}
+
+.ability-picker-shell .combat-search-icon {
+  width: 1.3em;
+  height: 1.3em;
 }
 
 .ability-picker-shell .conditions-modal-nav-btn {

@@ -7,6 +7,7 @@ import type { CharacterRecord } from './index'
 import RollResult, { RollCard, type RollResultData, type RollCardDie } from './RollResult'
 import { type Modifier } from './ModifiersPanel'
 import CombateModifiersPanel from './CombateModifiersPanel'
+import AttackFormModal from './AttackFormModal'
 import defenseRing from '../../assets/combate/border-defense-desktop.png'
 import resetIcon from '../../assets/combate/seta-reset.svg'
 import mysteryIcon from '../../assets/combate/op-icon-misterio-custom.png'
@@ -44,10 +45,6 @@ type InventoryAmmoInfo = {
 
 type Skill = { id: string; name: string }
 
-const ATTRS: AttributeKey[] = ['forca', 'agilidade', 'intelecto', 'vigor', 'presenca']
-
-const emptyForm = { name: '', skillId: '', attribute: 'forca' as AttributeKey, d20Bonus: 0, threatMargin: 20, multiplier: 2, damage: '', damageType: '' }
-
 export default function CombateTab({ character, onUpdated, editMode }: { character: CharacterRecord; onUpdated: () => void; editMode: boolean }) {
   const { session } = useAuth()
   const [attacks, setAttacks] = useState<Attack[]>([])
@@ -56,7 +53,6 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
   const [equippedDefense, setEquippedDefense] = useState(0)
   const [equippedProtectionName, setEquippedProtectionName] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
-  const [form, setForm] = useState(emptyForm)
   const [roll, setRoll] = useState<RollResultData | null>(null)
   const [attackMods, setAttackMods] = useState<Modifier[]>([])
   const [damageMods, setDamageMods] = useState<Modifier[]>([])
@@ -135,23 +131,6 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
   async function updateDefenseField(patch: Partial<Pick<CharacterRecord, 'defense_other_bonus' | 'bloqueio_bonus' | 'esquiva_bonus'>>) {
     await supabase.from('characters').update(patch).eq('id', character.id)
     onUpdated()
-  }
-
-  async function addAttack() {
-    if (!form.name) return
-    await supabase.from('character_attacks').insert({
-      character_id: character.id,
-      name: form.name,
-      skill_id: form.skillId || null,
-      attribute: form.attribute,
-      d20_bonus: form.d20Bonus,
-      threat_margin: form.threatMargin,
-      multiplier: form.multiplier,
-      damage: form.damage ? [{ formula: form.damage, tipo: form.damageType }] : [],
-    })
-    setForm(emptyForm)
-    setAdding(false)
-    await loadAttacks()
   }
 
   async function removeAttack(id: string) {
@@ -448,30 +427,16 @@ export default function CombateTab({ character, onUpdated, editMode }: { charact
             <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </div>
-        <button type="button" className="combat-add-btn" onClick={() => setAdding((a) => !a)}>Adicionar Ataque</button>
+        <button type="button" className="combat-add-btn" onClick={() => setAdding(true)}>Adicionar Ataque</button>
       </div>
 
       {adding && (
-        <div className="vtt-card">
-          <label>Nome <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} /></label>
-          <label>Perícia
-            <select value={form.skillId} onChange={(e) => setForm((f) => ({ ...f, skillId: e.target.value }))}>
-              <option value="">—</option>
-              {skills.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-            </select>
-          </label>
-          <label>Atributo
-            <select value={form.attribute} onChange={(e) => setForm((f) => ({ ...f, attribute: e.target.value as AttributeKey }))}>
-              {ATTRS.map((a) => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </label>
-          <label>D20 Bônus de Ataque <input type="number" value={form.d20Bonus} onChange={(e) => setForm((f) => ({ ...f, d20Bonus: Number(e.target.value) }))} /></label>
-          <label>Margem de Ameaça <input type="number" value={form.threatMargin} onChange={(e) => setForm((f) => ({ ...f, threatMargin: Number(e.target.value) }))} /></label>
-          <label>Multiplicador <input type="number" value={form.multiplier} onChange={(e) => setForm((f) => ({ ...f, multiplier: Number(e.target.value) }))} /></label>
-          <label>Dano (fórmula) <input value={form.damage} onChange={(e) => setForm((f) => ({ ...f, damage: e.target.value }))} placeholder="1d8" /></label>
-          <label>Tipo de Dano <input value={form.damageType} onChange={(e) => setForm((f) => ({ ...f, damageType: e.target.value }))} /></label>
-          <button type="button" onClick={addAttack}>Adicionar Ataque</button>
-        </div>
+        <AttackFormModal
+          characterId={character.id}
+          skills={skills}
+          onClose={() => setAdding(false)}
+          onSaved={loadAttacks}
+        />
       )}
 
       {attacks.filter((a) => a.name.toLowerCase().includes(attackSearch.toLowerCase())).map((a) => {

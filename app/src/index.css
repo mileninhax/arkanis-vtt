@@ -5680,6 +5680,443 @@ code, .counter {
   --shine-color: #f2f2f2;
 }
 
+.attack-modal-backdrop {
+  z-index: 90;
+}
+
+.attack-modal {
+  position: relative;
+  width: min(480px, 94vw);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: #16151d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.4em 1.6em 1.6em;
+  overflow: hidden;
+}
+
+.attack-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: url('./assets/pericias/veins-texture.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.attack-modal-close {
+  position: absolute;
+  top: 1.2em;
+  right: 1.4em;
+}
+
+.attack-modal-tabs {
+  margin: 1.6em 0 0.8em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.attack-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  padding-right: 0.4em;
+}
+
+.attack-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 4px;
+  margin-top: 0.6em;
+}
+
+.attack-section-title span {
+  font-family: 'Keyes', var(--heading);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.attack-section-title-inline {
+  align-items: center;
+}
+
+.attack-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.attack-field-label {
+  font-family: var(--raleway);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.attack-field-row {
+  display: flex;
+  gap: 0.8em;
+}
+
+.attack-input,
+.attack-textarea {
+  background: rgba(16, 18, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #fff;
+  font-family: var(--poppins);
+  font-size: 12px;
+  padding: 0.5em 0.6em;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.attack-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.attack-input::placeholder,
+.attack-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.attack-select {
+  position: relative;
+}
+
+.attack-select-trigger {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4em;
+  background: rgba(16, 18, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  color: #fff;
+  font-family: var(--poppins);
+  font-size: 12px;
+  padding: 0.5em 0.6em;
+  cursor: pointer;
+}
+
+.attack-select-arrow {
+  flex-shrink: 0;
+  font-size: 0.8em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.attack-select-list {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 160px;
+  overflow-y: auto;
+  background: #100f16;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+
+.attack-select-list button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--poppins);
+  font-size: 12px;
+  text-align: left;
+  padding: 0.4em 0.5em;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.attack-select-list button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.attack-select-list button.selected {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.attack-add-row-btn {
+  flex-shrink: 0;
+  background: #fff;
+  border: none;
+  border-radius: 999px;
+  color: #060517;
+  font-family: 'Keyes', var(--heading);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.3em 0.9em;
+  cursor: pointer;
+}
+
+.attack-damage-row {
+  position: relative;
+  align-items: flex-end;
+}
+
+.attack-damage-remove {
+  flex-shrink: 0;
+  align-self: center;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2em;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.attack-image-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 18, 24, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 1em;
+  min-height: 140px;
+}
+
+.attack-image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.attack-image-alter {
+  position: absolute;
+  right: 0.8em;
+  bottom: 0.8em;
+  background: #fff;
+  border-radius: 999px;
+  color: #060517;
+  font-family: 'Keyes', var(--heading);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.4em 1em;
+  cursor: pointer;
+}
+
+.attack-mod-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.attack-mod-pill {
+  background: rgba(16, 18, 24, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.6em 0.8em;
+}
+
+.attack-mod-pill-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+
+.attack-mod-pill-head strong {
+  font-family: var(--poppins);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.attack-mod-pill-head button {
+  flex-shrink: 0;
+  background: #fff;
+  border: none;
+  border-radius: 999px;
+  color: #060517;
+  font-family: 'Keyes', var(--heading);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+}
+
+.attack-mod-pill p {
+  margin: 0.4em 0 0;
+  font-family: var(--poppins);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.attack-submit-btn {
+  align-self: flex-end;
+  background: #fff;
+  border: none;
+  border-radius: 999px;
+  color: #060517;
+  font-family: 'Keyes', var(--heading);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0.6em 1.6em;
+  cursor: pointer;
+  margin-top: 0.6em;
+}
+
+.attack-alt-block {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 0.6em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+
+.attack-alt-remove {
+  align-self: flex-start;
+  background: rgba(16, 18, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  color: #fff;
+  font-family: 'Keyes', var(--heading);
+  font-size: 11px;
+  padding: 0.4em 1em;
+  cursor: pointer;
+}
+
+.attack-modmodal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+
+.attack-modmodal {
+  position: relative;
+  width: min(420px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #16151d url('./assets/pericias/dark-plaster-texture.webp');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.2em 1.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+
+.attack-modmodal-tabs {
+  display: flex;
+  gap: 0.6em;
+}
+
+.attack-modmodal-tabs button {
+  flex: 1 1 0;
+  background: rgba(16, 18, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Keyes', var(--heading);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.attack-modmodal-tabs button.active {
+  background: #fff;
+  color: #060517;
+}
+
+.attack-modmodal-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.4em;
+  font-family: var(--poppins);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.attack-modmodal-search svg {
+  width: 1.1em;
+  height: 1.1em;
+  color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.attack-modmodal-disclaimer {
+  margin: 0;
+  font-family: var(--poppins);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.attack-modmodal-shop {
+  align-self: center;
+  background: #6d3fd6;
+  border-radius: 999px;
+  color: #fff;
+  font-family: var(--poppins);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 0.5em 1.4em;
+  text-decoration: none;
+}
+
+.attack-modmodal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6em;
+  margin-top: 0.4em;
+}
+
+.attack-modmodal-back,
+.attack-modmodal-create {
+  border-radius: 999px;
+  font-family: 'Keyes', var(--heading);
+  font-size: 12px;
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+}
+
+.attack-modmodal-back {
+  background: rgba(16, 18, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.attack-modmodal-create {
+  background: #fff;
+  border: none;
+  color: #060517;
+}
+
 .combat-add-btn::after {
   content: '';
   position: absolute;

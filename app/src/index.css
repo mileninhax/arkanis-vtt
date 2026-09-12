@@ -207,6 +207,16 @@ h1, h2, h3, h4 {
   background: transparent !important;
 }
 
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 h1 { font-size: 1.6em; }
 h2 { font-size: 1.2em; }
 h3 { font-size: 1.05em; }

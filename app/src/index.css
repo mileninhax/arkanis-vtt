@@ -5684,7 +5684,7 @@ code, .counter {
 .attack-modal-tabs button {
   background: rgba(20, 18, 26, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 14px;
+  border-radius: 0;
   color: rgba(255, 255, 255, 0.7);
   font-family: 'Keyes', var(--heading);
   font-size: 12px;
@@ -6114,7 +6114,7 @@ code, .counter {
   flex: 1 1 0;
   background: rgba(16, 18, 24, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 14px;
+  border-radius: 0;
   color: rgba(255, 255, 255, 0.7);
   font-family: 'Keyes', var(--heading);
   font-size: 12px;

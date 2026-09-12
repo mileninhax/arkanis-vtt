@@ -6373,6 +6373,7 @@ code, .counter {
 }
 
 .ability-picker-shell .combat-search-field {
+  flex: none;
   padding-bottom: 0.6em;
 }
 
